@@ -11,9 +11,7 @@ brew install caskroom/cask/brew-cask
 brew cask install vagrant virtualbox
 ```
 
-Seuraavaksi kopioi Fermaatin Git-repository koneellesi. Tähän voit käyttää esimerkiksi [GitHubin omaa sovellusta](https://mac.github.com/).
-
-Kun repository on kopioitu, mene komentorivillä repositoryn hakemistoon ja aja siellä seuraava komento:
+Seuraavaksi kopioi Fermaatin Git-repository koneellesi. Tähän voit käyttää esimerkiksi [GitHubin omaa sovellusta](https://mac.github.com/). Kun repository on kopioitu, mene komentorivillä repositoryn hakemistoon ja aja siellä seuraava komento:
 
 ```
 vagrant up
@@ -21,7 +19,7 @@ vagrant up
 
 Komento pystyttää virtuaalisen Ubuntu-palvelimen kehitystyötä varten. Tässä menee aikaa, ja levytilaa kuluu muutama giga. Kun operaatio on valmis, palvelin on käynnissä, ja menemällä selaimessa osoitteeseen `http://192.168.33.10/` pääset ihastelemaan Fermaattia.
 
-Jos sinun tarvitsee tehdä virtuaalipalvelimella asioita, voit ottaa ssh-yhteyden Ubuntuun seuraavasti, kun olet repositoryn hakemistossa:
+Nyt voit koodata Fermaattia `/public` -kansion sisältöä muokkaamalla. Jos sinun tarvitsee tehdä virtuaalipalvelimella asioita, voit ottaa ssh-yhteyden Ubuntuun seuraavasti, kun olet repositoryn hakemistossa:
 ```
 vagrant ssh
 ```
