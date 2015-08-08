@@ -25,3 +25,20 @@ vagrant ssh
 ```
 
 Lisäohjeita löytyy [Skotch Boxin saitilta](https://box.scotch.io/).
+
+# Tietokannan populointi
+
+Tiedostossa `populate-db.sql`  on kehityksen kannalta mukavat asetukset OwnCloudiin. Tietokanta kannattaa päivittää sql-tiedoston mukaiseksi heti kehitysympäristön pystytyksen jälkeen:
+
+```
+cd /var/www
+mysqldump skotchbox > populate-db.sql
+```
+
+Tämän jälkeen pääset kirjautumaan OwnCloudiin tunnuksilla `admin`/`admin`.
+
+Jos sql-tiedostoa halutaan päivittää, se onnistuu seuraavalla komennolla:
+
+```
+mysql skotchbox < populate-db.sql
+```

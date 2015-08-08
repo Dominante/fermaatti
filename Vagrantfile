@@ -16,9 +16,12 @@ Vagrant.configure("2") do |config|
       apt-get install -y python3-pip
       pip3 install ocdev
 
-      # Set language envs
+      # Set missing language envs
       echo "export LC_CTYPE=en_US.UTF-8" >> ~/.profile
       echo "export LC_ALL=en_US.UTF-8" >> ~/.profile
+
+      # Go by default to /var/www where the OwnCloud resides
+      echo "cd /var/www" >> ~/.profile
 
       # Use dev config for OwnCloud
       cd /var/www/public/config
