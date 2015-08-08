@@ -17,9 +17,11 @@ Seuraavaksi kopioi Fermaatin Git-repository koneellesi. Tähän voit käyttää 
 vagrant up
 ```
 
-Komento pystyttää virtuaalisen Ubuntu-palvelimen kehitystyötä varten. Tässä menee aikaa, ja levytilaa kuluu muutama giga. Kun operaatio on valmis, palvelin on käynnissä, ja menemällä selaimessa osoitteeseen `http://192.168.33.10/` pääset ihastelemaan Fermaattia.
+Komento pystyttää virtuaalisen palvelimen ([Skotch Box 2.0](https://box.scotch.io/)) kehitystyötä varten. Tässä menee aikaa, ja levytilaa kuluu muutama giga. Kun operaatio on valmis, palvelin on käynnissä, ja menemällä selaimessa osoitteeseen `http://192.168.33.10/` pääset ihastelemaan Fermaattia.
 
 Nyt voit koodata Fermaattia `/public` -kansion sisältöä muokkaamalla. Jos sinun tarvitsee tehdä virtuaalipalvelimella asioita, voit ottaa ssh-yhteyden Ubuntuun seuraavasti, kun olet repositoryn hakemistossa:
 ```
 vagrant ssh
 ```
+
+Lisäohjeita löytyy [Skotch Boxin saitilta](https://box.scotch.io/).
