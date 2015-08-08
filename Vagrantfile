@@ -15,5 +15,9 @@ Vagrant.configure("2") do |config|
       # Install OwnCloud development tool
       apt-get install -y python3-pip
       pip3 install ocdev
+
+      # Set language envs
+      echo "export LC_CTYPE=en_US.UTF-8" >> ~/.profile
+      echo "export LC_ALL=en_US.UTF-8" >> ~/.profile
     SHELL
 end
