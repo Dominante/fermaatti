@@ -107,7 +107,7 @@ CREATE TABLE `oc_appconfig` (
 
 LOCK TABLES `oc_appconfig` WRITE;
 /*!40000 ALTER TABLE `oc_appconfig` DISABLE KEYS */;
-INSERT INTO `oc_appconfig` VALUES ('activity','enabled','no'),('activity','installed_version','2.0.1'),('activity','types','filesystem'),('backgroundjob','lastjob','1'),('core','backgroundjobs_mode','ajax'),('core','installedat','1439048593.7236'),('core','lastcron','1439051943'),('core','lastupdateResult','{\"version\":{},\"versionstring\":{},\"url\":{},\"web\":{}}'),('core','lastupdatedat','1439051382'),('core','public_files','files_sharing/public.php'),('core','public_gallery','gallery/public.php'),('core','public_webdav','files_sharing/publicwebdav.php'),('core','remote_files','files/appinfo/remote.php'),('core','remote_webdav','files/appinfo/remote.php'),('external','enabled','yes'),('external','installed_version','1.2'),('external','ocsid','166046'),('external','types',''),('files','enabled','yes'),('files','installed_version','1.1.9'),('files','types','filesystem'),('files_locking','enabled','yes'),('files_locking','installed_version',''),('files_locking','types','filesystem'),('files_pdfviewer','enabled','yes'),('files_pdfviewer','installed_version','0.7'),('files_pdfviewer','ocsid','166049'),('files_pdfviewer','types',''),('files_sharing','enabled','yes'),('files_sharing','installed_version','0.6.2'),('files_sharing','types','filesystem'),('files_texteditor','enabled','yes'),('files_texteditor','installed_version','0.4'),('files_texteditor','ocsid','166051'),('files_texteditor','types',''),('files_trashbin','enabled','yes'),('files_trashbin','installed_version','0.6.3'),('files_trashbin','types','filesystem'),('files_versions','enabled','no'),('files_versions','installed_version','1.0.6'),('files_versions','types','filesystem'),('files_videoviewer','enabled','yes'),('files_videoviewer','installed_version','0.1.3'),('files_videoviewer','ocsid','166054'),('files_videoviewer','types',''),('firstrunwizard','enabled','no'),('firstrunwizard','installed_version','1.1'),('firstrunwizard','ocsid','166055'),('firstrunwizard','types',''),('gallery','enabled','yes'),('gallery','installed_version','0.6.0'),('gallery','ocsid','166056'),('gallery','types',''),('provisioning_api','enabled','yes'),('provisioning_api','installed_version','0.2'),('provisioning_api','types','filesystem'),('templateeditor','enabled','yes'),('templateeditor','installed_version','0.1'),('templateeditor','types',''),('updater','enabled','no'),('updater','installed_version','0.6'),('updater','types','');
+INSERT INTO `oc_appconfig` VALUES ('activity','enabled','no'),('activity','installed_version','2.0.1'),('activity','types','filesystem'),('backgroundjob','lastjob','1'),('core','backgroundjobs_mode','ajax'),('core','incoming_server2server_share_enabled','no'),('core','installedat','1439048593.7236'),('core','lastcron','1439057315'),('core','lastupdateResult','{\"version\":{},\"versionstring\":{},\"url\":{},\"web\":{}}'),('core','lastupdatedat','1439056792'),('core','outgoing_server2server_share_enabled','no'),('core','public_files','files_sharing/public.php'),('core','public_gallery','gallery/public.php'),('core','public_webdav','files_sharing/publicwebdav.php'),('core','remote_files','files/appinfo/remote.php'),('core','remote_webdav','files/appinfo/remote.php'),('external','enabled','yes'),('external','installed_version','1.2'),('external','ocsid','166046'),('external','sites','[[\"Kalenteri\",\"https:\\/\\/www.google.com\\/calendar\\/embed?height=800&wkst=2&bgcolor=%23FFFFFF&src=dominante.choir.internal%40gmail.com&color=%232952A3&src=fi.finnish%23holiday%40group.v.calendar.google.com&color=%23875509&src=e_2_fi%23weeknum%40group.v.calendar.google.com&color=%23B1440E&ctz=Europe%2FHelsinki\",\"external.png\"],[\"Laulutunnit\",\"https:\\/\\/docs.google.com\\/forms\\/d\\/1-LvglKmDZZ-aXj-LAAM856Iu7pmPp-HvQjOhMDpVqWA\\/viewform?embedded=true#start=embed\",\"external.png\"]]'),('external','types',''),('files','enabled','yes'),('files','installed_version','1.1.9'),('files','types','filesystem'),('files_locking','enabled','yes'),('files_locking','installed_version',''),('files_locking','types','filesystem'),('files_pdfviewer','enabled','yes'),('files_pdfviewer','installed_version','0.7'),('files_pdfviewer','ocsid','166049'),('files_pdfviewer','types',''),('files_sharing','enabled','yes'),('files_sharing','incoming_server2server_share_enabled','no'),('files_sharing','installed_version','0.6.2'),('files_sharing','outgoing_server2server_share_enabled','no'),('files_sharing','types','filesystem'),('files_texteditor','enabled','yes'),('files_texteditor','installed_version','0.4'),('files_texteditor','ocsid','166051'),('files_texteditor','types',''),('files_trashbin','enabled','yes'),('files_trashbin','installed_version','0.6.3'),('files_trashbin','types','filesystem'),('files_versions','enabled','no'),('files_versions','installed_version','1.0.6'),('files_versions','types','filesystem'),('files_videoviewer','enabled','yes'),('files_videoviewer','installed_version','0.1.3'),('files_videoviewer','ocsid','166054'),('files_videoviewer','types',''),('firstrunwizard','enabled','no'),('firstrunwizard','installed_version','1.1'),('firstrunwizard','ocsid','166055'),('firstrunwizard','types',''),('gallery','enabled','yes'),('gallery','installed_version','0.6.0'),('gallery','ocsid','166056'),('gallery','types',''),('old_menu','enabled','yes'),('old_menu','installed_version','2.1'),('old_menu','types',''),('provisioning_api','enabled','yes'),('provisioning_api','installed_version','0.2'),('provisioning_api','types','filesystem'),('templateeditor','enabled','yes'),('templateeditor','installed_version','0.1'),('templateeditor','types',''),('updater','enabled','no'),('updater','installed_version','0.6'),('updater','types','');
 /*!40000 ALTER TABLE `oc_appconfig` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -166,7 +166,7 @@ CREATE TABLE `oc_filecache` (
   KEY `fs_storage_mimetype` (`storage`,`mimetype`),
   KEY `fs_storage_mimepart` (`storage`,`mimepart`),
   KEY `fs_storage_size` (`storage`,`size`,`fileid`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -175,7 +175,7 @@ CREATE TABLE `oc_filecache` (
 
 LOCK TABLES `oc_filecache` WRITE;
 /*!40000 ALTER TABLE `oc_filecache` DISABLE KEYS */;
-INSERT INTO `oc_filecache` VALUES (1,1,'','d41d8cd98f00b204e9800998ecf8427e',-1,'',2,1,2930658,1439048594,1439048593,0,0,'55c6239246fd3',23),(2,1,'files','45b963397aa40d4a0063e0d85e4fe7a1',1,'files',2,1,2930658,1439048594,1439048594,0,0,'55c623924756f',31),(3,1,'files/Documents','0ad78ba05b6961d92f7970b2b3922eca',2,'Documents',2,1,36227,1439048594,1439048594,0,0,'55c6239219037',31),(4,1,'files/Documents/Example.odt','c89c560541b952a435783a7d51a27d50',3,'Example.odt',4,3,36227,1439048594,1439048594,0,0,'35dbd1236e66d79712b3cd4f6ddc024b',27),(5,1,'files/ownCloudUserManual.pdf','c8edba2d1b8eb651c107b43532c34445',2,'ownCloudUserManual.pdf',5,3,2215875,1439048594,1439048594,0,0,'1d05054958a2bba0828d5f1f4e2e0697',27),(6,1,'files/Photos','d01bb67e7b71dd49fd06bad922f521c9',2,'Photos',2,1,678556,1439048594,1439048594,0,0,'55c62392479c5',31),(7,1,'files/Photos/Paris.jpg','a208ddedf08367bbc56963107248dda5',6,'Paris.jpg',7,6,228761,1439048594,1439048594,0,0,'b955b7d57be75c46bae0398ce820963a',27),(8,1,'files/Photos/San Francisco.jpg','9fc714efbeaafee22f7058e73d2b1c3b',6,'San Francisco.jpg',7,6,216071,1439048594,1439048594,0,0,'c41a70c534a92020cc8728b86794eec1',27),(9,1,'files/Photos/Squirrel.jpg','de85d1da71bcd6232ad893f959063b8c',6,'Squirrel.jpg',7,6,233724,1439048594,1439048594,0,0,'f918a9b91adb1c14ff459932fbae06ae',27);
+INSERT INTO `oc_filecache` VALUES (1,1,'','d41d8cd98f00b204e9800998ecf8427e',-1,'',2,1,2930658,1439048594,1439048593,0,0,'55c6239246fd3',23),(2,1,'files','45b963397aa40d4a0063e0d85e4fe7a1',1,'files',2,1,678561,1439056861,1439055029,0,0,'55c643dd76b81',31),(6,1,'files/Photos','d01bb67e7b71dd49fd06bad922f521c9',2,'Photos',2,1,678556,1439048594,1439048594,0,0,'55c62392479c5',31),(7,1,'files/Photos/Paris.jpg','a208ddedf08367bbc56963107248dda5',6,'Paris.jpg',7,6,228761,1439048594,1439048594,0,0,'b955b7d57be75c46bae0398ce820963a',27),(8,1,'files/Photos/San Francisco.jpg','9fc714efbeaafee22f7058e73d2b1c3b',6,'San Francisco.jpg',7,6,216071,1439048594,1439048594,0,0,'c41a70c534a92020cc8728b86794eec1',27),(9,1,'files/Photos/Squirrel.jpg','de85d1da71bcd6232ad893f959063b8c',6,'Squirrel.jpg',7,6,233724,1439048594,1439048594,0,0,'f918a9b91adb1c14ff459932fbae06ae',27),(10,1,'files/testi.jes','14023b86dee29013baee0eddd01b1134',2,'testi.jes',8,3,5,1439055037,1439055037,0,0,'43fff786bfb85b5d72925090cda64659',27);
 /*!40000 ALTER TABLE `oc_filecache` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -320,7 +320,7 @@ CREATE TABLE `oc_mimetypes` (
   `mimetype` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   UNIQUE KEY `mimetype_id_index` (`mimetype`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -329,7 +329,7 @@ CREATE TABLE `oc_mimetypes` (
 
 LOCK TABLES `oc_mimetypes` WRITE;
 /*!40000 ALTER TABLE `oc_mimetypes` DISABLE KEYS */;
-INSERT INTO `oc_mimetypes` VALUES (3,'application'),(5,'application/pdf'),(4,'application/vnd.oasis.opendocument.text'),(1,'httpd'),(2,'httpd/unix-directory'),(6,'image'),(7,'image/jpeg');
+INSERT INTO `oc_mimetypes` VALUES (3,'application'),(8,'application/octet-stream'),(5,'application/pdf'),(4,'application/vnd.oasis.opendocument.text'),(1,'httpd'),(2,'httpd/unix-directory'),(6,'image'),(7,'image/jpeg');
 /*!40000 ALTER TABLE `oc_mimetypes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -598,4 +598,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-08-08 17:57:34
+-- Dump completed on 2015-08-08 18:08:41
