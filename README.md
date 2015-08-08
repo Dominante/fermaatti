@@ -1,5 +1,5 @@
 # Fermaatti
-Dominante-kuoron intranet
+Dominante-kuoron intranet. Alustana OwnCloud 8.1.0.
 
 # Kehitysympäristö
 
