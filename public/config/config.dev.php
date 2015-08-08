@@ -21,4 +21,5 @@ $CONFIG = array (
   'logtimezone' => 'UTC',
   'installed' => true,
   'memcache.local' => '\OC\Memcache\Redis',
+  'default_language' => 'fi',
 );
