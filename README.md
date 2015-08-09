@@ -55,4 +55,4 @@ Fermaatin OwnCloud -asennus kannattaa päivittää säännöllisesti, esimerkiks
 
 Viimeistään 4/2017, kun `8.1.X` -releasea ei tueta, kannattaa tehdä iso versiopäivitys, joka vaatii suuremman työmäärän (appien yhteensopivuus täytyy tuolloin tarkistaa).
 
-Päivitys tehdään [manuaalisen päivityksen ohjeita mukaillen](https://doc.owncloud.org/server/8.1/admin_manual/maintenance/upgrade.html#manual-upgrade-procedure). Muista backup tuotannon tietokannasta! OwnCloud-asennuksen tiedostoista ei tarvitse backupia, koska vanhat tiedostot ovat Gitissä tallessa.
+Kaikki päivitykset tehdään [manuaalisen päivityksen ohjeita mukaillen](https://doc.owncloud.org/server/8.1/admin_manual/maintenance/upgrade.html#manual-upgrade-procedure). Muista backup tuotannon tietokannasta! OwnCloud-asennuksen tiedostoista ei tarvitse backupia, koska vanhat tiedostot ovat Gitissä tallessa.
