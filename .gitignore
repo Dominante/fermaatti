@@ -1,3 +1,4 @@
 public/config/config.php
 data/*/
 .vagrant
+owncloud.log

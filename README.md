@@ -42,3 +42,9 @@ Jos sql-tiedostoa halutaan päivittää, se onnistuu seuraavalla komennolla:
 ```
 mysql skotchbox < populate-db.sql
 ```
+
+# Deploy
+
+Käytämme [Setting up Push-to-Deploy with git](http://krisjordan.com/essays/setting-up-push-to-deploy-with-git) -artikkelin mukaista Git-pohjaista deployta.
+
+Deploy-työnkulku on tiedostossa `deploy/post-receive`. Jos sitä päivitetään, se täytyy käsin päivittää palvelimella olevan repositoryn `.git/hooks/` -hakemistoon.
