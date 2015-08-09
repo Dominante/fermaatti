@@ -1,7 +1,7 @@
 # Fermaatti
-Dominante-kuoron intranet. Alustana OwnCloud 8.1.0.
+Dominante-kuoron intranet. Alustana on avoimen lähdekoodin [OwnCloud](https://owncloud.org/).
 
-# Kehitysympäristö
+## Kehitysympäristö
 
 Koska haluamme, että koodaustyö on kivaa ja ongelmatonta, pystytämme kehitysympäristön Vagrant-nimisen systeemin avulla.
 
@@ -26,7 +26,7 @@ vagrant ssh
 
 Lisäohjeita löytyy [Skotch Boxin saitilta](https://box.scotch.io/).
 
-# Tietokannan populointi
+## Tietokannan populointi
 
 Tiedostossa `populate-db.sql`  on kehityksen kannalta mukavat asetukset OwnCloudiin. Tietokanta kannattaa päivittää sql-tiedoston mukaiseksi heti kehitysympäristön pystytyksen jälkeen:
 
@@ -43,8 +43,16 @@ Jos sql-tiedostoa halutaan päivittää, se onnistuu seuraavalla komennolla:
 mysql skotchbox < populate-db.sql
 ```
 
-# Deploy
+## Deploy
 
 Käytämme [Setting up Push-to-Deploy with git](http://krisjordan.com/essays/setting-up-push-to-deploy-with-git) -artikkelin mukaista Git-pohjaista deployta.
 
 Deploy-työnkulku on tiedostossa `deploy/post-receive`. Jos sitä päivitetään, se täytyy käsin päivittää palvelimella olevan repositoryn `.git/hooks/` -hakemistoon.
+
+## OwnCloudin päivittäminen
+
+Fermaatin OwnCloud -asennus kannattaa päivittää säännöllisesti, esimerkiksi puolen vuoden välein. Helpointa on päivittää nykyiseen releaseen (`8.1`) pelkät tietoturvapäivitykset (tällöin versionumero muuttuu esim. `8.1.0` => `8.1.1`). 
+
+Viimeistään 4/2017, kun `8.1` -releasea ei tueta, kannattaa tehdä iso versiopäivitys, joka vaatii suuremman työmäärän (appien yhteensopivuus täytyy tuolloin tarkistaa).
+
+Päivitys tehdään [manuaalisen päivityksen ohjeita mukaillen](https://doc.owncloud.org/server/8.1/admin_manual/maintenance/upgrade.html#manual-upgrade-procedure). Muista backup tuotannon tietokannasta! OwnCloud-asennuksen tiedostoista ei tarvitse backupia, koska vanhat tiedostot ovat Gitissä tallessa.
