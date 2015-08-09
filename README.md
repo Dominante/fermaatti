@@ -51,8 +51,8 @@ Deploy-työnkulku on tiedostossa `deploy/post-receive`. Jos sitä päivitetään
 
 ## OwnCloudin päivittäminen
 
-Fermaatin OwnCloud -asennus kannattaa päivittää säännöllisesti, esimerkiksi puolen vuoden välein. Helpointa on päivittää nykyiseen releaseen (`8.1`) pelkät tietoturvapäivitykset (tällöin versionumero muuttuu esim. `8.1.0` => `8.1.1`). 
+Fermaatin OwnCloud -asennus kannattaa päivittää säännöllisesti, esimerkiksi puolen vuoden välein. Helpointa on päivittää nykyiseen `8.1.X` -releaseen pelkät tietoturvapäivitykset (tällöin versionumero muuttuu esim. `8.1.0` => `8.1.1`). 
 
-Viimeistään 4/2017, kun `8.1` -releasea ei tueta, kannattaa tehdä iso versiopäivitys, joka vaatii suuremman työmäärän (appien yhteensopivuus täytyy tuolloin tarkistaa).
+Viimeistään 4/2017, kun `8.1.X` -releasea ei tueta, kannattaa tehdä iso versiopäivitys, joka vaatii suuremman työmäärän (appien yhteensopivuus täytyy tuolloin tarkistaa).
 
 Päivitys tehdään [manuaalisen päivityksen ohjeita mukaillen](https://doc.owncloud.org/server/8.1/admin_manual/maintenance/upgrade.html#manual-upgrade-procedure). Muista backup tuotannon tietokannasta! OwnCloud-asennuksen tiedostoista ei tarvitse backupia, koska vanhat tiedostot ovat Gitissä tallessa.
