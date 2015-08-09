@@ -14,12 +14,12 @@ $CONFIG = array (
     0 => '192.168.33.10',
     1 => 'fermaatti'
   ),
-  'datadirectory' => '/var/www/public/data',
+  'datadirectory' => '/var/www/data',
   'overwrite.cli.url' => 'http://192.168.33.10',
   'version' => '8.1.0.8',
   'dbtableprefix' => 'oc_',
   'logtimezone' => 'UTC',
   'installed' => true,
-  'memcache.local' => '\OC\Memcache\Redis',
+  'memcache.local' => '\\OC\\Memcache\\Redis',
   'default_language' => 'fi',
 );
