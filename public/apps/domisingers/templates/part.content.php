@@ -1,5 +1,5 @@
-<div id="controls"><div class="breadcrumb"><div class="crumb svg last" data-dir="/"><a href="/owncloud/index.php/apps/files?dir=/"><img class="svg" src="/owncloud/core/img/places/home.svg" alt="Koti"></a></div></div>
-    <div class="actions creatable">
+<div id="controls"><div class="breadcrumb"><div class="crumb svg last" data-dir="/"><a style="visibility: hidden;" href="/owncloud/index.php/apps/files?dir=/"><img class="svg" src="<?php print_unescaped(OCP\image_path("core", "places/home.svg")); ?>" alt="Koti"></a></div></div>
+    <div class="actions creatable" style="margin-left: 20px;">
         <select style="position: relative; top: -1px;">
             <option value="" selected="">Kaikki äänialat</option>
             <option value="core/templates/mail.php">Sopraanot</option>
@@ -44,7 +44,7 @@
 
                 <span class="actions" style="display: none;">
                     <a class="icon-delete delete svg action text permanent">
-                        Poista <img class="svg" alt="Poista" src="/owncloud/core/img/actions/delete.svg">
+                        Poista <img class="svg" alt="Poista" src="<?php print_unescaped(OCP\image_path("core", "actions/delete.svg")); ?>">
                     </a>
                     <select class="groups svg action text permanent shared" name="groups" style="">
                         <option value="-1" disabled="disabled" selected="selected">Ryhmät</option>
