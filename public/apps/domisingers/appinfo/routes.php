@@ -17,9 +17,18 @@
  * The controller class has to be registered in the application.php file since
  * it's instantiated in there
  */
+
+// NOTE: Atte Keinänen 9.8.15
+// Quirky deprecated procedural copy-paste from External Sites module :D
+
+/** @var $this \OCP\Route\IRouter */
+$this->create('domisingers_ajax_setsites', 'ajax/setjsonpath.php')
+  ->actionInclude('domisingers/ajax/setjsonpath.php');
+
 return [
     'routes' => [
 	   ['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
 	   ['name' => 'page#do_echo', 'url' => '/echo', 'verb' => 'POST'],
+     ['name' => 'page#do_echo', 'url' => '/echo', 'verb' => 'POST'],
     ]
 ];
