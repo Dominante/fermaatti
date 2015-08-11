@@ -9,13 +9,11 @@ $CONFIG = array (
   'dbpassword' => 'root',
   'passwordsalt' => '6blnPnnjeEBdwKhckX+nE+Lwr+onf3',
   'secret' => 'WGCzfQX0xPRTo0gfwqiqmFw44cPFU1iHisukMaYluJHTu3SD',
-  'trusted_domains' => 
-  array (
-    0 => '192.168.33.10',
-    1 => 'fermaatti'
+  'trusted_domains' => array(
+    0 => 'fermaatti.dominante.fi'
   ),
-  'datadirectory' => '/var/www/data',
-  'overwrite.cli.url' => 'http://192.168.33.10',
+  'datadirectory' => '/var/wwwhome/jasensivut-dev/data',
+  'overwrite.cli.url' => 'http://fermaatti.dominante.fi/jasensivut-dev',
   'version' => '8.1.0.8',
   'dbtableprefix' => 'oc_',
   'logtimezone' => 'UTC',
