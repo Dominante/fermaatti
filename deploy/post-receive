@@ -14,3 +14,7 @@ end
 deploy_to_dir = File.expand_path('/var/wwwhome/jasensivut-kehitys')
 `GIT_WORK_TREE="#{deploy_to_dir}" git checkout -f master`
 puts "DEPLOY: master(#{to}) copied to '#{deploy_to_dir}'"
+
+# 4. Use production config
+`cd /var/wwwhome/jasensivut-dev/public/config; cp config.production.php config.php`
+puts "DEPLOY: Using production config file (config.production.php)'"
