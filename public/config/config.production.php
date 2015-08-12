@@ -1,4 +1,7 @@
 <?php
+/* Ympäristömuuttujat tulevat Apachen configista
+ * (/etc/apache2/sites-available/...)
+ */
 define('DEBUG',true);
 $CONFIG = array (
   'instanceid' => 'ock4xi9fsk9t',
@@ -12,8 +15,8 @@ $CONFIG = array (
   'trusted_domains' => array(
     0 => 'fermaatti.dominante.fi'
   ),
-  'datadirectory' => '/var/wwwhome/jasensivut-dev/data',
-  'overwrite.cli.url' => 'http://fermaatti.dominante.fi/jasensivut-dev',
+  'datadirectory' => '/var/wwwhome/jasensivut-kehitys/data',
+  'overwrite.cli.url' => 'http://fermaatti.dominante.fi/jasensivut-kehitys',
   'version' => '8.1.0.8',
   'dbtableprefix' => 'oc_',
   'logtimezone' => 'UTC',
