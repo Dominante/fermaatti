@@ -17,14 +17,14 @@ Seuraavaksi kopioi Fermaatin Git-repository koneellesi. Tähän voit käyttää 
 vagrant up
 ```
 
-Komento pystyttää virtuaalisen palvelimen ([Skotch Box 2.0](https://box.scotch.io/)) kehitystyötä varten. Tässä menee aikaa, ja levytilaa kuluu muutama giga. Kun operaatio on valmis, palvelin on käynnissä, ja menemällä selaimessa osoitteeseen `http://192.168.33.10/` pääset ihastelemaan Fermaattia.
+Komento pystyttää virtuaalisen palvelimen ([Scotch Box 2.0](https://box.scotch.io/)) kehitystyötä varten. Tässä menee aikaa, ja levytilaa kuluu muutama giga. Kun operaatio on valmis, palvelin on käynnissä, ja menemällä selaimessa osoitteeseen `http://192.168.33.10/` pääset ihastelemaan Fermaattia.
 
 Nyt voit koodata Fermaattia `/public` -kansion sisältöä muokkaamalla. Jos sinun tarvitsee tehdä virtuaalipalvelimella asioita, voit ottaa ssh-yhteyden Ubuntuun seuraavasti, kun olet repositoryn hakemistossa:
 ```
 vagrant ssh
 ```
 
-Lisäohjeita löytyy [Skotch Boxin saitilta](https://box.scotch.io/).
+Lisäohjeita löytyy [Scotch Boxin saitilta](https://box.scotch.io/).
 
 ## Tietokannan populointi
 
@@ -32,7 +32,7 @@ Tiedostossa `populate-db.sql`  on kehityksen kannalta mukavat asetukset OwnCloud
 
 ```
 cd /var/www
-mysqldump skotchbox > populate-db.sql
+mysql scotchbox < populate-db.sql
 ```
 
 Tämän jälkeen pääset kirjautumaan OwnCloudiin tunnuksilla `admin`/`admin`.
@@ -40,7 +40,7 @@ Tämän jälkeen pääset kirjautumaan OwnCloudiin tunnuksilla `admin`/`admin`.
 Jos sql-tiedostoa halutaan päivittää, se onnistuu seuraavalla komennolla:
 
 ```
-mysql skotchbox < populate-db.sql
+mysqldump scotchbox > populate-db.sql
 ```
 
 ## Deploy
@@ -51,8 +51,8 @@ Deploy-työnkulku on tiedostossa `deploy/post-receive`. Jos sitä päivitetään
 
 ## OwnCloudin päivittäminen
 
-Fermaatin OwnCloud -asennus kannattaa päivittää säännöllisesti, esimerkiksi puolen vuoden välein. Helpointa on päivittää nykyiseen `8.1.X` -releaseen pelkät tietoturvapäivitykset (tällöin versionumero muuttuu esim. `8.1.0` => `8.1.1`). 
+Fermaatin OwnCloud -asennus kannattaa päivittää säännöllisesti, esimerkiksi puolen vuoden välein. Helpointa on päivittää nykyiseen `8.1.X` -releaseen pelkät tietoturvapäivitykset (tällöin versionumero muuttuu esim. `8.1.0` => `8.1.1`).
 
 Viimeistään 4/2017, kun `8.1.X` -releasea ei tueta, kannattaa tehdä iso versiopäivitys, joka vaatii suuremman työmäärän (appien yhteensopivuus täytyy tuolloin tarkistaa).
- 
+
 Kaikki päivitykset tehdään [manuaalisen päivityksen ohjeita mukaillen](https://doc.owncloud.org/server/8.1/admin_manual/maintenance/upgrade.html#manual-upgrade-procedure). Muista backup tuotannon tietokannasta! OwnCloud-asennuksen tiedostoista ei tarvitse backupia, koska vanhat tiedostot ovat Gitissä tallessa.
