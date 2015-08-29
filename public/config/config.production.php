@@ -20,5 +20,6 @@ $CONFIG = array (
   'installed' => true,
   'memcache.local' => '\\OC\\Memcache\\Redis',
   'loglevel' => 0,
-  'default_language' => 'fi'
+  'default_language' => 'fi',
+  'updatechecker' => false    // Päivitysmuistutukset pois
 );
