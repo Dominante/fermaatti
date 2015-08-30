@@ -2,3 +2,4 @@ public/config/config.php
 data/*/
 .vagrant
 owncloud.log
+choir-members-dump.sql

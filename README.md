@@ -28,6 +28,8 @@ Lisäohjeita löytyy [Scotch Boxin saitilta](https://box.scotch.io/).
 
 ## Tietokannan populointi
 
+### OwnCloud
+
 Tiedostossa `populate-db.sql`  on kehityksen kannalta mukavat asetukset OwnCloudiin. Tietokanta kannattaa päivittää sql-tiedoston mukaiseksi heti kehitysympäristön pystytyksen jälkeen:
 
 ```
@@ -42,6 +44,18 @@ Jos sql-tiedostoa halutaan päivittää, se onnistuu seuraavalla komennolla:
 ```
 mysqldump scotchbox > populate-db.sql
 ```
+
+### Kuorolaisten yhteystiedot
+
+Kuorolaisten yhteystiedot ovat salassapidettäviä, ja siksi ne pitää hakea Fermaatin palvelimelta:
+
+```
+cd /var/www
+scp kayttaja@fermaatti.dominante.fi:/var/db-dumps/choir-members-dump.sql choir-members-dump.sql
+mysql scotchbox < choir-members-dump.sql
+```
+
+Tiedostonimi `choir-members-dump.sql` on gitignoressa.
 
 ## Deploy
 
