@@ -27,8 +27,8 @@ $this->create('domisingers_ajax_setsites', 'ajax/setjsonpath.php')
 
 return [
     'routes' => [
-	   ['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
-	   ['name' => 'page#do_echo', 'url' => '/echo', 'verb' => 'POST'],
-     ['name' => 'page#do_echo', 'url' => '/echo', 'verb' => 'POST'],
+        ['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
+        ['name' => 'page#do_echo', 'url' => '/echo', 'verb' => 'POST'],
+        ['name' => 'memberlist#listall', 'url' => '/listall', 'verb' => 'GET'],
     ]
 ];
