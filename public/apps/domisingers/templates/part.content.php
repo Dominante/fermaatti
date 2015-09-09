@@ -1,7 +1,7 @@
 <?php
 $members = $_['members'];
 
-$attributes = ['etunimi', 'sukunimi', 'puhelin1', 'email', 'stemma', 'vastuut'];
+$headers = ['nimi', 'stemma', 'puhelin', 'email', 'vastuut'];
 
 $stemmat = ['muu', 'sopraano', 'altto', 'tenori', 'basso'];
 ?>
@@ -9,20 +9,22 @@ $stemmat = ['muu', 'sopraano', 'altto', 'tenori', 'basso'];
 <table>
   <thead>
     <tr>
-      <th><?php echo implode('</th><th>', $attributes); ?></th>
+      <th><?php echo implode('</th><th>', $headers); ?></th>
     </tr>
   </thead>
   <tbody>
 <?php foreach ($members as $member):
     if ($member->lopettanut != '0000-00-00') continue;
-    $fields = get_object_vars($member);
-    $fields['stemma'] = $stemmat[$member->stemma];
-    $fields['vastuut'] = implode(', ', $member->vastuut);
+    $fields = [
+        $member->etunimi.' '.$member->sukunimi,
+        $stemmat[$member->stemma],
+        $member->puhelin1,
+        $member->email,
+        implode(', ', $member->vastuut)
+        ];
 ?>
     <tr>
-        <?php foreach ($attributes as $attr): ?>
-            <td><?php echo $fields[$attr]; ?></td>
-        <?php endforeach; ?>
+        <td><?php echo implode('</td><td>', $fields); ?></td>
     </tr>
 <?php endforeach; ?>
   </tbody>
