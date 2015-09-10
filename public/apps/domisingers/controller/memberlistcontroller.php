@@ -31,7 +31,7 @@ class MemberlistController extends Controller {
 		$this->mapper = $mapper;
 	}
 
-	public function listall() {
+	public function listAll() {
             return new DataResponse($this->mapper->findAll());
 	}
 

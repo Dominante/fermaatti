@@ -29,6 +29,6 @@ return [
     'routes' => [
         ['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
         ['name' => 'page#do_echo', 'url' => '/echo', 'verb' => 'POST'],
-        ['name' => 'memberlist#listall', 'url' => '/listall', 'verb' => 'GET'],
+        ['name' => 'memberlist#list_all', 'url' => '/list/all', 'verb' => 'GET'],
     ]
 ];

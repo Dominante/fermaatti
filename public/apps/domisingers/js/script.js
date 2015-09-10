@@ -4,84 +4,72 @@
  * @copyright Atte Keinänen / Dominante 2015
  */
 
+function sortByPart(member1, member2) {
+    if (member1.stemma != member2.stemma) {
+        return member1.stemma > member2.stemma? 1 : -1;
+    } else {
+        return member1.sukunimi > member2.sukunimi? 1 : -1;
+    }
+}
+
 (function ($, OC) {
-	var showingEditor = false;
+    var members = [];
+    var baseUrl = OC.generateUrl('/apps/domisingers');
+    var ready = false;
+    var showFormerMembers = false;
 
+    loadMembers(function() { if (ready) updateList(); })
+    
 	$(document).ready(function () {
-		$("#editSingers").click(showOrHideEditor);
-
-		updateSingers();
+        ready = true;
+        if (members.length > 0) updateList();
+        
+        $('#checkbox').attr('checked', false);              
+        $('#checkbox').change(function() {
+            showFormerMembers = !showFormerMembers;
+            updateList();
+        });
+        
 	});
+        
+    function loadMembers(callback) {
+        $.ajax({
+            url: baseUrl + '/list/all',
+            type: 'GET',
+            contentType: 'application/json'
+        }).done(function (response) {
+            members = response;
+            members.sort(sortByPart);
+            callback();
+        }).fail(function (response, code) {
+            console.log('fail');
+        });
+            
+    }
 
-	function updateSingers() {
-		var singers = JSON.parse($("#singerEditor").val());
+	function updateList() {
+        var tableElement =  $("#membertable");
+        
+        tableElement.empty();
 
-		$("#contactlist tbody").empty();
-
-		singers.forEach(function(singer) {
-			$("#contactlist tbody").append(getSingerRowHtml(singer));
+		members.forEach(function(member) {
+            if (showFormerMembers || member.lopettanut == '0000-00-00') {
+                tableElement.append(getSingerRowHtml(member));
+            }
 		});
 	}
 
-	function showOrHideEditor() {
-		showingEditor = !showingEditor;
-
-		if (showingEditor) {
-			$("#contactlist").hide();
-			$("#singerEditor").show();
-			$("#editSingers").html("Tallenna kuorolaislista");
-		}
-		else {
-			updateSingers();
-			$("#contactlist").show();
-			$("#singerEditor").hide();
-			$("#editSingers").html("Muokkaa kuorolaislistaa");
-		}
-	}
-
-	function getSingerColor(singer) {
-		var membership = singer.membership.toLowerCase();
-
-		if (membership.indexOf("lopettanut") > -1 || membership.indexOf("laulajapankissa") > -1) {
-			return 'rgb(180, 180, 180)';
-		}
-		if (singer.vocal === "Basso") {
-			return 'rgb(146, 182, 85)';
-		}
-		else if (singer.vocal === "Tenori") {
-			return 'rgb(246, 82, 85)';
-		}
-		else if (singer.vocal === "Altto") {
-			return 'rgb(246, 182, 85)';
-		}
-		else if (singer.vocal === "Sopraano") {
-			return 'rgb(226, 182, 130)';
-		}
-		else {
-			return 'rgb(50, 50, 50)';
-		}
-	}
-
-	function getSingerRowHtml(singer) {
-		var vocalColor = getSingerColor(singer);
-
-		//rgb(146, 182, 85)
-		return '<tr class="contact" data-id="2" data-parent="2" data-backend="local" style="display: table-row;">' +
-      '<td class="name thumbnail ui-draggable">' + 
-      '  <input type="checkbox" id="select-2" name="id" value="1"> ' +
-      '  <label for="select-2"></label>' +
-      '  <div class="avatar" style="height: 32px; color: rgb(255, 255, 255); font-weight: bold; text-align: center; line-height: 32px; font-size: 17.6px; background-color: '+vocalColor+';">'+singer.name[0]+'</div>' +
-      '  <a href="#1" class="nametext">'+singer.name+'</a>' +
-      '  </td>' +
-      '  <td>'+singer.vocal+'</td>' +
-      '  <td>'+singer.membership+'</td>' +
-      '  <td>'+singer.roles+'</td>' +
-      '  <td class="email">' +
-      '    <a href="mailto:">'+singer.email+'</a>' +
-      '    <a class="icon-mail svg mailto hidden" title="Lähetä sähköpostia"></a>' +
-      '  </td>' +
-      '<td class="tel">'+singer.phone+'</td>' +
-      '<td>'+singer.user+'</td>' +
-			'</tr>';
+    function getSingerRowHtml(member) {
+        var stemmat = ['muu', 'sopraano', 'altto', 'tenori', 'basso'];
+        
+        var fields = [
+            '<b>' + member.etunimi + ' ' + member.sukunimi + '</b>',
+            stemmat[member.stemma],
+            member.puhelin,
+            member.email,
+            member.vastuut.join(', ')
+            ];
+            
+        return '<tr><td>' + fields.join('</td><td>') + '</td></tr>';
 	}
 })(jQuery, OC);
