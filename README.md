@@ -71,7 +71,7 @@ Deploy onnistuu helposti git pushilla:
 git push fermaatti master
 ```
 
-Deploy-työnkulku on tiedostossa `deploy/post-receive`. Jos sitä päivitetään, se täytyy käsin päivittää palvelimella olevan repositoryn `.git/hooks/` -hakemistoon.
+Palvelinpäässä `git push` -komennon yhteydessä ajettava työnkulku on tiedostossa `deploy/post-receive`. Jos sitä päivitetään, se täytyy käsin päivittää palvelimella olevan repositoryn `.git/hooks/` -hakemistoon.
 
 ## OwnCloudin päivittäminen
 
