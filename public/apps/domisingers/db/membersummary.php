@@ -7,15 +7,15 @@ use JsonSerializable;
 
 class MemberSummary extends Entity implements JsonSerializable {
 
-    public $personId;
-    public $etunimi;
-    public $sukunimi;
-    public $puhelin1;
-    public $email;
-    public $stemma;
-    public $lopettanut;
+    protected $personId;
+    protected $etunimi;
+    protected $sukunimi;
+    protected $puhelin1;
+    protected $email;
+    protected $stemma;
+    protected $lopettanut;
     
-    public $vastuut = [];
+    protected $vastuut = [];
 
     public function __construct() {
         // add types in constructor
@@ -25,7 +25,7 @@ class MemberSummary extends Entity implements JsonSerializable {
     
     public function jsonSerialize() {
         return [
-            'id' => $this->personId,
+            'personId' => $this->personId,
             'etunimi' => $this->etunimi,
             'sukunimi' => $this->sukunimi,
             'puhelin' => $this->puhelin1,

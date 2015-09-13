@@ -42,11 +42,22 @@ class PageController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function index() {
-                $members = $this->summaryMapper->findAll();
-		$params = ['user' => $this->userId, 'members' => $members];
-		return new TemplateResponse('domisingers', 'main', $params);  // templates/main.php
+		$params = ['user' => $this->userId];
+		return new TemplateResponse($this->appName, 'main', $params);  // templates/main.php
 	}
 
+	/**
+	 * Show the profile page for a member
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+     * @param int $id
+	 */
+	public function profile($id) {
+        $params = ['user' => $this->userId, 'member' => $id];
+        return new TemplateResponse($this->appName, 'profile', $params);
+    }
+	
 	/**
 	 * Simply method that posts back the payload of the request
 	 * @NoAdminRequired

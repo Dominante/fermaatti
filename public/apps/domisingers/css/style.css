@@ -11,3 +11,5 @@ tbody tr td {
   border-bottom:1px solid #e0e0e0;
   
 }
+
+td:nth-child(1) { font-weight: bold }

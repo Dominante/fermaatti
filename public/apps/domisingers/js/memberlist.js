@@ -1,7 +1,7 @@
 /**
  * ownCloud - domisingers
- * @author Atte Keinänen / Dominante <atte.keinanen@gmail.com>
- * @copyright Atte Keinänen / Dominante 2015
+ * @author Tuukka Verho / Dominante <tuukka.verho@aalto.fi>
+ * @copyright Tuukka Verho / Dominante 2015
  */
 
 function sortByPart(member1, member2) {
@@ -42,7 +42,7 @@ function sortByPart(member1, member2) {
             members.sort(sortByPart);
             callback();
         }).fail(function (response, code) {
-            console.log('fail');
+            console.log('Failed to fetch member list');
         });
             
     }
@@ -54,16 +54,17 @@ function sortByPart(member1, member2) {
 
 		members.forEach(function(member) {
             if (showFormerMembers || member.lopettanut == '0000-00-00') {
-                tableElement.append(getSingerRowHtml(member));
+                tableElement.append(getMemberRowHtml(member));
             }
 		});
 	}
 
-    function getSingerRowHtml(member) {
+    function getMemberRowHtml(member) {
         var stemmat = ['muu', 'sopraano', 'altto', 'tenori', 'basso'];
+        detailsUrl = baseUrl + '/profile/' + member.personId;
         
         var fields = [
-            '<b>' + member.etunimi + ' ' + member.sukunimi + '</b>',
+            '<a href='+detailsUrl+'>' + member.etunimi + ' ' + member.sukunimi + '</a>',
             stemmat[member.stemma],
             member.puhelin,
             member.email,

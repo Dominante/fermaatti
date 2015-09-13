@@ -5,8 +5,6 @@ namespace OCA\Domisingers\Db;
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\Mapper;
 
-use ArrayIterator;
-
 class MemberSummaryMapper extends Mapper {
 
     public function __construct(IDBConnection $db) {
@@ -22,25 +20,26 @@ class MemberSummaryMapper extends Mapper {
         
         // Get responsibilities from the database
         $sql = 'SELECT person_id, viskaalius 
-            FROM `viskaaliudet` 
-            LEFT JOIN viskaalius 
+            FROM viskaalius 
+            LEFT JOIN viskaaliudet 
             ON viskaaliudet.viskaalius_id = viskaalius.viskaalius_id
             WHERE kausi='.date('Y').'
-            GROUP BY person_id';
+            ORDER BY person_id';
         $stmt = $this->execute($sql);
         
         // Add responsibilities to member objects
         $row = $stmt->fetch();
         $personId = intval($row['person_id']);
         foreach ($entities as $member) {
-            while ($row && ($member->personId >= $personId)) {
-                if ($member->personId == $personId) {
-                    $member->vastuut[] = $row['viskaalius'];
+            while ($row && ($member->getPersonId() >= $personId)) {
+                if ($member->getPersonId() == $personId) {
+                    $member->getVastuut[] = $row['viskaalius'];
                 }
                 $row = $stmt->fetch();
                 $personId = intval($row['person_id']);
             }
         }
+        $stmt->closeCursor();
         return $entities;
     }
 }
