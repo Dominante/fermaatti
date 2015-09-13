@@ -61,7 +61,17 @@ Tiedostonimi `choir-members-dump.sql` on gitignoressa.
 
 Käytämme [Setting up Push-to-Deploy with git](http://krisjordan.com/essays/setting-up-push-to-deploy-with-git) -artikkelin mukaista Git-pohjaista deployta.
 
-Deploy-työnkulku on tiedostossa `deploy/post-receive`. Jos sitä päivitetään, se täytyy käsin päivittää palvelimella olevan repositoryn `.git/hooks/` -hakemistoon.
+Mene kansioon, jossa sinulla on paikallinen kopio Fermaatin Git-repositorysta. Lisää Fermaatin palvelimen git-repository remoteksi (olettaen että sinulla on SSH-avain jolla pääset Fermaatin palvelimelle):
+```
+git remote add fermaatti kayttaja@fermaatti.dominante.fi:/var/wwwhome/jasensivut-kehitys-git
+```
+
+Deploy onnistuu helposti git pushilla:
+```
+git push fermaatti master
+```
+
+Palvelinpäässä `git push` -komennon yhteydessä ajettava työnkulku on tiedostossa `deploy/post-receive`. Jos sitä päivitetään, se täytyy käsin päivittää palvelimella olevan repositoryn `.git/hooks/` -hakemistoon.
 
 ## OwnCloudin päivittäminen
 
