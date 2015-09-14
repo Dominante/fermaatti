@@ -16,22 +16,22 @@ use OCP\IRequest;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Controller;
 
-use OCA\DomiSingers\Db\MemberSummaryMapper;
+use OCA\DomiSingers\Db\MemberSummaryService;
 
 class MemberlistController extends Controller {
 
 
 	private $userId;
-	private $mapper;
+	private $service;
 
-	public function __construct($AppName, IRequest $request, MemberSummaryMapper $mapper, $UserId){
+	public function __construct($AppName, IRequest $request, MemberSummaryService $service, $UserId){
 		parent::__construct($AppName, $request);
 		$this->userId = $UserId;
-		$this->mapper = $mapper;
+		$this->service = $service;
 	}
 
 	public function listAll() {
-            return new DataResponse($this->mapper->findAll());
+            return new DataResponse($this->service->findAll());
 	}
 
 

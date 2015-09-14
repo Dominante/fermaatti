@@ -16,22 +16,22 @@ use OCP\IRequest;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Controller;
 
-use OCA\DomiSingers\Db\MemberProfileHandler;
+use OCA\DomiSingers\Db\MemberProfileService;
 
 class MemberProfileController extends Controller {
 
 
 	private $userId;
-	private $handler;
+	private $service;
 
-	public function __construct($AppName, IRequest $request, MemberProfileHandler $handler, $UserId){
+	public function __construct($AppName, IRequest $request, MemberProfileService $service, $UserId){
 		parent::__construct($AppName, $request);
 		$this->userId = $UserId;
-		$this->handler = $handler;
+		$this->service = $service;
 	}
 
 	public function show($id) {
-            return new DataResponse($this->handler->show($id));
+            return new DataResponse($this->service->show($id));
 	}
 
 
