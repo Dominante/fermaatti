@@ -53,6 +53,17 @@ class PageController extends Controller {
         $params = ['user' => $this->userId, 'member' => $id];
         return new TemplateResponse($this->appName, 'profile', $params);
     }
+    
+    /**
+	 * Show the profile page for a member
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 */
+	public function newProfile($id) {
+        $params = ['user' => $this->userId];
+        return new TemplateResponse($this->appName, 'newprofile', $params);
+    }
 	
 	/**
 	 * Simply method that posts back the payload of the request

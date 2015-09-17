@@ -1,6 +1,6 @@
 <?php
 script('domisingers', 'memberlist');
-style('domisingers', 'style');
+style('domisingers', 'memberlist');
 ?>
 
 <div id="app">

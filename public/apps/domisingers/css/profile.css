@@ -1,0 +1,72 @@
+.edit {
+    display:none;
+}
+
+.label {
+    width:120px;
+    color: #666666;
+    font-weight: bold;
+}
+
+.tableheader {
+    color: #666666;
+    font-weight: bold;
+}
+
+.edit .label {
+    text-align: right;
+}
+
+.value {
+    width:250px;
+}
+
+.edit_section {
+}
+
+section {
+    margin: 6px;
+}
+
+section#delete {
+    padding-top: 50px;
+}
+
+.row > * {
+    margin: 6px;
+}
+
+.row {
+    display:flex;
+    align-items:center;
+}
+
+#delete .row {
+    width: 500px;
+    justify-content: flex-end;
+}
+
+#responsibilities .col1 {
+    width: 100px;
+}
+
+
+#responsibilities .col2 {
+    width: 200px;
+}
+
+#presence .col1 {
+    width: 80px;
+}
+
+#presence .col2 {
+    width: 80px;
+}
+
+#presence .col3 {
+    width: 200px;
+}
+
+#app-content-wrapper {
+    padding: 20px;
+}

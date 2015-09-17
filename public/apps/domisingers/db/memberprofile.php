@@ -1,4 +1,14 @@
 <?php
+/**
+ * ownCloud - domisingers
+ *
+ * This file is licensed under the Affero General Public License version 3 or
+ * later. See the COPYING file.
+ *
+ * @author Tuukka Verho / Dominante <tuukka.verho@aalto.fi>
+ * @copyright Tuukka Verho / Dominante 2015
+ */
+
 namespace OCA\DomiSingers\Db;
 
 use OCP\AppFramework\Db\Entity;
@@ -28,7 +38,7 @@ class MemberProfile implements JsonSerializable {
     }
     
     
-    public function updateFromJson($json, $responsibilityNames) {
+    public static function fromJson($json, $responsibilityNames) {
         $responsibilityKey = array_flip($responsibilityNames);
     
         $memberParams = [];
@@ -37,17 +47,20 @@ class MemberProfile implements JsonSerializable {
                 $memberParams[$k] = $v;
             }
         }
-        $member = Member::fromParams(memberParams);
+        $member = Member::fromParams($memberParams);
         
         $responsibilities = [];
-        foreach ($json['vastuut'] as $responsibilityName => $kausi) {
+        foreach ($json['vastuut'] as $entry) {
+            $kausi = $entry['kausi'];
+            $responsibilityName = $entry['viskaalius'];
+            
             $respId = $responsibilityKey[$responsibilityName];
             $params = [
-                'personId' => $json->$member->getPersonId(),
+                'personId' => $member->getPersonId(),
                 'viskaaliusId' => $respId,
                 'kausi' => $kausi
             ];                
-            $responsibilities[] = Responsibility.fromParams($params);
+            $responsibilities[] = Responsibility::fromParams($params);
         }
             
         return new static($member, $responsibilities, $responsibilityNames);

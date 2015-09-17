@@ -1,5 +1,14 @@
 <?php
-
+/**
+ * ownCloud - domisingers
+ *
+ * This file is licensed under the Affero General Public License version 3 or
+ * later. See the COPYING file.
+ *
+ * @author Tuukka Verho / Dominante <tuukka.verho@aalto.fi>
+ * @copyright Tuukka Verho / Dominante 2015
+ */
+ 
 namespace OCA\DomiSingers\Db;
 
 use OCP\IDBConnection;
@@ -16,13 +25,14 @@ class MemberProfileService {
     protected $responsibilityMapper;
     
     
-    public function __construct(IDBConnection $db, MemberMapper $memberMapper, ResponsibilityMapper $responsibilityMapper) {
+    public function __construct(IDBConnection $db, \OCP\ILogger $logger, MemberMapper $memberMapper, ResponsibilityMapper $responsibilityMapper) {
         $this->db = $db;
         $this->memberMapper = $memberMapper;        
         $this->responsibilityMapper = $responsibilityMapper;
+        $this->logger = $logger;
     }
 
-    public function show($personId) {
+    public function find($personId) {
         $member = $this->memberMapper->findMember($personId);
         $responsibilities = $this->responsibilityMapper->findResponsibilities($personId);
         $responsibilityNames = $this->getResponsibilityNames();
@@ -41,13 +51,18 @@ class MemberProfileService {
         return $result;
     }
     
-    protected function update($json) {
-        $originalProfile = $this->findProfile($json['id']);
-        $modifiedProfile = MemberProfile::fromJson($json, $this->getResponsibilityNames);
+    public function listExistingResponsibilities() {
+        return array_values($this->getResponsibilityNames());
+    }
+    
+    public function update($data) {
+        $personId = intval($data['personId']);
+        $originalProfile = $this->find($personId);
+        $modifiedProfile = MemberProfile::fromJson($data, $this->getResponsibilityNames());
         
         $member = $originalProfile->member;
         $member->updateFields($modifiedProfile->member);
-        $memberMapper->update($member);
+        $sql = $this->memberMapper->update($member);
         
         $responsibilities = $originalProfile->responsibilities;
         $modifiedResponsibilities = $modifiedProfile->responsibilities;
@@ -72,26 +87,31 @@ class MemberProfileService {
                 }
             }
             if ($removed) {
-                $this->responsibilityMapper->remove(old);
+                $this->responsibilityMapper->delete($old);
             }
         }
+        return $modifiedProfile;
     }
     
-    protected function create($json) {
-        $profile = MemberProfile::fromJson($json, $this->getResponsibilityNames);
-        $this->memberMapper->insert($profile->member);
-        foreach ($profile->responsibilities as $r) {
-            $this->responsibilityMapper->insert($r);
-        }
-    }
-    
-    protected function delete($personId) {
-        $member = $memberMapper->findMember($personId);
-        $memberMapper->delete($member);
+    public function create($etunimi, $sukunimi, $stemma, $liittynyt) {
+        $member = new Member();
+        $member->setEtunimi($etunimi);
+        $member->setSukunimi($sukunimi);
+        $member->setStemma($stemma);
+        $member->setLiittynyt($liittynyt);
+        $this->memberMapper->insert($member);
         
-        $responsibilities = $responsibilities->findResponsibilities($personId);
+        $profile = new MemberProfile($member, [], []);
+        return $profile;
+    }
+    
+    public function delete($personId) {
+        $member = $this->memberMapper->findMember($personId);
+        $this->memberMapper->delete($member);
+        
+        $responsibilities = $this->responsibilityMapper->findResponsibilities($personId);
         foreach($responsibilities as $r) {
-            $responsibilityMapper->delete($r);
+            $this->responsibilityMapper->delete($r);
         }
     }
 }

@@ -19,12 +19,14 @@
 return [
     'routes' => [
         ['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
-        ['name' => 'page#profile', 'url' => '/profile/{id}', 'verb' => 'GET'],
+        ['name' => 'page#profile', 'url' => '/profile/display/{id}', 'verb' => 'GET'],
+        ['name' => 'page#newProfile', 'url' => '/newprofile', 'verb' => 'GET'],
         ['name' => 'page#do_echo', 'url' => '/echo', 'verb' => 'POST'],
         ['name' => 'memberlist#list_all', 'url' => '/list/all', 'verb' => 'GET'],
         ['name' => 'memberprofile#show', 'url' => '/profile/show/{id}', 'verb' => 'GET'],
         ['name' => 'memberprofile#update', 'url' => '/profile/update', 'verb' => 'POST'],
         ['name' => 'memberprofile#create', 'url' => '/profile/create', 'verb' => 'POST'],
         ['name' => 'memberprofile#delete', 'url' => '/profile/delete/{id}', 'verb' => 'DELETE'],
+        ['name' => 'memberprofile#listExistingResponsibilities', 'url' => '/profile/responsibilitychoices', 'verb' => 'GET'],
     ]
 ];

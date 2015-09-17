@@ -30,5 +30,3 @@ namespace OCA\DomiSingers\AppInfo;
 	// navigation or on the settings page of your app
 	'name' => \OC_L10N::get('domisingers')->t('Kuorolaiset')
 ]);
-
-\OCP\App::registerAdmin('domisingers', 'settings');

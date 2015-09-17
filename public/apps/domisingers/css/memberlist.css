@@ -1,0 +1,25 @@
+thead th {
+  color:#aaa;
+  text-align:left;
+  padding:20px;
+  
+}
+
+tbody tr td {
+  font-family: 'Open Sans', sans-serif;
+  padding:20px 20px 20px 20px;
+  border-bottom:1px solid #e0e0e0;
+  
+}
+
+td:nth-child(1) { font-weight: bold }
+
+.row > * {
+    margin: 20px;
+}
+
+.row {
+    padding: 20px;
+    display:flex;
+    align-items:center;
+}

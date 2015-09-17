@@ -30,9 +30,56 @@ class MemberProfileController extends Controller {
 		$this->service = $service;
 	}
 
+	
+	/**
+     * @NoAdminRequired
+     *
+     * @param int $id
+     */
 	public function show($id) {
-            return new DataResponse($this->service->show($id));
+        return new DataResponse($this->service->find($id));
 	}
-
+	
+	/**
+     * @NoAdminRequired
+     *
+     * @param string $etunimi
+     * @param string $sukunimi
+     * @param int $stemma
+     * @param string $liittynyt
+     */
+	public function create($etunimi, $sukunimi, $stemma, $liittynyt) {
+        return new DataResponse($this->service->create($etunimi, $sukunimi, $stemma, $liittynyt));
+    }
+	
+    /**
+     * @NoAdminRequired
+     *
+     * @param $profile
+     */
+	
+	public function update($profile) {
+        return new DataResponse($this->service->update($profile));
+    }
+    
+    /**
+     * @NoAdminRequired
+     *
+     * @param int $id
+     */
+	public function delete($id) {
+        return new DataResponse($this->service->delete($id));
+	}
+    
+    
+    /**
+     * @NoAdminRequired
+     *
+     */
+    
+    public function listExistingResponsibilities() {
+        return new DataResponse($this->service->listExistingResponsibilities());
+    }
+    
 
 }

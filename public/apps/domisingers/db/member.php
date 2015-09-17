@@ -1,11 +1,20 @@
 <?php
+/**
+ * ownCloud - domisingers
+ *
+ * This file is licensed under the Affero General Public License version 3 or
+ * later. See the COPYING file.
+ *
+ * @author Tuukka Verho / Dominante <tuukka.verho@aalto.fi>
+ * @copyright Tuukka Verho / Dominante 2015
+ */
+
 namespace OCA\DomiSingers\Db;
 
 use OCP\AppFramework\Db\Entity;
 
 
 class Member extends Entity {
-
     protected $personId;
     protected $etunimi;
     protected $sukunimi;
@@ -33,12 +42,12 @@ class Member extends Entity {
     
     /**
      * Set the fields of this entity equal to the modified one 
-     * and mark them updated accordingly
+     * and mark them updated when appropriate
      */
     public function updateFields($modifiedMember) {
-        foreach($get_object_vars($this) as $attr => $val) {
+        foreach(get_object_vars($this) as $attr => $val) {
             if ($this->$attr != $modifiedMember->$attr) {
-                $this->setter($attr, [$val]);
+                $this->setter($attr, [$modifiedMember->$attr]);
             }
         }
     }

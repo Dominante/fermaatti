@@ -1,5 +1,9 @@
 /**
  * ownCloud - domisingers
+ *
+ * This file is licensed under the Affero General Public License version 3 or
+ * later. See the COPYING file.
+ *
  * @author Tuukka Verho / Dominante <tuukka.verho@aalto.fi>
  * @copyright Tuukka Verho / Dominante 2015
  */
@@ -24,12 +28,11 @@ function sortByPart(member1, member2) {
         ready = true;
         if (members.length > 0) updateList();
         
-        $('#checkbox').attr('checked', false);              
+        $('#checkbox').attr('checked', showFormerMembers);              
         $('#checkbox').change(function() {
             showFormerMembers = !showFormerMembers;
             updateList();
         });
-        
 	});
         
     function loadMembers(callback) {
@@ -61,7 +64,7 @@ function sortByPart(member1, member2) {
 
     function getMemberRowHtml(member) {
         var stemmat = ['muu', 'sopraano', 'altto', 'tenori', 'basso'];
-        detailsUrl = baseUrl + '/profile/' + member.personId;
+        detailsUrl = baseUrl + '/profile/display/' + member.personId;
         
         var fields = [
             '<a href='+detailsUrl+'>' + member.etunimi + ' ' + member.sukunimi + '</a>',
