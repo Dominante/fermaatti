@@ -75,6 +75,10 @@ style('domisingers', 'profile');
             <input class='value' id='input_email' type='text'>
         </div>
         <div class='row'>
+            <span class='label'> </span>
+            <span class='value'>T&auml;m&auml; ei muuta Owncloud-tunnuksen s&auml;hk&ouml;postia</span>
+        </div>
+        <div class='row'>
             <button class='cancel'>Peruuta</button>
             <button class='save'>Tallenna</button>
         </div>
