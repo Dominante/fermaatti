@@ -12,8 +12,20 @@ $headers = ['nimi', 'stemma', 'puhelin', 'email', 'vastuut'];
 <div id="app-content-wrapper">
 
 <div class='row'>
+	<input id='input_etunimi' placeholder='Etunimi' type='text'>
+	<input id='input_sukunimi' placeholder='Sukunimi' type='text'>
+	<select id='select_stemma'>
+		<option value=0>ei stemmaa</option>
+		<option value=1>sopraano</option>
+		<option value=2>altto</option>
+		<option value=3>tenori</option>
+		<option value=4>basso</option>
+	</select>
+	<input id='input_liittyi' placeholder='liittyi'>
+	<button class='newprofile'>Lisää kuorolainen</button>
+</div>
+<div class='row'>
 	<input type='checkbox' id='checkbox'>Näytä lopettaneet</input>
-	<a class=button href='newprofile'>Lisää kuorolainen</a>
 </div>
 <table>
 	<thead>

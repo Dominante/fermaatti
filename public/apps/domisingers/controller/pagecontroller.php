@@ -50,9 +50,9 @@ class PageController extends Controller {
      * @param int $id
 	 */
 	public function profile($id) {
-        $params = ['user' => $this->userId, 'member' => $id];
-        return new TemplateResponse($this->appName, 'profile', $params);
-    }
+		$params = ['user' => $this->userId];
+		return new TemplateResponse($this->appName, 'profile', $params);
+	}
     
     /**
 	 * Show the profile page for a member
@@ -61,9 +61,9 @@ class PageController extends Controller {
 	 *
 	 */
 	public function newProfile($id) {
-        $params = ['user' => $this->userId];
-        return new TemplateResponse($this->appName, 'newprofile', $params);
-    }
+		$params = ['user' => $this->userId];
+		return new TemplateResponse($this->appName, 'newprofile', $params);
+	}
 	
 	/**
 	 * Simply method that posts back the payload of the request
@@ -72,6 +72,4 @@ class PageController extends Controller {
 	public function doEcho($echo) {
 		return new DataResponse(['echo' => $echo]);
 	}
-
-
 }

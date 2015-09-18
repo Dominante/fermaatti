@@ -1,6 +1,15 @@
 .edit {
-    display:none;
+	display: none;
 }
+
+[data-action="edit_section"] {
+	visibility: hidden;
+}
+
+.row:hover > [data-action="edit_section"] {
+	visibility: visible;
+}
+
 
 .label {
     width:120px;
@@ -8,28 +17,18 @@
     font-weight: bold;
 }
 
+.edit .label {
+	display: flex;
+    justify-content: flex-end;
+}
+
 .tableheader {
     color: #666666;
     font-weight: bold;
 }
 
-.edit .label {
-    text-align: right;
-}
-
-.value {
-    width:250px;
-}
-
-.edit_section {
-}
-
 section {
     margin: 6px;
-}
-
-section#delete {
-    padding-top: 50px;
 }
 
 .row > * {
@@ -41,9 +40,11 @@ section#delete {
     align-items:center;
 }
 
-#delete .row {
-    width: 500px;
-    justify-content: flex-end;
+#cntrls .row {
+	padding-top: 50px;
+    width: 400px;
+    justify-content: space-between;
+	
 }
 
 #responsibilities .col1 {
@@ -69,4 +70,9 @@ section#delete {
 
 #app-content-wrapper {
     padding: 20px;
+}
+
+button div {
+	margin-right: 8px;
+	float: left;
 }

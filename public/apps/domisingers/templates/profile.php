@@ -10,7 +10,7 @@ style('domisingers', 'profile');
 <section id='name'>
     <div class='present'>
         <div class='row'>
-            <span class='label'>Nimi</span><span class='value'></span><button class='edit_section'>muokkaa</button>
+            <span class='label'>Nimi</span><span class='value'></span><a data-action='edit_section' class='icon-rename'></a>
         </div>
     </div>
     <div class='edit'>
@@ -35,15 +35,15 @@ style('domisingers', 'profile');
             <input class='value' id='input_entinen' type='text'>
         </div>
         <div class='row'>
-            <button class='cancel'>Peruuta</button>
-            <button class='save'>Tallenna</button>
+            <button data-action='cancel'>Peruuta</button>
+            <button data-action='save'>Tallenna</button>
         </div>
     </div>
 </section>
 <section id='stemma'>
     <div class='present'>
         <div class='row'>
-            <span class='label'>Stemma</span><span class='value'></span><button class='edit_section'>muokkaa</button>
+            <span class='label'>Stemma</span><span class='value'></span><a data-action='edit_section' class='icon-rename'></a>
         </div>
     </div>
     <div class='edit'>
@@ -58,15 +58,15 @@ style('domisingers', 'profile');
             </div>
         </div>
          <div class='row'>
-            <button class='cancel'>Peruuta</button>
-            <button class='save'>Tallenna</button>
+            <button data-action='cancel'>Peruuta</button>
+            <button data-action='save'>Tallenna</button>
         </div>
     </div>
 </section>
 <section id='email'>
     <div class='present'>
         <div class='row'>
-            <span class='label'>S&auml;hk&ouml;posti</span><span class='value'></span><button class='edit_section'>muokkaa</button>
+            <span class='label'>S&auml;hk&ouml;posti</span><span class='value'></span><a data-action='edit_section' class='icon-rename'></a>
         </div>
     </div>
     <div class='edit'>
@@ -79,15 +79,15 @@ style('domisingers', 'profile');
             <span class='value'>T&auml;m&auml; ei muuta Owncloud-tunnuksen s&auml;hk&ouml;postia</span>
         </div>
         <div class='row'>
-            <button class='cancel'>Peruuta</button>
-            <button class='save'>Tallenna</button>
+            <button data-action='cancel'>Peruuta</button>
+            <button data-action='save'>Tallenna</button>
         </div>
     </div>
 </section>
 <section id='phone'>
     <div class='present'>
         <div class='row'>
-            <span class='label'>Puhelin</span><span class='value'></span><button class='edit_section'>muokkaa</button>
+            <span class='label'>Puhelin</span><span class='value'></span><a data-action='edit_section' class='icon-rename'></a>
         </div>
     </div>
     <div class='edit'>
@@ -100,15 +100,15 @@ style('domisingers', 'profile');
             <input class='value' id='input_puhelin2' type='text'>
         </div>
         <div class='row'>
-            <button class='cancel'>Peruuta</button>
-            <button class='save'>Tallenna</button>
+            <button data-action='cancel'>Peruuta</button>
+            <button data-action='save'>Tallenna</button>
         </div>
     </div>
 </section>
 <section id='address'>
     <div class='present'>
         <div class='row'>
-            <span class='label'>Osoite</span><span class='value'></span><button class='edit_section'>muokkaa</button>
+            <span class='label'>Osoite</span><span class='value'></span><a data-action='edit_section' class='icon-rename'></a>
         </div>
     </div>
     <div class='edit'>
@@ -125,15 +125,15 @@ style('domisingers', 'profile');
             <input class='value' id='input_kunta' type='text'>
         </div>
         <div class='row'>
-            <button class='cancel'>Peruuta</button>
-            <button class='save'>Tallenna</button>
+            <button data-action='cancel'>Peruuta</button>
+            <button data-action='save'>Tallenna</button>
         </div>
     </div>
 </section>
 <section id='responsibilities'>
     <div class='present'>
         <div class='row'>
-            <span class='label'>Vastuut</span><span class='value'></span><button class='edit_section'>muokkaa</button>
+            <span class='label'>Vastuut</span><span class='value'></span><a data-action='edit_section' class='icon-rename'></a>
         </div>
     </div>
     <div class='edit'>
@@ -144,31 +144,32 @@ style('domisingers', 'profile');
         <div class='row entry_template' style='display:none'>
             <span class='col1'></span>
             <span class='col2'></span>
-            <button class='remove'>poista</button>
+            <a class='icon-delete' data-action='remove'></a>
         </div>
          <div class='row'>
             <input id='input_vuosi' class='col1' type='text'>
             <select id='select_vastuu' class='col2'></select>
-            <button class='add'>lis&auml;&auml;</button>
+            <button data-action='add'>lis&auml;&auml;</button>
         </div>
         <div class='row'>
-            <button class='save'>Valmis</button>
+            <button data-action='cancel'>Peruuta</button>
+            <button data-action='save'>Tallenna</button>
         </div>
     </div>
 </section>
 <section id='presence'>
     <div class='present'>
         <div class='row'>
-            <span class='label'>L&auml;sn&auml;olo</span><span class='value'></span><button class='edit_section'>muokkaa</button>
+            <span class='label'>L&auml;sn&auml;olo</span><span class='value'></span><a data-action='edit_section' class='icon-rename'></a>
         </div>
     </div>
     <div class='edit'>
         <div class='row'>
-            <span class='label'>Liittyi</span>
+            <span class='label'>liittyi</span>
             <input class='value' id='input_liittyi' type='date'>
         </div>
         <div class='row'>
-            <span class='label'><input type='checkbox' id='check_lopettanut'>Lopetti</span>
+            <span class='label'><input type='checkbox' id='check_lopettanut'>lopetti</span>
             <input class='value' id='input_lopetti' type='date'>
         </div>
         <div class='row'>
@@ -183,25 +184,31 @@ style('domisingers', 'profile');
             <span class='col1'></span>
             <span class='col2'></span>
             <span class='col3'></span>
-            <button class='remove'>poista</button>
+            <a class='icon-delete' data-action='remove'></a>
         </div>
         <div class='row'>
             <input id='input_alkoi' class='col1' type='date'>
             <input id='input_paattyi' class='col2' type='date'>
             <input id='input_selite' class='col3' type='text'>
-            <button class='add'>lis&auml;&auml;</button>
+            <button data-action='add'>lis&auml;&auml;</button>
         </div>
         <div class='row'>
-            <button class='cancel'>Peruuta</button>
-            <button class='save'>Tallenna</button>
+            <button data-action='cancel'>Peruuta</button>
+            <button data-action='save'>Tallenna</button>
         </div>
     </div>
 </section>
-<section id='delete'>
+<section id='cntrls'>
     <div class='row'>
-        <button class='remove'>Poista kuorolainen</button>
+		<a id='return_link' href=''>&lt;&lt; Palaa listaan</a>
+        <button data-action='remove'><div class='icon-delete'></div>Poista kuorolainen</button>
     </div>
 </section>
+
+</div>
+<div id='app-content-wrapper-user-deleted' style='display:none'>
+
+<section><b>J&auml;sen poistettu tietokannasta!</b></section>
 
 </div>
 </div>
