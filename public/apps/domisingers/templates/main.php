@@ -11,7 +11,8 @@ $headers = ['nimi', 'stemma', 'puhelin', 'email', 'vastuut'];
 <div id="app-content">
 <div id="app-content-wrapper">
 
-<div class='row'>
+<?php echo $_['user']; ?>
+<div class='row' <?php if (!$_['isAdmin']) echo 'style="display:none"'; ?> >
 	<input id='input_etunimi' placeholder='Etunimi' type='text'>
 	<input id='input_sukunimi' placeholder='Sukunimi' type='text'>
 	<select id='select_stemma'>

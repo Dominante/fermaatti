@@ -1,3 +1,7 @@
+.admin {
+	display: none;
+}
+
 .edit {
 	display: none;
 }
@@ -9,7 +13,6 @@
 .row:hover > [data-action="edit_section"] {
 	visibility: visible;
 }
-
 
 .label {
     width:120px;

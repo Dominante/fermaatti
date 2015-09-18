@@ -41,7 +41,6 @@ class MemberProfileController extends Controller {
 	}
 	
 	/**
-     * @NoAdminRequired
      *
      * @param string $etunimi
      * @param string $sukunimi
@@ -63,7 +62,6 @@ class MemberProfileController extends Controller {
     }
     
     /**
-     * @NoAdminRequired
      *
      * @param int $id
      */

@@ -7,10 +7,16 @@ style('domisingers', 'profile');
 <div id="app-content">
 <div id="app-content-wrapper">
 
+<?php if($_['isAdmin']): ?>
+<style>
+.admin { display: initial; }
+</style>
+<?php endif; ?>
+
 <section id='name'>
     <div class='present'>
         <div class='row'>
-            <span class='label'>Nimi</span><span class='value'></span><a data-action='edit_section' class='icon-rename'></a>
+            <span class='label'>Nimi</span><span class='value'></span><a data-action='edit_section' class='admin icon-rename'></a>
         </div>
     </div>
     <div class='edit'>
@@ -43,7 +49,7 @@ style('domisingers', 'profile');
 <section id='stemma'>
     <div class='present'>
         <div class='row'>
-            <span class='label'>Stemma</span><span class='value'></span><a data-action='edit_section' class='icon-rename'></a>
+            <span class='label'>Stemma</span><span class='value'></span><a data-action='edit_section' class='admin icon-rename'></a>
         </div>
     </div>
     <div class='edit'>
@@ -66,7 +72,7 @@ style('domisingers', 'profile');
 <section id='email'>
     <div class='present'>
         <div class='row'>
-            <span class='label'>S&auml;hk&ouml;posti</span><span class='value'></span><a data-action='edit_section' class='icon-rename'></a>
+            <span class='label'>S&auml;hk&ouml;posti</span><span class='value'></span><a data-action='edit_section' class='admin icon-rename'></a>
         </div>
     </div>
     <div class='edit'>
@@ -87,7 +93,7 @@ style('domisingers', 'profile');
 <section id='phone'>
     <div class='present'>
         <div class='row'>
-            <span class='label'>Puhelin</span><span class='value'></span><a data-action='edit_section' class='icon-rename'></a>
+            <span class='label'>Puhelin</span><span class='value'></span><a data-action='edit_section' class='admin icon-rename'></a>
         </div>
     </div>
     <div class='edit'>
@@ -108,7 +114,7 @@ style('domisingers', 'profile');
 <section id='address'>
     <div class='present'>
         <div class='row'>
-            <span class='label'>Osoite</span><span class='value'></span><a data-action='edit_section' class='icon-rename'></a>
+            <span class='label'>Osoite</span><span class='value'></span><a data-action='edit_section' class='admin icon-rename'></a>
         </div>
     </div>
     <div class='edit'>
@@ -133,7 +139,7 @@ style('domisingers', 'profile');
 <section id='responsibilities'>
     <div class='present'>
         <div class='row'>
-            <span class='label'>Vastuut</span><span class='value'></span><a data-action='edit_section' class='icon-rename'></a>
+            <span class='label'>Vastuut</span><span class='value'></span><a data-action='edit_section' class='admin icon-rename'></a>
         </div>
     </div>
     <div class='edit'>
@@ -160,7 +166,7 @@ style('domisingers', 'profile');
 <section id='presence'>
     <div class='present'>
         <div class='row'>
-            <span class='label'>L&auml;sn&auml;olo</span><span class='value'></span><a data-action='edit_section' class='icon-rename'></a>
+            <span class='label'>L&auml;sn&auml;olo</span><span class='value'></span><a data-action='edit_section' class='admin icon-rename'></a>
         </div>
     </div>
     <div class='edit'>
@@ -201,7 +207,7 @@ style('domisingers', 'profile');
 <section id='cntrls'>
     <div class='row'>
 		<a id='return_link' href=''>&lt;&lt; Palaa listaan</a>
-        <button data-action='remove'><div class='icon-delete'></div>Poista kuorolainen</button>
+        <button class='admin' data-action='remove'><div class='icon-delete'></div>Poista kuorolainen</button>
     </div>
 </section>
 

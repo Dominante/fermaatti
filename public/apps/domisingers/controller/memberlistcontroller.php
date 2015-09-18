@@ -30,9 +30,11 @@ class MemberlistController extends Controller {
 		$this->service = $service;
 	}
 
+	/**
+	 * @NoAdminRequired
+	 *
+	 */
 	public function listAll() {
-            return new DataResponse($this->service->findAll());
+		return new DataResponse($this->service->findAll());
 	}
-
-
 }

@@ -12,19 +12,23 @@
 namespace OCA\DomiSingers\Controller;
 
 use OCP\IRequest;
+use OCP\IGroupManager;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Controller;
+
 
 
 class PageController extends Controller {
 
 
 	private $userId;
+	private $isAdmin;
 
-	public function __construct($AppName, IRequest $request, $UserId){
-		parent::__construct($AppName, $request);
-		$this->userId = $UserId;
+	public function __construct($appName, IRequest $request, IGroupManager $groupManager, $userId) {
+		parent::__construct($appName, $request);
+		$this->userId = $userId;
+		$this->isAdmin = $groupManager->isAdmin($userId);
 	}
 
 	/**
@@ -38,7 +42,7 @@ class PageController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function index() {
-		$params = ['user' => $this->userId];
+		$params = ['user' => $this->userId, 'isAdmin' => $this->isAdmin];
 		return new TemplateResponse($this->appName, 'main', $params);  // templates/main.php
 	}
 
@@ -50,19 +54,8 @@ class PageController extends Controller {
      * @param int $id
 	 */
 	public function profile($id) {
-		$params = ['user' => $this->userId];
+		$params = ['user' => $this->userId, 'isAdmin' => $this->isAdmin];
 		return new TemplateResponse($this->appName, 'profile', $params);
-	}
-    
-    /**
-	 * Show the profile page for a member
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 */
-	public function newProfile($id) {
-		$params = ['user' => $this->userId];
-		return new TemplateResponse($this->appName, 'newprofile', $params);
 	}
 	
 	/**
