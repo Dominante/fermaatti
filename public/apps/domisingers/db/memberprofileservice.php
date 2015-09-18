@@ -62,7 +62,12 @@ class MemberProfileService {
         
         $member = $originalProfile->member;
         $member->updateFields($modifiedProfile->member);
+        $emailChanged = array_key_exists('email', $member->getUpdatedFields());
         $sql = $this->memberMapper->update($member);
+        
+        if ($emailChanged) {
+			$this->notifyEmailChanged($member);
+		}
         
         $responsibilities = $originalProfile->responsibilities;
         $modifiedResponsibilities = $modifiedProfile->responsibilities;
@@ -114,5 +119,33 @@ class MemberProfileService {
             $this->responsibilityMapper->delete($r);
         }
     }
+    
+	protected function notifyEmailChanged($member) {
+		$etunimi = $member->getEtunimi();
+		$sukunimi = $member->getSukunimi();
+		$email = $member->getEmail();
+		
+		$body ="Hyvä Dominanten sihteeri,
+
+Tämä on automaattisesti generoitu ilmoitus.
+Dominanten jäsen
+
+$etunimi $sukunimi
+
+vaihtoi omaksi sähköpostiosoitteekseen: 
+
+$email
+
+terveisin,
+Dominanten jäsensivut";
+		
+		$mailer = \OC::$server->getMailer();
+		$message = $mailer->createMessage();
+		$message->setSubject("Käyttäjän sähköpostiosoite muuttui Dominanten Jäsensivuilla");
+		$message->setFrom(array("dominante@dominante.fi" => 'Dominanten jäsensivut'));
+		$message->setTo(array("tuukka.verho@aalto.fi" => 'Dominanten sihteeri'));
+		$message->setPlainBody($body);
+		$mailer->send($message);
+	}
 }
 

@@ -179,6 +179,8 @@
 			updatePresencePresentation();
 		}
 		
+		console.log(JSON.stringify({profile: profile}));
+		
 		$.ajax({
 			url: baseUrl + '/profile/update',
 			type: 'POST',
