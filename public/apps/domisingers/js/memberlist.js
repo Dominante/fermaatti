@@ -57,7 +57,8 @@ function sortByPart(member1, member2) {
 		$('button.newprofile').click(function() { 
 			newProfile();
 		});
-	});
+		updateList();
+	}
 
 	function updateList() {
 		var tableElement =  $("#membertable");
