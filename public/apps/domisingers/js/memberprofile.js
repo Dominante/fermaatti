@@ -64,7 +64,11 @@
 		});
 		
 		$('#cntrls [data-action="remove"]').click(function(event) {
-			deleteProfile();
+			var title = 'Vahvistus';
+			var text = 'Poistetaanko kuorolainen? Toimintoa ei voi perua.';
+			OC.dialogs.confirm(text, title, function(result) {
+				if (result) deleteProfile();
+			});
 		});
 		
 		updateAll();
