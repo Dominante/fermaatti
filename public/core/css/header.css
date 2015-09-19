@@ -70,10 +70,10 @@
 }
 
 #header .logo {
-	background-image: url(../img/logo.svg);
+	background-image: url(../img/logo.png);
 	background-repeat: no-repeat;
-	width: 252px;
-	height: 120px;
+	width: 170px;
+	height: 190px;
 	margin: 0 auto;
 }
 
