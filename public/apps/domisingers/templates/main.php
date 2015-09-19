@@ -3,10 +3,6 @@ script('domisingers', 'memberlist');
 style('domisingers', 'memberlist');
 ?>
 
-<?php
-$headers = ['nimi', 'stemma', 'puhelin', 'email', 'vastuut'];
-?>
-
 <div id="app">
 <div id="app-content">
 <div id="app-content-wrapper">
@@ -28,13 +24,12 @@ $headers = ['nimi', 'stemma', 'puhelin', 'email', 'vastuut'];
 	<input type='checkbox' id='checkbox'>Näytä lopettaneet</input>
 </div>
 <table>
-	<thead>
-		<tr>
-			<th><?php echo implode('</th><th>', $headers); ?></th>
-		</tr>
-	</thead>
 	<tbody id='membertable'>
-		<tr><td>Ladataan kuorolaislistaa...</td></tr>
+		<tr class='row_template'>
+			<td><a class='name' href='{{profilelink}}'>{{name}}</a><br><span>{{stemma}}</span></td>
+			<td><a href='mailto:{{email}}'>{{email}}</a><br><span>{{phone}}</span></td>
+			<td><span>{{responsibilities}}</span></td>
+		</tr>
 	</tbody>
 </table>
 

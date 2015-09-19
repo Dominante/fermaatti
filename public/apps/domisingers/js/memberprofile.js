@@ -34,7 +34,9 @@
 			profile = response;
 			callback();
 		}).fail(function (response, code) {
-			console.error('Failed to fetch profile info');
+			OC.dialogs.alert('Profiilin haku epäonnistui! ', 'Virhe', function () {
+				window.location = baseUrl;
+			});
 		});  
 	}
 	
@@ -59,7 +61,7 @@
 		$('#responsibilities [data-action="add"]').click(function() {
 			var kausi = $('#input_vuosi').val();
 			var viskaalius = $('#select_vastuu').val();
-			profile['vastuut'].push({kausi: kausi, viskaalius: viskaalius});
+			profile.vastuut.push({kausi: kausi, viskaalius: viskaalius});
 			updateResponsibilitiesEdit();
 		});
 		
@@ -95,7 +97,7 @@
 			$('#app-content-wrapper-user-deleted').show();
 			window.setTimeout(function() {window.location = baseUrl;}, 1500);
 		}).fail(function (response, code) {
-			console.error('Failed to delete profile');
+			OC.dialogs.alert('Jäsenen poistaminen epäonnistui! ' + code, 'Virhe');
 		}); 
 	}
 	
@@ -106,26 +108,26 @@
 		section.find('.edit').show();
 		var id = section.attr('id');
 		if (id == 'name') {
-			$('#input_etunimi').val(profile['etunimi']);
-			$('#input_sukunimi').val(profile['sukunimi']);
-			$('#input_lempinimi').val(profile['lempinimi']);
-			$('#input_omaasukua').val(profile['sukunimi2']);
-			$('#input_entinen').val(profile['sukunimi3']);
+			$('#input_etunimi').val(profile.etunimi);
+			$('#input_sukunimi').val(profile.sukunimi);
+			$('#input_lempinimi').val(profile.lempinimi);
+			$('#input_omaasukua').val(profile.sukunimi2);
+			$('#input_entinen').val(profile.sukunimi3);
 		}
 		else if (id == 'stemma') {
-			$('input:radio[name=stemma]').val([profile['stemma']]);
+			$('input:radio[name=stemma]').val([profile.stemma]);
 		}
 		else if (id == 'email') {
-			$('#input_email').val(profile['email']);
+			$('#input_email').val(profile.email);
 		}
 		else if (id == 'phone') {
-			$('#input_puhelin').val(profile['puhelin1']);
-			$('#input_puhelin2').val(profile['puhelin2']);
+			$('#input_puhelin').val(profile.puhelin1);
+			$('#input_puhelin2').val(profile.puhelin2);
 		}
 		else if (id == 'address') {
-			$('#input_katuosoite').val(profile['katuosoite']);
-			$('#input_postinumero').val(profile['postinumero']);
-			$('#input_kunta').val(profile['kunta']);
+			$('#input_katuosoite').val(profile.katuosoite);
+			$('#input_postinumero').val(profile.postinumero);
+			$('#input_kunta').val(profile.kunta);
 		}
 		else if (id == 'responsibilities') {
 			loadResponsibilityChoices();
@@ -141,32 +143,32 @@
 		$('.edit').hide();
 		var id = section.attr('id');
 		if (id == 'name') {
-			profile['etunimi'] = $('#input_etunimi').val().trim();
-			profile['sukunimi'] = $('#input_sukunimi').val().trim();
-			profile['lempinimi'] = $('#input_lempinimi').val().trim();
-			profile['sukunimi2'] = $('#input_omaasukua').val().trim();
-			profile['sukunimi3'] = $('#input_entinen').val().trim();
+			profile.etunimi = $('#input_etunimi').val().trim();
+			profile.sukunimi = $('#input_sukunimi').val().trim();
+			profile.lempinimi = $('#input_lempinimi').val().trim();
+			profile.sukunimi2 = $('#input_omaasukua').val().trim();
+			profile.sukunimi3 = $('#input_entinen').val().trim();
 			updateNamePresentation();
 		}
 		else if (id == 'stemma') {
-			profile['stemma'] = $('input:radio[name=stemma]:checked').val();
+			profile.stemma = $('input:radio[name=stemma]:checked').val();
 			updateStemmaPresentation();
 		}
 		
 		else if (id == 'email') {
-			profile['email'] = $('#input_email').val().trim()
+			profile.email = $('#input_email').val().trim()
 			updateEmailPresentation();
 		}
 		else if (id == 'phone') {
-			profile['puhelin1'] = $('#input_puhelin').val().trim();
-			profile['puhelin2'] = $('#input_puhelin2').val().trim();
-			profile['kunta'] = $('#input_kunta').val().trim();
+			profile.puhelin1 = $('#input_puhelin').val().trim();
+			profile.puhelin2 = $('#input_puhelin2').val().trim();
+			profile.kunta = $('#input_kunta').val().trim();
 			updatePhonePresentation();
 		}
 		else if (id == 'address') {
-			profile['katuosoite'] = $('#input_katuosoite').val().trim();
-			profile['postinumero'] = $('#input_postinumero').val().trim();
-			profile['kunta'] = $('#input_kunta').val().trim();
+			profile.katuosoite = $('#input_katuosoite').val().trim();
+			profile.postinumero = $('#input_postinumero').val().trim();
+			profile.kunta = $('#input_kunta').val().trim();
 			updateAddressPresentation();
 		}
 		else if (id == 'responsibilities') {
@@ -174,16 +176,14 @@
 		}
 		
 		else if (id == 'presence') {
-			profile['liittynyt'] = $('#input_liittyi').val().trim();
+			profile.liittynyt = $('#input_liittyi').val().trim();
 			if ($('#check_lopettanut').attr('checked') && $('#input_lopetti').val()) {
-				profile['lopettanut'] = $('#input_lopetti').val().trim();
+				profile.lopettanut = $('#input_lopetti').val().trim();
 			} else {
-				profile['lopettanut'] = '0000-00-00';
+				profile.lopettanut = '0000-00-00';
 			}
 			updatePresencePresentation();
 		}
-		
-		console.log(JSON.stringify({profile: profile}));
 		
 		$.ajax({
 			url: baseUrl + '/profile/update',
@@ -193,7 +193,7 @@
 		}).done(function (updatedProfile) {
 			profile = updatedProfile;
 		}).fail(function (response, code) {
-			console.error('Failed to update profile');
+			OC.dialogs.alert('Profiilin päivitys epäonnistui! ' + code, 'Virhe');
 			loadProfile();
 		});
 		
@@ -221,8 +221,8 @@
 	function updateResponsibilitiesEdit() {
 		$('#responsibilities .entry').remove();
 		var template = $('#responsibilities .entry_template');
-		for(i=0; i<profile['vastuut'].length; i++) {
-			var r = profile['vastuut'][i];
+		for(i=0; i<profile.vastuut.length; i++) {
+			var r = profile.vastuut[i];
 			var row = template.clone();
 			row.switchClass('entry_template', 'entry ' + i);
 			row.insertBefore(template);
@@ -234,21 +234,21 @@
 		$('#responsibilities [data-action="remove"]').click(function(event) {
 			var row = event.target.closest('.row');
 			var i = $(row).prop('class').split(/\s+/)[2];
-			profile['vastuut'].splice(i, 1);
+			profile.vastuut.splice(i, 1);
 			updateResponsibilitiesEdit();
 		});
 	}
 	
 	function updatePresenceEdit() {
 		$('#input_liittyi').datepicker(datepickerDefaults);
-		$('#input_liittyi').datepicker('setDate', profile['liittynyt']);
+		$('#input_liittyi').datepicker('setDate', profile.liittynyt);
 		$('#input_lopetti').datepicker(datepickerDefaults);
 		
-		var finished = (profile['lopettanut'] != '0000-00-00');
+		var finished = (profile.lopettanut != '0000-00-00');
 		$('#check_lopettanut').attr('checked', finished);
 		
 		if (finished) {
-			$('#input_lopetti').datepicker('setDate', profile['lopettanut']);
+			$('#input_lopetti').datepicker('setDate', profile.lopettanut);
 		} else {
 			$('#input_lopetti').val('');
 		}
@@ -265,53 +265,53 @@
 		
 	
 	function updateNamePresentation() {
-		var str = profile['etunimi'] + ' ';
-		if (profile['lempinimi'])
-			str += '"' + profile['lempinimi'] + '" ';
-		str += profile['sukunimi'];
-		if (profile['sukunimi2'])
-			str += ' (o.s. ' + profile['sukunimi2']+')';
-		if (profile['sukunimi3'])
-			str += ' (ent. ' + profile['sukunimi3']+')';
+		var str = profile.etunimi + ' ';
+		if (profile.lempinimi)
+			str += '"' + profile.lempinimi + '" ';
+		str += profile.sukunimi;
+		if (profile.sukunimi2)
+			str += ' (o.s. ' + profile.sukunimi2+')';
+		if (profile.sukunimi3)
+			str += ' (ent. ' + profile.sukunimi3+')';
 		$('#name .present .value').text(str);
 	}
 	
 	function updateStemmaPresentation() {
-		var str = ['muu', 'sopraano', 'altto', 'tenori', 'basso'][profile['stemma']];
+		var str = ['muu', 'sopraano', 'altto', 'tenori', 'basso'][profile.stemma];
 		$('#stemma .present .value').text(str);
 	}
 	
 	function updateEmailPresentation() {
-		$('#email .present .value').text(profile['email']);
+		$('#email .present .value').text(profile.email);
 	}
 	
 	function updatePhonePresentation() {
-		var str = profile['puhelin1'];
-		if (profile['puhelin2'])
-			str += '<br>' + profile['puhelin2'];
+		var str = profile.puhelin1;
+		if (profile.puhelin2)
+			str += '<br>' + profile.puhelin2;
 		$('#phone .present .value').html(str);
 	}
 	
 	function updateAddressPresentation() {
-		var str = profile['katuosoite']+'<br>'+profile['postinumero']+' '+profile['kunta'];
+		var str = profile.katuosoite+'<br>'+profile.postinumero+' '+profile.kunta;
 		$('#address .present .value').html(str);
 	}
 	
 	function updateResponsibilitiesPresentation() {
 		var lines = [];
-		profile['vastuut'].forEach(function(r) {
+		profile.vastuut.forEach(function(r) {
 			lines.push(r['kausi'] + ': ' + r['viskaalius']);
 		});
-		var text = lines.join('<br>').replace(/ä/g, '&auml').replace(/ö/g, '&ouml');
+		var text = lines.join('<br>');
 		$('#responsibilities .present .value').html(text);
 	}
 	
 	function updatePresencePresentation() {
-		var lines = ['liittyi ' + profile['liittynyt']];
-		if (profile['lopettanut'] != '0000-00-00') {
-			lines.push('lopetti ' + profile['lopettanut']);
+		var lines = ['liittyi ' + profile.liittynyt];
+		if (profile.lopettanut != '0000-00-00') {
+			lines.push('lopetti ' + profile.lopettanut);
 		}
-		var text = lines.join('<br>').replace(/ä/g, '&auml').replace(/ö/g, '&ouml');
+		var text = lines.join('<br>');
 		$('#presence .present .value').html(text);
 	}
 })(jQuery, OC);
