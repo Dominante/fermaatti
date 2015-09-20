@@ -59,7 +59,8 @@ function sortByPart(member1, member2) {
 			newProfile();
 		});
 		updateList();
-		$('#membertable').show()
+		$('#membertable').show();
+		$('.loading').hide();
 	}
 
 	function updateList() {
