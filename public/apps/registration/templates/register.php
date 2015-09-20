@@ -33,9 +33,44 @@ if ($_['entered']): ?>
 				</ul>
 			<?php else: ?>
 				<ul class="msg">
-					<li><?php print_unescaped($l->t('You will receive an email with verification link')); ?></li>
+					<li style="font-size: 16px; color: white; padding-bottom: 10px;"><strong>Rekisteröinti</strong></li>
+					<li><?php print_unescaped($l->t('Valitse nimesi kuorolaislistasta ja anna sähköpostiosoitteesi. Saat sähköpostin, joka sisältää vahvistuslinkin.')); ?></li>
 				</ul>
 			<?php endif; ?>
+
+			<select id="select-choir-member">
+				<?php
+
+					function sort_array_of_array(&$array, $subfield) {
+					    $sortarray = array();
+					    foreach ($array as $key => $row)
+					    {
+					        $sortarray[$key] = $row[$subfield];
+					    }
+
+					    array_multisort($sortarray, SORT_ASC, $array);
+					}
+
+					sort_array_of_array($_['members'], 'etunimi');
+					echo '<optgroup label="Nykykuorolaiset">';
+						foreach($_['members'] as $member) {
+							if ($member['lopettanut'] === '0000-00-00') {
+
+								echo '<option value="'.$member['personId'].'">'. $member["etunimi"]." ".$member["sukunimi"].'</option>';
+							}
+						}
+					echo '</optgroup> <optgroup label="Seniorit">';
+					foreach($_['members'] as $member) {
+						if ($member['lopettanut'] !== '0000-00-00') {
+							echo '<option value="'.$member['personId'].'">'. $member["etunimi"]." ".$member["sukunimi"].'</option>';
+						}
+					}
+
+					echo '</optgroup>';
+
+				?>
+	    </select>
+
 			<p class="groupofone">
 			<input type="email" name="email" id="email" placeholder="<?php print_unescaped($l->t('Email')); ?>" value="" required autofocus />
 				<label for="email" class="infield"><?php print_unescaped($l->t('Email')); ?></label>

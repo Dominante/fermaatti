@@ -29,21 +29,28 @@ class RegisterController extends Controller {
 	private $urlgenerator;
 	private $pendingreg;
 	private $usermanager;
+	private $membersummaryservice;
 	private $config;
 	private $groupmanager;
 	protected $appName;
 
 	public function __construct($appName, IRequest $request, Wrapper\Mail $mail, IL10N $l10n, $urlgenerator,
-	$pendingreg, IUserManager $usermanager, IConfig $config, IGroupManager $groupmanager){
+	$pendingreg, IUserManager $usermanager, IConfig $config, IGroupManager $groupmanager, $membersummaryservice){
 		$this->mail = $mail;
 		$this->l10n = $l10n;
 		$this->urlgenerator = $urlgenerator;
 		$this->pendingreg = $pendingreg;
 		$this->usermanager = $usermanager;
+		$this->membersummaryservice = $membersummaryservice;
 		$this->config = $config;
 		$this->groupmanager = $groupmanager;
 		$this->appName = $appName;
 		parent::__construct($appName, $request);
+	}
+
+
+	private function isAuthorizedForRegistration() {
+		return $_REQUEST['auth'] === 'a84j29dj59dk92ds2';
 	}
 
 	/**
@@ -51,10 +58,21 @@ class RegisterController extends Controller {
 	 * @PublicPage
 	 */
 	public function askEmail($errormsg, $entered) {
+		if(!$this->isAuthorizedForRegistration()) {
+			return new TemplateResponse('', 'error', array(
+				'errors' => array(array(
+					'error' => $this->l10n->t('Sinulla ei ole enää käyttöoikeutta rekisteröintiin. Pyydä uusi rekisteröitymislinkki IT-työryhmältä!'),
+					'hint' => ''
+				))
+			), 'error');
+		}
+
 		$params = array(
 			'errormsg' => $errormsg ? $errormsg : $this->request->getParam('errormsg'),
-			'entered' => $entered ? $entered : $this->request->getParam('entered')
+			'entered' => $entered ? $entered : $this->request->getParam('entered'),
+			'members' => $this->membersummaryservice->findAll()
 		);
+
 		return new TemplateResponse('registration', 'register', $params, 'guest');
 	}
 

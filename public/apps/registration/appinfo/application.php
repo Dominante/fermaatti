@@ -17,6 +17,7 @@ use \OCA\Registration\Controller\RegisterController;
 use \OCA\Registration\Controller\SettingsController;
 use \OCA\Registration\Wrapper;
 use \OCA\Registration\Db\PendingRegist;
+use \OCA\Registration\Db\MemberSummaryService;
 
 
 class Application extends App {
@@ -39,7 +40,8 @@ class Application extends App {
 				$c->query('PendingRegist'),
 				$c->query('UserManager'),
 				$c->query('Config'),
-				$c->query('GroupManager')
+				$c->query('GroupManager'),
+				$c->query('MemberSummaryService')
 			);
 		});
 
@@ -59,7 +61,7 @@ class Application extends App {
 		 */
 		$container->registerService('UserId', function($c) {
 			return \OCP\User::getUser();
-		});		
+		});
 
 		$container->registerService('UserManager', function($c) {
 			return $c->query('ServerContainer')->getUserManager();
@@ -88,6 +90,10 @@ class Application extends App {
 		$container->registerService('PendingRegist', function($c) {
 			return new PendingRegist($c->query('ServerContainer')->getDb(),
 				$c->query('ServerContainer')->getSecureRandom()->getMediumStrengthGenerator());
+		});
+
+		$container->registerService('MemberSummaryService', function($c) {
+			return new MemberSummaryService($c->query('ServerContainer')->getDb());
 		});
 	}
 
