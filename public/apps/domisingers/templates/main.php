@@ -33,6 +33,8 @@ style('domisingers', 'memberlist');
 	</tbody>
 </table>
 
+<div class='loading icon-loading'></div>
+
 </div>
 </div>
 </div>

@@ -1,4 +1,12 @@
+.membertable {
+	display: none;
+}
 
+.loading {
+	width: 100px;
+	height: 100px;
+	margin-left: 200px;
+}
 
 tbody td {
 	padding:20px 20px 20px 20px;
@@ -24,22 +32,22 @@ tbody td {
 	font-weight: bold;
 }
 
-tr.stemma0 {
-	background-color: hsl(0, 0%, 99%);
+tr.stemma0 .name {
+	color: hsl(0, 0%, 50%);
 }
 
-tr.stemma1 {
-	background-color: hsl(260, 100%, 99%);
+tr.stemma1 .name {
+	color: hsl(260, 25%, 50%);
 }
 
-tr.stemma2 {
-	background-color: hsl(120, 100%, 99%);
+tr.stemma2 .name {
+	color: hsl(120, 25%, 50%);
 }
 
-tr.stemma3 {
-	background-color: hsl(60, 100%, 99%);
+tr.stemma3 .name {
+	color: hsl(60, 25%, 50%);
 }
 
-tr.stemma4 {
-	background-color: hsl(0, 100%, 99%);
+tr.stemma4 .name {
+	color: hsl(0, 25%, 50%);
 }

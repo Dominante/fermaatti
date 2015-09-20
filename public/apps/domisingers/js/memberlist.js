@@ -22,6 +22,7 @@ function sortByPart(member1, member2) {
 	var members;
 	var showFormerMembers = false;
 
+	// Run init() when both the DOM tree and the member list have loaded
 	loadMembers(function() {
 		if (documentReady) init();
 	})
@@ -58,6 +59,7 @@ function sortByPart(member1, member2) {
 			newProfile();
 		});
 		updateList();
+		$('#membertable').show()
 	}
 
 	function updateList() {

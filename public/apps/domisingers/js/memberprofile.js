@@ -16,6 +16,7 @@
 	var profile_revert;
 	var datepickerDefaults = {dateFormat: 'yy-mm-dd', minDate: null};
 
+	// Run init() when both the DOM tree and the profile have loaded
 	loadProfile(function() {
 		if (documentReady) init();
 	});
@@ -44,11 +45,15 @@
 		$('#return_link').prop('href', baseUrl);
 		
 		$('[data-action="edit_section"]').click(function(event) {
+			$('.present').show();
+			$('.edit').hide();
 			profile_revert = $.extend({}, profile);
 			editSection($(event.target).closest('section'));
 		});
 		
 		$('[data-action="save"]').click(function(event) {
+			$('.present').show();
+			$('.edit').hide();
 			saveChanges($(event.target).closest('section'));            
 		});
 		
@@ -101,9 +106,8 @@
 		}); 
 	}
 	
+	// Show editing controls for a section
 	function editSection(section) {
-		$('.present').show();
-		$('.edit').hide();
 		section.find('.present').hide();
 		section.find('.edit').show();
 		var id = section.attr('id');
@@ -138,9 +142,8 @@
 		}
 	}
 	
+	// Send updated profile to the server
 	function saveChanges(section, saveChanges) {
-		$('.present').show();
-		$('.edit').hide();
 		var id = section.attr('id');
 		if (id == 'name') {
 			profile.etunimi = $('#input_etunimi').val().trim();
@@ -199,7 +202,7 @@
 		
 	}
 	
-	
+	// Get the possible responsibility values from server
 	function loadResponsibilityChoices() {
 		$.ajax({
 			url: baseUrl + '/profile/responsibilitychoices',
@@ -217,7 +220,7 @@
 		}); 
 	}
 		
-	
+	// Initialize editing controls
 	function updateResponsibilitiesEdit() {
 		$('#responsibilities .entry').remove();
 		var template = $('#responsibilities .entry_template');
@@ -263,7 +266,7 @@
 		});
 	}
 		
-	
+	// Construct the non-editable class='present' elements
 	function updateNamePresentation() {
 		var str = profile.etunimi + ' ';
 		if (profile.lempinimi)
