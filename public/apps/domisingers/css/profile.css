@@ -25,6 +25,10 @@
     justify-content: flex-end;
 }
 
+.value.value {
+	width:250px;
+}
+
 .tableheader {
     color: #666666;
     font-weight: bold;
@@ -78,4 +82,12 @@ section {
 button div {
 	margin-right: 8px;
 	float: left;
+}
+
+.row div input[type='text'] {
+	width: 100%;
+}
+
+.row div select {
+	width: 100%;
 }

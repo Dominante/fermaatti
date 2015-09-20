@@ -22,6 +22,7 @@ function sortByPart(member1, member2) {
 	var members;
 	var showFormerMembers = false;
 
+	// Run init() when both the DOM tree and the member list have loaded
 	loadMembers(function() {
 		if (documentReady) init();
 	})
@@ -58,33 +59,28 @@ function sortByPart(member1, member2) {
 			newProfile();
 		});
 		updateList();
+		$('#membertable').show();
+		$('.loading').hide();
 	}
 
 	function updateList() {
-		var tableElement =  $("#membertable");
+		var stemmat = ['', 'sopraano', 'altto', 'tenori', 'basso'];
+		$('#membertable .entry').remove();
+		template = $('.row_template')
+		templateHTML = template.html();
 		
-		tableElement.empty();
-
 		members.forEach(function(member) {
 			if (showFormerMembers || member.lopettanut == '0000-00-00') {
-				tableElement.append(getMemberRowHtml(member));
+				rowHTML = templateHTML
+					.replace(/{{name}}/, member.etunimi + ' ' + member.sukunimi)
+					.replace(/{{profilelink}}/, baseUrl+'/profile/display/'+member.personId)
+					.replace(/{{stemma}}/, stemmat[member.stemma])
+					.replace(/{{email}}/g, member.email)
+					.replace(/{{phone}}/, member.puhelin)
+					.replace(/{{responsibilities}}/, member.vastuut.join('<br>'));
+				template.before('<tr class="entry stemma'+member.stemma+'">'+rowHTML+'</tr>');
 			}
 		});
-	}
-
-	function getMemberRowHtml(member) {
-		var stemmat = ['muu', 'sopraano', 'altto', 'tenori', 'basso'];
-		detailsUrl = baseUrl + '/profile/display/' + member.personId;
-		
-		var fields = [
-			'<a href='+detailsUrl+'>' + member.etunimi + ' ' + member.sukunimi + '</a>',
-			stemmat[member.stemma],
-			member.puhelin,
-			member.email,
-			member.vastuut.join(', ')
-			];
-			
-		return '<tr><td>' + fields.join('</td><td>') + '</td></tr>';
 	}
 	
 	function newProfile() {

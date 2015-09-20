@@ -153,8 +153,8 @@ style('domisingers', 'profile');
             <a class='icon-delete' data-action='remove'></a>
         </div>
          <div class='row'>
-            <input id='input_vuosi' class='col1' type='text'>
-            <select id='select_vastuu' class='col2'></select>
+            <div class='col1'><input id='input_vuosi' type='text'></div>
+            <div class='col2'><select id='select_vastuu'></select></div>
             <button data-action='add'>lis&auml;&auml;</button>
         </div>
         <div class='row'>
@@ -193,9 +193,9 @@ style('domisingers', 'profile');
             <a class='icon-delete' data-action='remove'></a>
         </div>
         <div class='row'>
-            <input id='input_alkoi' class='col1' type='date'>
-            <input id='input_paattyi' class='col2' type='date'>
-            <input id='input_selite' class='col3' type='text'>
+            <div class='col1'><input id='input_alkoi' type='text'></div>
+            <div class='col2'><input id='input_paattyi' type='text'></div>
+            <div class='col3'><input id='input_selite' type='text'></div>
             <button data-action='add'>lis&auml;&auml;</button>
         </div>
         <div class='row'>
