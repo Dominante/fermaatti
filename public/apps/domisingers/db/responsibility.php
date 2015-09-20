@@ -25,10 +25,4 @@ class Responsibility extends Entity {
         $this->addType('personId', 'integer');
         $this->addType('viskaaliusId', 'integer');
     }
-    
-    public function isEqual($other) {
-        return $this->personId == $other->personId &&
-            $this->viskaaliusId == $other->viskaaliusId &&
-            $this->kausi == $other->kausi;
-    }
 }

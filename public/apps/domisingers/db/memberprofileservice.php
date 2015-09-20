@@ -72,30 +72,19 @@ class MemberProfileService {
 		
 		$responsibilities = $originalProfile->responsibilities;
 		$modifiedResponsibilities = $modifiedProfile->responsibilities;
-		foreach($modifiedResponsibilities as $modified) {
-			$new = true;
-			foreach($responsibilities as $old) {
-				if ($old->isEqual($modified)) {
-					$new = false;
-					break;
-				}
-			}
-			if ($new) {
-				$this->responsibilityMapper->insert($modified);
-			}
-		}
-		foreach($responsibilities as $old) {
-			$removed = true;
-			foreach($modifiedResponsibilities as $modified) {
-				if ($old->isEqual($modified)) {
-					$removed = false;
-					break;
-				}
-			}
-			if ($removed) {
-				$this->responsibilityMapper->delete($old);
-			}
-		}
+		
+		// A compare function for array_udiff, must return negative, 0, or positive
+		$compareFunc = function($resp1, $resp2) {
+			$kausiComp = $resp1->getKausi() - $resp2->getKausi();
+			if ($kausiComp != 0) return $kausiComp;
+			return $resp1->getViskaaliusId() - $resp2->getViskaaliusId();
+		};
+		
+		$newResps = array_udiff($modifiedResponsibilities, $responsibilities, $compareFunc);
+		$deletedResps = array_udiff($responsibilities, $modifiedResponsibilities, $compareFunc);
+		array_map($this->responsibilityMapper->insert, $newResps);
+		array_map($this->responsibilityMapper->delete, $deletedResps);
+		
 		return $modifiedProfile;
 	}
 	
@@ -116,8 +105,8 @@ class MemberProfileService {
 		$this->memberMapper->delete($member);
 		
 		$responsibilities = $this->responsibilityMapper->findResponsibilities($personId);
-		foreach($responsibilities as $r) {
-			$this->responsibilityMapper->delete($r);
+		foreach($responsibilities as $resp) {
+			$this->responsibilityMapper->delete($resp);
 		}
 	}
 	

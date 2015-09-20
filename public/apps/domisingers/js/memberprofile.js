@@ -302,8 +302,8 @@
 	
 	function updateResponsibilitiesPresentation() {
 		var lines = [];
-		profile.vastuut.forEach(function(r) {
-			lines.push(r['kausi'] + ': ' + r['viskaalius']);
+		profile.vastuut.forEach(function(resp) {
+			lines.push(resp['kausi'] + ': ' + resp['viskaalius']);
 		});
 		var text = lines.join('<br>');
 		$('#responsibilities .present .value').html(text);
