@@ -18,9 +18,9 @@ class PendingRegist {
 		$this->random = $random;
 	}
 
-	public function save($email) {
+	public function save($email, $jasenId) {
 		$query = $this->db->prepareQuery( 'INSERT INTO `*PREFIX*registration`'
-			.' ( `email`, `token`, `requested` ) VALUES( ?, ?, NOW() )' );
+			.' ( `email`, `jasen_id`, `token`, `requested`, `` ) VALUES( ?, ?, ?, NOW() )' );
 
 		do {
 			$token = $this->random->generate(30);

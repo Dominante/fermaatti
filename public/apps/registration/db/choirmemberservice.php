@@ -13,7 +13,7 @@ namespace OCA\Registration\Db;
 
 use OCP\IDBConnection;
 
-class MemberSummaryService {
+class ChoirMemberService {
     protected $db;
 
     public function __construct(IDBConnection $db) {
@@ -60,5 +60,10 @@ class MemberSummaryService {
         $query->closeCursor();
         return array_values($members);
     }
-}
 
+    public function updateOcUserId($choirMemberId, $ocUserId) {
+      $sql = 'UPDATE jasen SET oc_uid=? WHERE person_id=?';
+      $query = $this->db->prepareQuery($sql);
+      return $query->execute(array($ocUserId, $choirMemberId));
+    }
+}

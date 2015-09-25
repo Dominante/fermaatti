@@ -29,19 +29,19 @@ class RegisterController extends Controller {
 	private $urlgenerator;
 	private $pendingreg;
 	private $usermanager;
-	private $membersummaryservice;
+	private $choirmemberservice;
 	private $config;
 	private $groupmanager;
 	protected $appName;
 
 	public function __construct($appName, IRequest $request, Wrapper\Mail $mail, IL10N $l10n, $urlgenerator,
-	$pendingreg, IUserManager $usermanager, IConfig $config, IGroupManager $groupmanager, $membersummaryservice){
+	$pendingreg, IUserManager $usermanager, IConfig $config, IGroupManager $groupmanager, $choirmemberservice){
 		$this->mail = $mail;
 		$this->l10n = $l10n;
 		$this->urlgenerator = $urlgenerator;
 		$this->pendingreg = $pendingreg;
 		$this->usermanager = $usermanager;
-		$this->membersummaryservice = $membersummaryservice;
+		$this->choirmemberservice = $choirmemberservice;
 		$this->config = $config;
 		$this->groupmanager = $groupmanager;
 		$this->appName = $appName;
@@ -70,7 +70,7 @@ class RegisterController extends Controller {
 		$params = array(
 			'errormsg' => $errormsg ? $errormsg : $this->request->getParam('errormsg'),
 			'entered' => $entered ? $entered : $this->request->getParam('entered'),
-			'members' => $this->membersummaryservice->findAll()
+			'members' => $this->choirmemberservice->findAll()
 		);
 
 		return new TemplateResponse('registration', 'register', $params, 'guest');
@@ -81,6 +81,8 @@ class RegisterController extends Controller {
 	 */
 	public function validateEmail() {
 		$email = $this->request->getParam('email');
+		$jasenId = $this->request->getParam('choir-member-id');
+
 		if ( !filter_var($email, FILTER_VALIDATE_EMAIL) ) {
 			return new TemplateResponse('', 'error', array(
 				'errors' => array(array(
@@ -92,7 +94,7 @@ class RegisterController extends Controller {
 
 		if ( $this->pendingreg->find($email) ) {
 			$this->pendingreg->delete($email);
-			$token = $this->pendingreg->save($email);
+			$token = $this->pendingreg->save($email, $jasenId);
 			$link = $this->urlgenerator->linkToRoute('registration.register.verifyToken', array('token' => $token));
 			$link = $this->urlgenerator->getAbsoluteURL($link);
 			$from = Util::getDefaultEmailAddress('register');
@@ -148,7 +150,7 @@ class RegisterController extends Controller {
 			}
 		}
 
-		$token = $this->pendingreg->save($email);
+		$token = $this->pendingreg->save($email, $jasenId);
 		//TODO: check for error
 		$link = $this->urlgenerator->linkToRoute('registration.register.verifyToken', array('token' => $token));
 		$link = $this->urlgenerator->getAbsoluteURL($link);
@@ -206,7 +208,6 @@ class RegisterController extends Controller {
 			$password = $this->request->getParam('password');
 			try {
 				$user = $this->usermanager->createUser($username, $password);
-				// TÄSSÄ TÄYDENNETÄÄN JÄSENTIEDOT
 			} catch (\Exception $e) {
 				return new TemplateResponse('registration', 'form',
 					array('email' => $email,
@@ -248,6 +249,9 @@ class RegisterController extends Controller {
 						), 'error');
 					}
 				}
+
+				// Update choir member with account information
+				$this->choirmemberservice->updateOcUserId($memberid, $user->uid)
 
 				// Delete pending reg request
 				$res = $this->pendingreg->delete($email);
