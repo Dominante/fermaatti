@@ -15,8 +15,8 @@ $CONFIG = array (
   'trusted_domains' => array(
     0 => 'fermaatti.dominante.fi'
   ),
-  'datadirectory' => '/var/wwwhome/jasensivut-kehitys/data',
-  'overwrite.cli.url' => 'http://fermaatti.dominante.fi/jasensivut-kehitys',
+  'datadirectory' => '/var/wwwhome/jasensivut/data',
+  'overwrite.cli.url' => 'http://fermaatti.dominante.fi/jasensivut',
   'version' => '8.1.0.8',
   'dbtableprefix' => 'oc_',
   'logtimezone' => 'UTC',
