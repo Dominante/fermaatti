@@ -64,8 +64,6 @@ class ChoirMemberService {
     public function updateOcUserId($choirMemberId, $ocUserId) {
       $sql = 'UPDATE jasen SET oc_uid=? WHERE person_id=?';
       $query = $this->db->prepareQuery($sql);
-      var_dump($choirMemberId);
-      var_dump($ocUserId);
       return $query->execute(array($ocUserId, $choirMemberId));
     }
 }
