@@ -41,7 +41,7 @@
 			</div>
 		</div>
 		<footer role="contentinfo">
-			<p class="info"><strong><a href="http://fermaatti.dominante.fi/jasensivut-vanha/public/index.php">Linkki vanhoille jäsensivuille</a></strong></p>
+			<p class="info"><strong><a href="http://fermaatti.dominante.fi/jasensivut-vanha/">Linkki vanhoille jäsensivuille</a></strong></p>
 		</footer>
 	</body>
 </html>
