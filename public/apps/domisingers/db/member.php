@@ -32,7 +32,8 @@ class Member extends Entity {
     protected $lopettanut;
     protected $taukoja;
     protected $tietosuoja;
-    
+    protected $ocUid;
+
     public function __construct() {
         $this->addType('personId', 'integer');
         $this->addType('stemma', 'integer');

@@ -16,7 +16,7 @@ use OCP\IGroupManager;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Controller;
-
+use OCA\DomiSingers\Db\MemberMapper;
 
 
 class PageController extends Controller {
@@ -24,11 +24,13 @@ class PageController extends Controller {
 
 	private $userId;
 	private $isAdmin;
+	private $membermapper;
 
-	public function __construct($appName, IRequest $request, IGroupManager $groupManager, $userId) {
+	public function __construct($appName, IRequest $request, IGroupManager $groupManager, MemberMapper $membermapper, $userId) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->isAdmin = $groupManager->isAdmin($userId);
+		$this->membermapper = $membermapper;
 	}
 
 	/**
@@ -54,10 +56,14 @@ class PageController extends Controller {
      * @param int $id
 	 */
 	public function profile($id) {
-		$params = ['user' => $this->userId, 'isAdmin' => $this->isAdmin];
+		$member = $this->membermapper->findMember($id);
+		$isCurrentUser = $member->getOcUid() == $this->userId;
+
+		$isPrivilegedToEdit = $this->isAdmin || $isCurrentUser;
+		$params = ['user' => $this->userId, 'isAdmin' => $this->isAdmin, 'isPrivilegedToEdit' => $isPrivilegedToEdit];
 		return new TemplateResponse($this->appName, 'profile', $params);
 	}
-	
+
 	/**
 	 * Simply method that posts back the payload of the request
 	 * @NoAdminRequired
