@@ -82,8 +82,8 @@ class MemberProfileService {
 		
 		$newResps = array_udiff($modifiedResponsibilities, $responsibilities, $compareFunc);
 		$deletedResps = array_udiff($responsibilities, $modifiedResponsibilities, $compareFunc);
-		array_map($this->responsibilityMapper->insert, $newResps);
-		array_map($this->responsibilityMapper->delete, $deletedResps);
+		array_map(array($this->responsibilityMapper, 'insert'), $newResps);
+		array_map(array($this->responsibilityMapper, 'delete'), $deletedResps);
 		
 		return $modifiedProfile;
 	}
