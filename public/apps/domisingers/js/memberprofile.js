@@ -20,12 +20,12 @@
 	loadProfile(function() {
 		if (documentReady) init();
 	});
-	
+
 	$(document).ready(function () {
 		documentReady = true;
 		if (profile) init();
 	});
-	
+
 	function loadProfile(callback) {
 		$.ajax({
 			url: baseUrl + '/profile/show/' + personId,
@@ -38,38 +38,38 @@
 			OC.dialogs.alert('Profiilin haku epäonnistui! ', 'Virhe', function () {
 				window.location = baseUrl;
 			});
-		});  
+		});
 	}
-	
+
 	function init() {
 		$('#return_link').prop('href', baseUrl);
-		
+
 		$('[data-action="edit_section"]').click(function(event) {
 			$('.present').show();
 			$('.edit').hide();
 			profile_revert = $.extend({}, profile);
 			editSection($(event.target).closest('section'));
 		});
-		
+
 		$('[data-action="save"]').click(function(event) {
 			$('.present').show();
 			$('.edit').hide();
-			saveChanges($(event.target).closest('section'));            
+			saveChanges($(event.target).closest('section'));
 		});
-		
+
 		$('[data-action="cancel"]').click(function(event) {
 			$('.present').show();
 			$('.edit').hide();
 			profile = profile_revert;
 		});
-		
+
 		$('#responsibilities [data-action="add"]').click(function() {
 			var kausi = $('#input_vuosi').val();
 			var viskaalius = $('#select_vastuu').val();
 			profile.vastuut.push({kausi: kausi, viskaalius: viskaalius});
 			updateResponsibilitiesEdit();
 		});
-		
+
 		$('#cntrls [data-action="remove"]').click(function(event) {
 			var title = 'Vahvistus';
 			var text = 'Poistetaanko kuorolainen? Toimintoa ei voi perua.';
@@ -77,10 +77,10 @@
 				if (result) deleteProfile();
 			});
 		});
-		
+
 		updateAll();
 	}
-	
+
 	function updateAll() {
 		updateNamePresentation();
 		updateStemmaPresentation();
@@ -89,8 +89,9 @@
 		updateAddressPresentation();
 		updateResponsibilitiesPresentation();
 		updatePresencePresentation();
+		updateUsernamePresentation();
 	}
-	
+
 	function deleteProfile() {
 		$.ajax({
 			url: baseUrl + '/profile/delete/' + personId,
@@ -103,9 +104,9 @@
 			window.setTimeout(function() {window.location = baseUrl;}, 1500);
 		}).fail(function (response, code) {
 			OC.dialogs.alert('Jäsenen poistaminen epäonnistui! ' + code, 'Virhe');
-		}); 
+		});
 	}
-	
+
 	// Show editing controls for a section
 	function editSection(section) {
 		section.find('.present').hide();
@@ -141,7 +142,7 @@
 			updatePresenceEdit();
 		}
 	}
-	
+
 	// Send updated profile to the server
 	function saveChanges(section, saveChanges) {
 		var id = section.attr('id');
@@ -157,7 +158,7 @@
 			profile.stemma = $('input:radio[name=stemma]:checked').val();
 			updateStemmaPresentation();
 		}
-		
+
 		else if (id == 'email') {
 			profile.email = $('#input_email').val().trim()
 			updateEmailPresentation();
@@ -177,7 +178,7 @@
 		else if (id == 'responsibilities') {
 			updateResponsibilitiesPresentation();
 		}
-		
+
 		else if (id == 'presence') {
 			profile.liittynyt = $('#input_liittyi').val().trim();
 			if ($('#check_lopettanut').attr('checked') && $('#input_lopetti').val()) {
@@ -187,7 +188,7 @@
 			}
 			updatePresencePresentation();
 		}
-		
+
 		$.ajax({
 			url: baseUrl + '/profile/update',
 			type: 'POST',
@@ -199,9 +200,9 @@
 			OC.dialogs.alert('Profiilin päivitys epäonnistui! ' + code, 'Virhe');
 			loadProfile();
 		});
-		
+
 	}
-	
+
 	// Get the possible responsibility values from server
 	function loadResponsibilityChoices() {
 		$.ajax({
@@ -217,9 +218,9 @@
 			});
 		}).fail(function (response, code) {
 			console.error('Failed to load responsibility choices');
-		}); 
+		});
 	}
-		
+
 	// Initialize editing controls
 	function updateResponsibilitiesEdit() {
 		$('#responsibilities .entry').remove();
@@ -233,7 +234,7 @@
 			row.find('.col2').text(r['viskaalius']);
 			row.show();
 		}
-		
+
 		$('#responsibilities [data-action="remove"]').click(function(event) {
 			var row = event.target.closest('.row');
 			var i = $(row).prop('class').split(/\s+/)[2];
@@ -241,31 +242,31 @@
 			updateResponsibilitiesEdit();
 		});
 	}
-	
+
 	function updatePresenceEdit() {
 		$('#input_liittyi').datepicker(datepickerDefaults);
 		$('#input_liittyi').datepicker('setDate', profile.liittynyt);
 		$('#input_lopetti').datepicker(datepickerDefaults);
-		
+
 		var finished = (profile.lopettanut != '0000-00-00');
 		$('#check_lopettanut').attr('checked', finished);
-		
+
 		if (finished) {
 			$('#input_lopetti').datepicker('setDate', profile.lopettanut);
 		} else {
 			$('#input_lopetti').val('');
 		}
-		$('#input_lopetti').prop('disabled', !finished); 
-		
+		$('#input_lopetti').prop('disabled', !finished);
+
 		$('#check_lopettanut').change(function() {
 			var finished = $(this).attr('checked');
 			if (finished) {
 				$('#input_lopetti').datepicker('show');
-			} 
-			$('#input_lopetti').prop('disabled', !finished); 
+			}
+			$('#input_lopetti').prop('disabled', !finished);
 		});
 	}
-		
+
 	// Construct the non-editable class='present' elements
 	function updateNamePresentation() {
 		var str = profile.etunimi + ' ';
@@ -278,28 +279,28 @@
 			str += ' (ent. ' + profile.sukunimi3+')';
 		$('#name .present .value').text(str);
 	}
-	
+
 	function updateStemmaPresentation() {
 		var str = ['muu', 'sopraano', 'altto', 'tenori', 'basso'][profile.stemma];
 		$('#stemma .present .value').text(str);
 	}
-	
+
 	function updateEmailPresentation() {
 		$('#email .present .value').text(profile.email);
 	}
-	
+
 	function updatePhonePresentation() {
 		var str = profile.puhelin1;
 		if (profile.puhelin2)
 			str += '<br>' + profile.puhelin2;
 		$('#phone .present .value').html(str);
 	}
-	
+
 	function updateAddressPresentation() {
 		var str = profile.katuosoite+'<br>'+profile.postinumero+' '+profile.kunta;
 		$('#address .present .value').html(str);
 	}
-	
+
 	function updateResponsibilitiesPresentation() {
 		var lines = [];
 		profile.vastuut.forEach(function(resp) {
@@ -308,7 +309,7 @@
 		var text = lines.join('<br>');
 		$('#responsibilities .present .value').html(text);
 	}
-	
+
 	function updatePresencePresentation() {
 		var lines = ['liittyi ' + profile.liittynyt];
 		if (profile.lopettanut != '0000-00-00') {
@@ -316,5 +317,9 @@
 		}
 		var text = lines.join('<br>');
 		$('#presence .present .value').html(text);
+	}
+
+	function updateUsernamePresentation() {
+		$('#username .present .value').html(profile.ocUid || 'Ei käyttäjää');
 	}
 })(jQuery, OC);

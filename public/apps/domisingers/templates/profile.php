@@ -204,8 +204,18 @@ style('domisingers', 'profile');
             <button data-action='add'>lis&auml;&auml;</button>
         </div>
         <div class='row'>
+            <span class='label'>Tauot</span>
+        </div>
+        <div class='row'>
             <button data-action='cancel'>Peruuta</button>
             <button data-action='save'>Tallenna</button>
+        </div>
+    </div>
+</section>
+<section id='username'>
+    <div class='present'>
+        <div class='row'>
+            <span class='label'>Käyttäjätunnus</span><span class='value'></span>
         </div>
     </div>
 </section>
