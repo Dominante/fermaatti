@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <info>
     <id>registration</id>
-    <name>Registration</name>
+    <name>Dominante registration</name>
     <description>User registration</description>
-    <licence>AGPL</licence>
-    <author>Pellaeon Lin</author>
+    <licence>General Dominante Licence</licence>
+    <author>Atte Keinänen (orig. Pellaeon Lin)</author>
     <version>0.0.7</version>
     <requiremin>8.0.0</requiremin>
 </info>
