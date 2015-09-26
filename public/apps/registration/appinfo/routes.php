@@ -11,6 +11,7 @@
 
 return ['routes' => [
 	array('name' => 'settings#admin', 'url' => '/settings', 'verb' => 'POST'),
+	array('name' => 'settings#newAuthHash', 'url' => '/settings/newAuthHash', 'verb' => 'POST'),
 	array('name' => 'register#askEmail', 'url' => '/', 'verb' => 'GET'),
 	array('name' => 'register#validateEmail', 'url' => '/', 'verb' => 'POST'),
 	array('name' => 'register#verifyToken', 'url' => '/verify/{token}', 'verb' => 'GET'),

@@ -50,7 +50,8 @@ class RegisterController extends Controller {
 
 
 	private function isAuthorizedForRegistration() {
-		return $_REQUEST['auth'] === 'a84j29dj59dk92ds2';
+		$registration_auth_hash = $this->config->getAppValue($this->appName, 'registration_auth_hash', '');
+		return $_REQUEST['auth'] === $registration_auth_hash;
 	}
 
 	/**
@@ -61,7 +62,7 @@ class RegisterController extends Controller {
 		if(!$this->isAuthorizedForRegistration()) {
 			return new TemplateResponse('', 'error', array(
 				'errors' => array(array(
-					'error' => $this->l10n->t('Sinulla ei ole enää käyttöoikeutta rekisteröintiin. Pyydä uusi rekisteröitymislinkki IT-työryhmältä!'),
+					'error' => $this->l10n->t('Rekisteröitymislinkkisi on vanhentunut. Pyydä uusi linkki IT-työryhmältä!'),
 					'hint' => ''
 				))
 			), 'error');
@@ -70,7 +71,8 @@ class RegisterController extends Controller {
 		$params = array(
 			'errormsg' => $errormsg ? $errormsg : $this->request->getParam('errormsg'),
 			'entered' => $entered ? $entered : $this->request->getParam('entered'),
-			'members' => $this->choirmemberservice->findAll()
+			'members' => $this->choirmemberservice->findAllWithoutOcUser(),
+			'registration_auth_hash' => $this->config->getAppValue($this->appName, 'registration_auth_hash', '')
 		);
 
 		return new TemplateResponse('registration', 'register', $params, 'guest');
@@ -80,6 +82,15 @@ class RegisterController extends Controller {
 	 * @PublicPage
 	 */
 	public function validateEmail() {
+		if(!$this->isAuthorizedForRegistration()) {
+			return new TemplateResponse('', 'error', array(
+				'errors' => array(array(
+					'error' => $this->l10n->t('Rekisteröitymislinkkisi on vanhentunut. Pyydä uusi linkki IT-työryhmältä!'),
+					'hint' => ''
+				))
+			), 'error');
+		}
+
 		$email = $this->request->getParam('email');
 		$jasenId = $this->request->getParam('choir-member-id');
 
@@ -98,6 +109,7 @@ class RegisterController extends Controller {
 			$link = $this->urlgenerator->linkToRoute('registration.register.verifyToken', array('token' => $token));
 			$link = $this->urlgenerator->getAbsoluteURL($link);
 			$from = Util::getDefaultEmailAddress('register');
+
 			$res = new TemplateResponse('registration', 'email', array('link' => $link), 'blank');
 			$msg = $res->render();
 			try {
@@ -195,7 +207,7 @@ class RegisterController extends Controller {
 	 */
 	public function createAccount($token) {
 		$email = $this->pendingreg->findEmailByToken($token);
-		$memberId = $this->pendingreg->findChoirMemberIdByToken($token);
+		$memberid = $this->pendingreg->findChoirMemberIdByToken($token);
 		if ( \OCP\DB::isError($email) ) {
 			return new TemplateResponse('', 'error', array(
 				'errors' => array(array(
@@ -251,7 +263,7 @@ class RegisterController extends Controller {
 				}
 
 				// Update choir member with account information
-				$this->choirmemberservice->updateOcUserId($memberid, $user->uid)
+				$this->choirmemberservice->updateOcUserId($memberid, $user->getUID());
 
 				// Delete pending reg request
 				$res = $this->pendingreg->delete($email);

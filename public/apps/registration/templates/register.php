@@ -24,7 +24,7 @@ if ($_['entered']): ?>
 		</form>
 	<?php endif; ?>
 <?php else: ?>
-	<form action="<?php print_unescaped(OC_Helper::linkToRoute('registration.register.validateEmail')) ?>" method="post">
+	<form action="<?php print_unescaped(OC_Helper::linkToRoute('registration.register.validateEmail')) ?>?auth=<?php echo $_['registration_auth_hash']; ?>" method="post">
 		<fieldset>
 			<?php if ($_['errormsg']): ?>
 				<ul class="error">
@@ -38,7 +38,7 @@ if ($_['entered']): ?>
 				</ul>
 			<?php endif; ?>
 
-			<select id="select-choir-member">
+			<select name="choir-member-id" id="select-choir-member">
 				<?php
 
 					function sort_array_of_array(&$array, $subfield) {

@@ -21,11 +21,11 @@ class ChoirMemberService {
     }
 
 
-    public function findAll($limit=null, $offset=null) {
+    public function findAllWithoutOcUser($limit=null, $offset=null) {
         $members = [];
         // Get list of members from the database
         $columns = ['person_id', 'etunimi', 'sukunimi', 'puhelin1', 'email', 'stemma', 'lopettanut'];
-        $sql = 'SELECT '.implode(',', $columns).' FROM jasen';
+        $sql = 'SELECT '.implode(',', $columns).' FROM jasen WHERE oc_uid IS NULL';
         $query = $this->db->prepare($sql);
         $result = $query->execute();
 
@@ -64,6 +64,8 @@ class ChoirMemberService {
     public function updateOcUserId($choirMemberId, $ocUserId) {
       $sql = 'UPDATE jasen SET oc_uid=? WHERE person_id=?';
       $query = $this->db->prepareQuery($sql);
+      var_dump($choirMemberId);
+      var_dump($ocUserId);
       return $query->execute(array($ocUserId, $choirMemberId));
     }
 }

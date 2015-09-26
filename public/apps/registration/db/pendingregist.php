@@ -20,13 +20,13 @@ class PendingRegist {
 
 	public function save($email, $jasenId) {
 		$query = $this->db->prepareQuery( 'INSERT INTO `*PREFIX*registration`'
-			.' ( `email`, `jasen_id`, `token`, `requested`, `` ) VALUES( ?, ?, ?, NOW() )' );
+			.' ( `email`, `jasen_id`, `token`, `requested` ) VALUES( ?, ?, ?, NOW() )' );
 
 		do {
 			$token = $this->random->generate(30);
 		} while (preg_match('/[\/]++/', $token));
 
-		$query->execute(array( $email, $token ));
+		$query->execute(array( $email, $jasenId, $token ));
 		return $token;
 	}
 	public function find($email) {

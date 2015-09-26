@@ -26,17 +26,33 @@ class SettingsController extends Controller {
 	private $l10n;
 	private $config;
 	private $groupmanager;
+	private $urlgenerator;
 	protected $appName;
 
-	public function __construct($appName, IRequest $request, IL10N $l10n, IConfig $config, IGroupManager $groupmanager){
+	public function __construct($appName, IRequest $request, IL10N $l10n, IConfig $config, IGroupManager $groupmanager, $urlgenerator){
 		$this->l10n = $l10n;
 		$this->config = $config;
 		$this->groupmanager = $groupmanager;
 		$this->appName = $appName;
+		$this->urlgenerator = $urlgenerator;
 		parent::__construct($appName, $request);
 	}
 
-	
+	/**
+	 * @AdminRequired
+	 *
+	 * @return hash
+	 */
+	public function newAuthHash() {
+		$newHash = bin2hex(openssl_random_pseudo_bytes(20));
+		$this->config->setAppValue($this->appName, 'registration_auth_hash', $newHash);
+
+		return new DataResponse(array(
+			'data' => array(
+				'hash' => $newHash
+			),
+		));
+	}
 
 	/**
 	 * @AdminRequired
@@ -90,11 +106,14 @@ class SettingsController extends Controller {
 		}
 		// TODO selected
 		$current_value = $this->config->getAppValue($this->appName, 'registered_user_group', 'none');
-		$allowed_domains = $this->config->getAppValue($this->appName, 'allowed_domains', '');
+		$allowed_domains = $this->config->getAppValue($this->appName, 'allowed_ domains', '');
+		$registration_auth_hash = $this->config->getAppValue($this->appName, 'registration_auth_hash', '');
+		$url = $this->urlgenerator->linkToRouteAbsolute('registration.register.askEmail', array('auth' => $registration_auth_hash));
 		return new TemplateResponse('registration', 'admin', [
 			'groups' => $group_id_list,
 			'current' => $current_value,
-			'allowed' => $allowed_domains
+			'allowed' => $allowed_domains,
+			'registration_url' => $url
 		], '');
 	}
 }

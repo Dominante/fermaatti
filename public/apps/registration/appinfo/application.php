@@ -17,7 +17,7 @@ use \OCA\Registration\Controller\RegisterController;
 use \OCA\Registration\Controller\SettingsController;
 use \OCA\Registration\Wrapper;
 use \OCA\Registration\Db\PendingRegist;
-use \OCA\Registration\Db\MemberSummaryService;
+use \OCA\Registration\Db\ChoirMemberService;
 
 
 class Application extends App {
@@ -41,7 +41,7 @@ class Application extends App {
 				$c->query('UserManager'),
 				$c->query('Config'),
 				$c->query('GroupManager'),
-				$c->query('MemberSummaryService')
+				$c->query('ChoirMemberService')
 			);
 		});
 
@@ -51,7 +51,8 @@ class Application extends App {
 				$c->query('Request'),
 				$c->query('L10N'),
 				$c->query('Config'),
-				$c->query('GroupManager')
+				$c->query('GroupManager'),
+				$c->query('ServerContainer')->getURLGenerator()
 			);
 		});
 
@@ -92,8 +93,8 @@ class Application extends App {
 				$c->query('ServerContainer')->getSecureRandom()->getMediumStrengthGenerator());
 		});
 
-		$container->registerService('MemberSummaryService', function($c) {
-			return new MemberSummaryService($c->query('ServerContainer')->getDb());
+		$container->registerService('ChoirMemberService', function($c) {
+			return new ChoirMemberService($c->query('ServerContainer')->getDb());
 		});
 	}
 
