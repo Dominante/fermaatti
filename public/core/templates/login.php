@@ -68,7 +68,7 @@ script('core', [
 		<input type="hidden" name="timezone-offset" id="timezone-offset"/>
 		<input type="hidden" name="timezone" id="timezone"/>
 		<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']) ?>">
-		<input type="submit" id="submit" class="login primary" value="<?php p($l->t('Log in')); ?>" disabled="disabled"/>
+		<input type="submit" id="submit" class="login primary" value="<?php p('Kirjaudu'); ?>" disabled="disabled"/>
 	</fieldset>
 </form>
 <?php if (!empty($_['alt_login'])) { ?>
@@ -83,4 +83,3 @@ script('core', [
 	</fieldset>
 </form>
 <?php }
-
