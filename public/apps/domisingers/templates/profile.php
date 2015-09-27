@@ -21,7 +21,7 @@ style('domisingers', 'profile');
 <section id='name'>
     <div class='present'>
         <div class='row'>
-            <span class='label'>Nimi</span><span class='value'></span><a data-action='edit_section' class='privileged' icon-rename'></a>
+            <span class='label'>Nimi</span><span class='value'></span><a data-action='edit_section' class='privileged icon-rename'></a>
         </div>
     </div>
     <div class='edit'>

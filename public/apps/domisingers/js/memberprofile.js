@@ -72,7 +72,8 @@
 
 		$('#cntrls [data-action="remove"]').click(function(event) {
 			var title = 'Vahvistus';
-			var text = 'Poistetaanko kuorolainen? Toimintoa ei voi perua.';
+			var text = 'Poistetaanko kuorolainen? Toimintoa ei voi perua.'+
+				' Huom: älä poista lopettaneita kuorolaisia vaan merkitse heille lopetuspäivämäärä!';
 			OC.dialogs.confirm(text, title, function(result) {
 				if (result) deleteProfile();
 			});
