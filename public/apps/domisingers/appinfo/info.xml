@@ -2,10 +2,10 @@
 <info>
     <id>domisingers</id>
     <name>Domi Singers</name>
-    <description>Show and manage choir singer information</description>
+    <description>Show and manage choir member information</description>
     <licence>AGPL</licence>
-    <author>Atte Keinänen / Dominante</author>
-    <version>0.0.1</version>
+    <author>Atte Keinänen, Tuukka Verho / Dominante</author>
+    <version>0.1.0</version>
     <namespace>DomiSingers</namespace>
     <category>other</category>
     <dependencies>
