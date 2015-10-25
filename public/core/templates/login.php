@@ -83,5 +83,3 @@ script('core', [
 	</fieldset>
 </form>
 <?php } ?>
-
-<p class="info">Dominanten jäsensivut uudistuvat täysin! Rekisteröitymisohjeet tulevat viikkomailissa ja maanantain treeneissä on lisäinfoa. Alta pääset vanhoille jäsensivuille.</p>
