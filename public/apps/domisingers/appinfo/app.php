@@ -28,5 +28,5 @@ namespace OCA\DomiSingers\AppInfo;
 
 	// the title of your application. This will be used in the
 	// navigation or on the settings page of your app
-	'name' => \OC_L10N::get('domisingers')->t('Jäsenet')
+	'name' => \OC::$server->getL10N('domisingers')->t('Jäsenet')
 ]);
