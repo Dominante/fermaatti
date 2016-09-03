@@ -1,18 +1,16 @@
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>User Management &mdash; ownCloud Server Administration Manual 8.2 documentation</title>
+    <title>User Management &mdash; ownCloud 8.2 Server Administration Manual 8.2 documentation</title>
     
-    <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/style.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/main.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/styles.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -26,87 +24,41 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/bootstrap.js"></script>
-    <link rel="top" title="ownCloud Server Administration Manual 8.2 documentation" href="../index.html" />
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="ownCloud 8.2 Server Administration Manual 8.2 documentation" href="../contents.html" />
     <link rel="up" title="User Management" href="index.html" />
     <link rel="next" title="Resetting a Lost Admin Password" href="reset_admin_password.html" />
     <link rel="prev" title="User Management" href="index.html" />
-<script type="text/javascript">
-(function () {
-  /**
-   * Patch TOC list.
-   *
-   * Will mutate the underlying span to have a correct ul for nav.
-   *
-   * @param $span: Span containing nested UL's to mutate.
-   * @param minLevel: Starting level for nested lists. (1: global, 2: local).
-   */
-  var patchToc = function ($ul, minLevel) {
-    var findA;
-
-    // Find all a "internal" tags, traversing recursively.
-    findA = function ($elem, level) {
-      var level = level || 0,
-        $items = $elem.find("> li > a.internal, > ul, > li > ul");
-
-      // Iterate everything in order.
-      $items.each(function (index, item) {
-        var $item = $(item),
-          tag = item.tagName.toLowerCase(),
-          pad = 15 + ((level - minLevel) * 10);
-
-        if (tag === 'a' && level >= minLevel) {
-          // Add to existing padding.
-          $item.css('padding-left', pad + "px");
-          console.log(level, $item, 'padding-left', pad + "px");
-        } else if (tag === 'ul') {
-          // Recurse.
-          findA($item, level + 1);
-        }
-      });
-    };
-
-    console.log("HERE");
-    findA($ul);
-  };
-
-  $(document).ready(function () {
-    // Add styling, structure to TOC's.
-    $(".dropdown-menu").each(function () {
-      $(this).find("ul").each(function (index, item){
-        var $item = $(item);
-        $item.addClass('unstyled');
-      });
-      $(this).find("li").each(function () {
-        $(this).parent().append(this);
-      });
-    });
-
-    // Patch in level.
-    patchToc($("ul.globaltoc"), 2);
-    patchToc($("ul.localtoc"), 2);
-
-    // Enable dropdown.
-    $('.dropdown-toggle').dropdown();
-  });
-}());
-</script>
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1d2d44">
 
   </head>
-  <body>
-  
+  <body role="document">
 
-<div class="container">
-  <div class="content">
-    <div class="page-header">
-      <h1><a href="../contents.html">ownCloud Server Administration Manual</a></h1>
 
+<div class="wrap container not-front">
+  <div class="content row">
+  <main class="main">
+    <div class="row page-content-header">
+      <div class="col-md-5 col-md-offset-7">
+      
+        <form class="headersearch" style="margin-bottom:-3px;" action="../search.html" method="get">
+        <input type="text" value="" name="q" id="q" class="form-control" /> 
+        <button  class="btn btn-default" type="submit" id="searchsubmit">Search</button>
+        </form>
+      
+      </div>
     </div>
     
 			<div class="row">
-				<div class="span3">
+				<div class="col-md-3">
 					<div class="sidebar">
-						<div class="well">
 							<div class="menu-support-container">
 								<ul id="menu-support" class="menu">
 									<ul>
@@ -116,8 +68,9 @@
                   <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 8.2 Server Administration Manual Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 8.2 Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 8.1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 8.2</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration_server/index.html">ownCloud Server Configuration</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">User Management</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="">User Management</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#creating-a-new-user">Creating a New User</a></li>
@@ -137,30 +90,42 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../configuration_files/index.html">File Sharing and Management</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../configuration_server/index.html">ownCloud Server Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configuration_database/index.html">Database Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration_mimetypes/index.html">Mimetypes Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../maintenance/index.html">Maintenance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../operations/index.html">Operations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../issues/index.html">Issues and Troubleshooting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../videos/index.html">ownCloud Videos</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../enterprise_installation/index.html">Enterprise Subscription Installation (ES Only)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../enterprise_clients/index.html">Creating Branded ownCloud Clients (ES only)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../enterprise_external_storage/index.html">External Storage (ES only)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../enterprise_user_management/index.html">User Management (ES only)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../enterprise_files_drop/index.html">Enabling Anonymous Uploads with Files Drop (ES Only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_installation/index.html">Enterprise Edition Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_clients/index.html">Creating Branded ownCloud Clients (Enterprise only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_server_branding/index.html">Enterprise Server Branding (Enterprise only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_external_storage/index.html">External Storage (Enterprise only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_user_management/index.html">User Management (Enterprise only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_files_drop/index.html">Enabling Anonymous Uploads with Files Drop (Enterprise Only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_logging/index.html">Enterprise Logging Apps (Enterprise only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_troubleshooting.html">Enterprise Troubleshooting</a></li>
 </ul>
 
 								</ul>
 							</div>
-						</div>
 					</div>
 				</div>
         
 
-				<div class="span9">
+				<div class="col-md-9">
 					<div class="page-content">
+            
+<ul class="prevnext-title list-unstyled list-inline">
+  <li class="prev">
+    <a href="index.html" title="Previous Chapter: User Management"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm">&laquo; User Management</span>
+    </a>
+  </li>
+  <li class="next">
+    <a href="reset_admin_password.html" title="Next Chapter: Resetting a Lost Admin Password"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm">Resetting a L... &raquo;</span>
+    </a>
+  </li>
+</ul>
 						
   <div class="section" id="user-management">
 <h1>User Management<a class="headerlink" href="#user-management" title="Permalink to this headline">¶</a></h1>
@@ -226,7 +191,7 @@ storage in user quotas.</dd>
 <img alt="../_images/users-create.png" src="../_images/users-create.png" />
 </div>
 <p>Login names may contain letters (a-z, A-Z), numbers (0-9), dashes (-),
-underscores (_), periods (.) and ampersands (&#64;). After creating the user, you
+underscores (_), periods (.) and at signs (&#64;). After creating the user, you
 may fill in their <strong>Full Name</strong> if it is different than the login name, or
 leave it for the user to complete.</p>
 <p>If you have checked <strong>Send email to new user</strong> in the control panel on the
@@ -273,7 +238,7 @@ assign group admin privileges.</p>
 </div>
 <p><strong>Super Administrators</strong> have full rights on your ownCloud server, and can
 access and modify all settings. To assign the <strong>Super Administrators</strong> role to
-a user, simply add them to the <tt class="docutils literal"><span class="pre">admin</span></tt> group.</p>
+a user, simply add them to the <code class="docutils literal"><span class="pre">admin</span></code> group.</p>
 </div>
 <div class="section" id="managing-groups">
 <h2>Managing Groups<a class="headerlink" href="#managing-groups" title="Permalink to this headline">¶</a></h2>
@@ -289,12 +254,13 @@ automatically applied to new users. You may assign a different quota to any user
 by selecting from the <strong>Quota</strong> dropdown, selecting either a preset value or
 entering a custom value. When you create custom quotas, use the normal
 abbreviations for your storage values such as 500 MB, 5 GB, 5 TB, and so on.</p>
-<p>You now have a configurable option in <tt class="docutils literal"><span class="pre">config.php</span></tt> that controls whether
+<p>You now have a configurable option in <code class="docutils literal"><span class="pre">config.php</span></code> that controls whether
 external storage is counted against user&#8217;s quotas. This is still
 experimental, and may not work as expected. The default is to not count
 external storage as part of user storage quotas. If you prefer to include it,
-then change the default <tt class="docutils literal"><span class="pre">false</span></tt> to <tt class="docutils literal"><span class="pre">true</span></tt>.:</p>
-<div class="highlight-python"><pre>'quota_include_external_storage' =&gt; false,</pre>
+then change the default <code class="docutils literal"><span class="pre">false</span></code> to <code class="docutils literal"><span class="pre">true</span></code>.:</p>
+<div class="highlight-python"><div class="highlight"><pre>&#39;quota_include_external_storage&#39; =&gt; false,
+</pre></div>
 </div>
 <p>Metadata (such as thumbnails, temporary files, and encryption keys) takes up
 about 10% of disk space, but is not counted against user quotas. Users can check
@@ -332,10 +298,21 @@ persistent file shares that survive user deletions.</p>
 </div>
 
 
+            
+<ul class="prevnext-title list-unstyled list-inline">
+  <li class="prev">
+    <a href="index.html" title="Previous Chapter: User Management"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm">&laquo; User Management</span>
+    </a>
+  </li>
+  <li class="next">
+    <a href="reset_admin_password.html" title="Next Chapter: Resetting a Lost Admin Password"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm">Resetting a L... &raquo;</span>
+    </a>
+  </li>
+</ul>
 					</div>
 				</div>
 			</div>
-    
+  </main>  
   </div>
 </div>
   </body>

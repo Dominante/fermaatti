@@ -42,6 +42,9 @@ class ActivityTest extends TestCase {
 	/** @var \PHPUnit_Framework_MockObject_MockObject */
 	protected $activityHelper;
 
+	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	protected $l10nFactory;
+
 	/** @var \OCA\Files\Activity */
 	protected $activityExtension;
 
@@ -67,8 +70,28 @@ class ActivityTest extends TestCase {
 			$this->config
 		);
 
+		$this->l10nFactory = $this->getMockBuilder('OC\L10N\Factory')
+			->disableOriginalConstructor()
+			->getMock();
+		$deL10n = $this->getMockBuilder('OC_L10N')
+			->disableOriginalConstructor()
+			->getMock();
+		$deL10n->expects($this->any())
+			->method('t')
+			->willReturnCallback(function ($argument) {
+				return 'translate(' . $argument . ')';
+			});
+
+		$this->l10nFactory->expects($this->any())
+			->method('get')
+			->willReturnMap([
+				['files', null, new \OC_L10N('files', 'en')],
+				['files', 'en', new \OC_L10N('files', 'en')],
+				['files', 'de', $deL10n],
+			]);
+
 		$this->activityExtension = $activityExtension = new Activity(
-			new \OC\L10N\Factory(),
+			$this->l10nFactory,
 			$this->getMockBuilder('OCP\IURLGenerator')->disableOriginalConstructor()->getMock(),
 			$this->activityManager,
 			$this->activityHelper,
@@ -110,6 +133,26 @@ class ActivityTest extends TestCase {
 		$this->assertFalse(
 			$this->activityExtension->translate('files_sharing', '', [], false, false, 'en'),
 			'Asserting that no translations are set for files_sharing'
+		);
+
+		// Test english
+		$this->assertNotFalse(
+			$this->activityExtension->translate('files', 'deleted_self', ['file'], false, false, 'en'),
+			'Asserting that translations are set for files.deleted_self'
+		);
+		$this->assertStringStartsWith(
+			'You deleted ',
+			$this->activityExtension->translate('files', 'deleted_self', ['file'], false, false, 'en')
+		);
+
+		// Test translation
+		$this->assertNotFalse(
+			$this->activityExtension->translate('files', 'deleted_self', ['file'], false, false, 'de'),
+			'Asserting that translations are set for files.deleted_self'
+		);
+		$this->assertStringStartsWith(
+			'translate(You deleted ',
+			$this->activityExtension->translate('files', 'deleted_self', ['file'], false, false, 'de')
 		);
 	}
 
@@ -247,16 +290,16 @@ class ActivityTest extends TestCase {
 					'items' => [],
 					'folders' => [],
 				],
-				' CASE WHEN `app` = ? THEN ((`type` <> ? AND `type` <> ?)) ELSE `app` <> ? END ',
-				['files', Activity::TYPE_SHARE_CREATED, Activity::TYPE_SHARE_CHANGED, 'files']
+				' CASE WHEN `app` <> ? THEN 1 WHEN `app` = ? AND ((`type` <> ? AND `type` <> ?)) THEN 1 ELSE 0 END = 1 ',
+				['files', 'files', Activity::TYPE_SHARE_CREATED, Activity::TYPE_SHARE_CHANGED]
 			],
 			[
 				[
 					'items' => ['file.txt', 'folder'],
 					'folders' => ['folder'],
 				],
-				' CASE WHEN `app` = ? THEN ((`type` <> ? AND `type` <> ?) OR `file` = ? OR `file` = ? OR `file` LIKE ?) ELSE `app` <> ? END ',
-				['files', Activity::TYPE_SHARE_CREATED, Activity::TYPE_SHARE_CHANGED, 'file.txt', 'folder', 'folder/%', 'files']
+				' CASE WHEN `app` <> ? THEN 1 WHEN `app` = ? AND ((`type` <> ? AND `type` <> ?) OR `file` = ? OR `file` = ? OR `file` LIKE ?) THEN 1 ELSE 0 END = 1 ',
+				['files', 'files', Activity::TYPE_SHARE_CREATED, Activity::TYPE_SHARE_CHANGED, 'file.txt', 'folder', 'folder/%']
 			],
 		];
 	}
@@ -290,6 +333,19 @@ class ActivityTest extends TestCase {
 
 		$result = $this->activityExtension->getQueryForFilter('all');
 		$this->assertEquals([$query, $parameters], $result);
+
+		$this->executeQueryForFilter($result);
+	}
+
+	public function executeQueryForFilter(array $result) {
+		list($resultQuery, $resultParameters) = $result;
+		$resultQuery = str_replace('`file`', '`user`', $resultQuery);
+		$resultQuery = str_replace('`type`', '`key`', $resultQuery);
+
+		$connection = \OC::$server->getDatabaseConnection();
+		$result = $connection->executeQuery('SELECT * FROM `*PREFIX*privatedata` WHERE ' . $resultQuery, $resultParameters);
+		$rows = $result->fetchAll();
+		$result->closeCursor();
 	}
 
 	protected function mockUserSession($user) {

@@ -10,7 +10,7 @@ use
  *
  * This object represents LANGUAGE-TAG values as used in vCards.
  *
- * @copyright Copyright (C) 2011-2015 fruux GmbH (https://fruux.com/).
+ * @copyright Copyright (C) fruux GmbH (https://fruux.com/)
  * @author Evert Pot (http://evertpot.com/)
  * @license http://sabre.io/license/ Modified BSD License
  */
@@ -38,7 +38,7 @@ class LanguageTag extends Property {
      */
     public function getRawMimeDirValue() {
 
-        return $this->value;
+        return $this->getValue();
 
     }
 

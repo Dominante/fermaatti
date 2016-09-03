@@ -1,18 +1,16 @@
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Encrypting Your ownCloud Files &mdash; ownCloud User Manual 8.2 documentation</title>
+    <title>Encrypting Your ownCloud Files &mdash; ownCloud 8.2 User Manual 8.2 documentation</title>
     
-    <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/style.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/main.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/styles.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -26,87 +24,41 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/bootstrap.js"></script>
-    <link rel="top" title="ownCloud User Manual 8.2 documentation" href="../index.html" />
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="ownCloud 8.2 User Manual 8.2 documentation" href="../contents.html" />
     <link rel="up" title="Files &amp; Synchronization" href="index.html" />
     <link rel="next" title="Using Federated Cloud Sharing" href="federated_cloud_sharing.html" />
     <link rel="prev" title="Desktop and Mobile Synchronization" href="desktop_mobile_sync.html" />
-<script type="text/javascript">
-(function () {
-  /**
-   * Patch TOC list.
-   *
-   * Will mutate the underlying span to have a correct ul for nav.
-   *
-   * @param $span: Span containing nested UL's to mutate.
-   * @param minLevel: Starting level for nested lists. (1: global, 2: local).
-   */
-  var patchToc = function ($ul, minLevel) {
-    var findA;
-
-    // Find all a "internal" tags, traversing recursively.
-    findA = function ($elem, level) {
-      var level = level || 0,
-        $items = $elem.find("> li > a.internal, > ul, > li > ul");
-
-      // Iterate everything in order.
-      $items.each(function (index, item) {
-        var $item = $(item),
-          tag = item.tagName.toLowerCase(),
-          pad = 15 + ((level - minLevel) * 10);
-
-        if (tag === 'a' && level >= minLevel) {
-          // Add to existing padding.
-          $item.css('padding-left', pad + "px");
-          console.log(level, $item, 'padding-left', pad + "px");
-        } else if (tag === 'ul') {
-          // Recurse.
-          findA($item, level + 1);
-        }
-      });
-    };
-
-    console.log("HERE");
-    findA($ul);
-  };
-
-  $(document).ready(function () {
-    // Add styling, structure to TOC's.
-    $(".dropdown-menu").each(function () {
-      $(this).find("ul").each(function (index, item){
-        var $item = $(item);
-        $item.addClass('unstyled');
-      });
-      $(this).find("li").each(function () {
-        $(this).parent().append(this);
-      });
-    });
-
-    // Patch in level.
-    patchToc($("ul.globaltoc"), 2);
-    patchToc($("ul.localtoc"), 2);
-
-    // Enable dropdown.
-    $('.dropdown-toggle').dropdown();
-  });
-}());
-</script>
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1d2d44">
 
   </head>
-  <body>
-  
+  <body role="document">
 
-<div class="container">
-  <div class="content">
-    <div class="page-header">
-      <h1><a href="../contents.html">ownCloud User Manual</a></h1>
 
+<div class="wrap container not-front">
+  <div class="content row">
+  <main class="main">
+    <div class="row page-content-header">
+      <div class="col-md-5 col-md-offset-7">
+      
+        <form class="headersearch" style="margin-bottom:-3px;" action="../search.html" method="get">
+        <input type="text" value="" name="q" id="q" class="form-control" /> 
+        <button  class="btn btn-default" type="submit" id="searchsubmit">Search</button>
+        </form>
+      
+      </div>
     </div>
     
 			<div class="row">
-				<div class="span3">
+				<div class="col-md-3">
 					<div class="sidebar">
-						<div class="well">
 							<div class="menu-support-container">
 								<ul id="menu-support" class="menu">
 									<ul>
@@ -115,11 +67,12 @@
 									</ul>
                   <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 8.2 User Manual Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../whats_new.html">What&#8217;s New for Users in ownCloud 8.1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../whats_new.html">What&#8217;s New for Users in ownCloud 8.2</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../webinterface.html">The ownCloud Web Interface</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Files &amp; Synchronization</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="access_webgui.html">Accessing your Files Using the ownCloud Web Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="access_webdav.html">Accessing ownCloud Files Using WebDAV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gallery_app.html">Gallery App</a></li>
 <li class="toctree-l2"><a class="reference internal" href="deleted_file_management.html">Managing Deleted Files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="desktop_mobile_sync.html">Desktop and Mobile Synchronization</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">Encrypting Your ownCloud Files</a><ul>
@@ -129,7 +82,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="federated_cloud_sharing.html">Using Federated Cloud Sharing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="file_drop.html">Making Anonymous Uploads (ES Only)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_drop.html">Making Anonymous Uploads (Enterprise Only)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="large_file_upload.html">Large File Uploads</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quota.html">Storage Quota</a></li>
 <li class="toctree-l2"><a class="reference internal" href="version_control.html">Version Control</a></li>
@@ -137,20 +90,33 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../pim/index.html">Contacts &amp; Calendar</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../documents.html">Collaborative Document Editing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../bookmarks.html">Using the Bookmarks App</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bookmarks.html">The main interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bookmarks.html#the-bookmarklet">The Bookmarklet</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../userpreferences.html">Setting Your Preferences</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../external_storage/index.html">External Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bookmarks.html">The main interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bookmarks.html#the-bookmarklet">The Bookmarklet</a></li>
 </ul>
 
 								</ul>
 							</div>
-						</div>
 					</div>
 				</div>
         
 
-				<div class="span9">
+				<div class="col-md-9">
 					<div class="page-content">
+            
+<ul class="prevnext-title list-unstyled list-inline">
+  <li class="prev">
+    <a href="desktop_mobile_sync.html" title="Previous Chapter: Desktop and Mobile Synchronization"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm">&laquo; Desktop and M...</span>
+    </a>
+  </li>
+  <li class="next">
+    <a href="federated_cloud_sharing.html" title="Next Chapter: Using Federated Cloud Sharing"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm">Using Federat... &raquo;</span>
+    </a>
+  </li>
+</ul>
 						
   <div class="section" id="encrypting-your-owncloud-files">
 <h1>Encrypting Your ownCloud Files<a class="headerlink" href="#encrypting-your-owncloud-files" title="Permalink to this headline">¶</a></h1>
@@ -186,7 +152,7 @@ banner on your Files page warning you to log out and then log back in.</p>
 <div class="figure">
 <img alt="../_images/encryption1.png" src="../_images/encryption1.png" />
 </div>
-<p>When you log back it takes a few minutes to work, depending on how many
+<p>When you log back in it takes a few minutes to work, depending on how many
 files you have, and then you are returned to your default ownCloud page.</p>
 <div class="figure">
 <img alt="../_images/encryption2.png" src="../_images/encryption2.png" />
@@ -253,10 +219,21 @@ your encryption password are identical.</p>
 </div>
 
 
+            
+<ul class="prevnext-title list-unstyled list-inline">
+  <li class="prev">
+    <a href="desktop_mobile_sync.html" title="Previous Chapter: Desktop and Mobile Synchronization"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm">&laquo; Desktop and M...</span>
+    </a>
+  </li>
+  <li class="next">
+    <a href="federated_cloud_sharing.html" title="Next Chapter: Using Federated Cloud Sharing"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm">Using Federat... &raquo;</span>
+    </a>
+  </li>
+</ul>
 					</div>
 				</div>
 			</div>
-    
+  </main>  
   </div>
 </div>
   </body>

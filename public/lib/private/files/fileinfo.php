@@ -6,6 +6,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
+ * @author tbartenstein <tbartenstein@users.noreply.github.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -83,6 +84,8 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	public function offsetGet($offset) {
 		if ($offset === 'type') {
 			return $this->getType();
+		} elseif ($offset === 'permissions') {
+			return $this->getPermissions();
 		} elseif (isset($this->data[$offset])) {
 			return $this->data[$offset];
 		} else {
@@ -171,7 +174,11 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	 * @return int
 	 */
 	public function getPermissions() {
-		return $this->data['permissions'];
+		$perms = $this->data['permissions'];
+		if (\OCP\Util::isSharingDisabledForUser() || ($this->isShared() && !\OC\Share\Share::isResharingAllowed())) {
+			$perms = $perms & ~\OCP\Constants::PERMISSION_SHARE;
+		}
+		return $perms;
 	}
 
 	/**
@@ -252,7 +259,7 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 		$sid = $this->getStorage()->getId();
 		if (!is_null($sid)) {
 			$sid = explode(':', $sid);
-			return ($sid[0] !== 'local' and $sid[0] !== 'home' and $sid[0] !== 'shared');
+			return ($sid[0] !== 'home' and $sid[0] !== 'shared');
 		}
 
 		return false;

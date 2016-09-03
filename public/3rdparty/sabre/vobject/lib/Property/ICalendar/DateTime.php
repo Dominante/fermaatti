@@ -18,7 +18,7 @@ use Sabre\VObject\TimeZoneUtil;
  * cases represent a DATE value. This is because it's a common usecase to be
  * able to change a DATE-TIME into a DATE.
  *
- * @copyright Copyright (C) 2011-2015 fruux GmbH (https://fruux.com/).
+ * @copyright Copyright (C) fruux GmbH (https://fruux.com/)
  * @author Evert Pot (http://evertpot.com/)
  * @license http://sabre.io/license/ Modified BSD License
  */
@@ -365,15 +365,17 @@ class DateTime extends Property {
 
         $messages = parent::validate($options);
         $valueType = $this->getValueType();
-        $value = $this->getValue();
+        $values = $this->getParts();
         try {
-            switch($valueType) {
-                case 'DATE' :
-                    $foo = DateTimeParser::parseDate($value);
-                    break;
-                case 'DATE-TIME' :
-                    $foo = DateTimeParser::parseDateTime($value);
-                    break;
+            foreach($values as $value) {
+                switch($valueType) {
+                    case 'DATE' :
+                        $foo = DateTimeParser::parseDate($value);
+                        break;
+                    case 'DATE-TIME' :
+                        $foo = DateTimeParser::parseDateTime($value);
+                        break;
+                }
             }
         } catch (\LogicException $e) {
             $messages[] = array(

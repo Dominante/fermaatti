@@ -1,18 +1,16 @@
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Synchronizing with OS X &mdash; ownCloud User Manual 8.2 documentation</title>
+    <title>Synchronizing with OS X &mdash; ownCloud 8.2 User Manual 8.2 documentation</title>
     
-    <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/style.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/main.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/styles.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -26,87 +24,41 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/bootstrap.js"></script>
-    <link rel="top" title="ownCloud User Manual 8.2 documentation" href="../index.html" />
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="ownCloud 8.2 User Manual 8.2 documentation" href="../contents.html" />
     <link rel="up" title="Contacts &amp; Calendar" href="index.html" />
     <link rel="next" title="Synchronizing with KDE SC" href="sync_kde.html" />
     <link rel="prev" title="iOS - Synchronize iPhone/iPad" href="sync_ios.html" />
-<script type="text/javascript">
-(function () {
-  /**
-   * Patch TOC list.
-   *
-   * Will mutate the underlying span to have a correct ul for nav.
-   *
-   * @param $span: Span containing nested UL's to mutate.
-   * @param minLevel: Starting level for nested lists. (1: global, 2: local).
-   */
-  var patchToc = function ($ul, minLevel) {
-    var findA;
-
-    // Find all a "internal" tags, traversing recursively.
-    findA = function ($elem, level) {
-      var level = level || 0,
-        $items = $elem.find("> li > a.internal, > ul, > li > ul");
-
-      // Iterate everything in order.
-      $items.each(function (index, item) {
-        var $item = $(item),
-          tag = item.tagName.toLowerCase(),
-          pad = 15 + ((level - minLevel) * 10);
-
-        if (tag === 'a' && level >= minLevel) {
-          // Add to existing padding.
-          $item.css('padding-left', pad + "px");
-          console.log(level, $item, 'padding-left', pad + "px");
-        } else if (tag === 'ul') {
-          // Recurse.
-          findA($item, level + 1);
-        }
-      });
-    };
-
-    console.log("HERE");
-    findA($ul);
-  };
-
-  $(document).ready(function () {
-    // Add styling, structure to TOC's.
-    $(".dropdown-menu").each(function () {
-      $(this).find("ul").each(function (index, item){
-        var $item = $(item);
-        $item.addClass('unstyled');
-      });
-      $(this).find("li").each(function () {
-        $(this).parent().append(this);
-      });
-    });
-
-    // Patch in level.
-    patchToc($("ul.globaltoc"), 2);
-    patchToc($("ul.localtoc"), 2);
-
-    // Enable dropdown.
-    $('.dropdown-toggle').dropdown();
-  });
-}());
-</script>
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1d2d44">
 
   </head>
-  <body>
-  
+  <body role="document">
 
-<div class="container">
-  <div class="content">
-    <div class="page-header">
-      <h1><a href="../contents.html">ownCloud User Manual</a></h1>
 
+<div class="wrap container not-front">
+  <div class="content row">
+  <main class="main">
+    <div class="row page-content-header">
+      <div class="col-md-5 col-md-offset-7">
+      
+        <form class="headersearch" style="margin-bottom:-3px;" action="../search.html" method="get">
+        <input type="text" value="" name="q" id="q" class="form-control" /> 
+        <button  class="btn btn-default" type="submit" id="searchsubmit">Search</button>
+        </form>
+      
+      </div>
     </div>
     
 			<div class="row">
-				<div class="span3">
+				<div class="col-md-3">
 					<div class="sidebar">
-						<div class="well">
 							<div class="menu-support-container">
 								<ul id="menu-support" class="menu">
 									<ul>
@@ -115,7 +67,7 @@
 									</ul>
                   <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 8.2 User Manual Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../whats_new.html">What&#8217;s New for Users in ownCloud 8.1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../whats_new.html">What&#8217;s New for Users in ownCloud 8.2</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../webinterface.html">The ownCloud Web Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../files/index.html">Files &amp; Synchronization</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Contacts &amp; Calendar</a><ul class="current">
@@ -129,25 +81,39 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../documents.html">Collaborative Document Editing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../bookmarks.html">Using the Bookmarks App</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bookmarks.html">The main interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bookmarks.html#the-bookmarklet">The Bookmarklet</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../userpreferences.html">Setting Your Preferences</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../external_storage/index.html">External Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bookmarks.html">The main interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bookmarks.html#the-bookmarklet">The Bookmarklet</a></li>
 </ul>
 
 								</ul>
 							</div>
-						</div>
 					</div>
 				</div>
         
 
-				<div class="span9">
+				<div class="col-md-9">
 					<div class="page-content">
+            
+<ul class="prevnext-title list-unstyled list-inline">
+  <li class="prev">
+    <a href="sync_ios.html" title="Previous Chapter: iOS - Synchronize iPhone/iPad"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm">&laquo; iOS - Synchro...</span>
+    </a>
+  </li>
+  <li class="next">
+    <a href="sync_kde.html" title="Next Chapter: Synchronizing with KDE SC"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm">Synchronizing... &raquo;</span>
+    </a>
+  </li>
+</ul>
 						
   <div class="section" id="synchronizing-with-os-x">
 <h1>Synchronizing with OS X<a class="headerlink" href="#synchronizing-with-os-x" title="Permalink to this headline">¶</a></h1>
 <p>To use ownCloud with iCal you will need to use the following URL:</p>
-<div class="highlight-python"><pre>http://ADDRESS/remote.php/caldav/principals/username/</pre>
+<div class="highlight-python"><div class="highlight"><pre>http://ADDRESS/remote.php/caldav/principals/username/
+</pre></div>
 </div>
 <p>The setup is basically the same as with iOS using the path <strong>ADDRESS/remote.php/caldav/principals/username/</strong> to sync with ownCloud. For OS X 10.7 Lion and 10.8 Mountain Lion everything works fine, but OS X 10.6 (Snow Leopard) and older needs some fiddling to work. A user contributed the following:</p>
 <ol class="arabic">
@@ -164,13 +130,15 @@
 <li><p class="first">Navigate to the newly created folder and edit the <strong>Configuration.plist</strong> with your favorite text editor.</p>
 </li>
 <li><p class="first">Search for a section looking like this:</p>
-<div class="highlight-python"><pre>&lt;key&gt;servername&lt;/key&gt; &lt;string&gt;http://:0(null)&lt;/string&gt; &lt;key&gt;username&lt;/key&gt; &lt;string&gt;Whatever_you_entered_before&lt;/string&gt;</pre>
+<div class="highlight-python"><div class="highlight"><pre>&lt;key&gt;servername&lt;/key&gt; &lt;string&gt;http://:0(null)&lt;/string&gt; &lt;key&gt;username&lt;/key&gt; &lt;string&gt;Whatever_you_entered_before&lt;/string&gt;
+</pre></div>
 </div>
 </li>
 </ol>
 <ol class="arabic" start="8">
 <li><p class="first">Make it look like this. Please note that the :80 after <strong>YOUR_DOMAIN</strong> is important:</p>
-<div class="highlight-python"><pre>&lt;key&gt;servername&lt;/key &lt;string&gt;http://YOUR_DOMAIN:80/owncloud/remote.php/carddav/principals/username&lt;/string&gt; &lt;key&gt;username&lt;/key &lt;string&gt;username&lt;/string&gt;</pre>
+<div class="highlight-python"><div class="highlight"><pre>&lt;key&gt;servername&lt;/key &lt;string&gt;http://YOUR_DOMAIN:80/owncloud/remote.php/carddav/principals/username&lt;/string&gt; &lt;key&gt;username&lt;/key &lt;string&gt;username&lt;/string&gt;
+</pre></div>
 </div>
 </li>
 <li><p class="first">Save the file and open addressbook again. It will not work yet.</p>
@@ -180,15 +148,27 @@
 <li><p class="first">You may have to restart addressbook once more. After this, it should work.</p>
 </li>
 </ol>
-<p>If it&#8217;s still not working, have a look at the <a class="reference internal" href="troubleshooting.html"><em>Troubleshooting</em></a> guide.</p>
+<p>If it&#8217;s still not working, have a look at the <a class="reference internal" href="troubleshooting.html"><em>Troubleshooting</em></a> and
+<a class="reference external" href="https://doc.owncloud.org/server/8.2/admin_manual/issues/index.html#troubleshooting-contacts-calendar">Troubleshooting Contacts &amp; Calendar</a> guides.</p>
 <p>There is also an easy <a class="reference external" href="http://forum.owncloud.org/viewtopic.php?f=3&amp;t=132">HOWTO</a> in the forum.</p>
 </div>
 
 
+            
+<ul class="prevnext-title list-unstyled list-inline">
+  <li class="prev">
+    <a href="sync_ios.html" title="Previous Chapter: iOS - Synchronize iPhone/iPad"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm">&laquo; iOS - Synchro...</span>
+    </a>
+  </li>
+  <li class="next">
+    <a href="sync_kde.html" title="Next Chapter: Synchronizing with KDE SC"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm">Synchronizing... &raquo;</span>
+    </a>
+  </li>
+</ul>
 					</div>
 				</div>
 			</div>
-    
+  </main>  
   </div>
 </div>
   </body>

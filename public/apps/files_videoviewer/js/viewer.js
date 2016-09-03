@@ -12,9 +12,9 @@ var videoViewer = {
 			$('#box-close').click(videoViewer.hidePlayer);
 			var size = videoViewer.UI.getSize();
 			var playerView = videoViewer.UI.playerTemplate.replace(/%width%/g, size.width)
-								.replace(/%height%/g, size.height)
-								.replace(/%type%/g, videoViewer.mime)
-								.replace(/%src%/g, videoViewer.location)
+								.replace(/%height%/g, escapeHTML(size.height))
+								.replace(/%type%/g, escapeHTML(videoViewer.mime))
+								.replace(/%src%/g, escapeHTML(videoViewer.location))
 			;
 			$(playerView).prependTo('#videoviewer_container');
 		},
@@ -48,14 +48,18 @@ var videoViewer = {
 		'application/ogg',
 		'video/ogg',
 		'video/quicktime',
-		'video/x-msvideo',
 		'video/x-matroska',
 		'video/x-ms-asf'
 	],
 	onView : function(file, data) {
 		videoViewer.file = file;
 		videoViewer.dir = data.dir;
-		videoViewer.location = data.fileList.getDownloadUrl(file, videoViewer.dir);
+		if ($('#isPublic').length){
+			// No seek for public videos atm, sorry
+			videoViewer.location = data.fileList.getDownloadUrl(file, videoViewer.dir);
+		} else {
+			videoViewer.location = OC.linkToRemote('webdav') + OC.joinPaths(videoViewer.dir, file);
+		}
 		videoViewer.mime = data.$file.attr('data-mime');
 		
 		OC.addScript('files_videoviewer','mediaelement-and-player', function(){

@@ -15,7 +15,7 @@ It is not recommended to enable asset-pipelining when using apps pulled via git.
 Parameters
 ----------
 
-.. code-block:: php
+::
 
   <?php
     $CONFIG = array (
@@ -24,4 +24,4 @@ Parameters
       ...
     );
 
-You can set this parameters in the :file:`config/config.php`
+You can set this parameter in the :file:`config/config.php`

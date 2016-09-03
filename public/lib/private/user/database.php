@@ -48,11 +48,21 @@
  *
  */
 
+use OC\Cache\CappedMemoryCache;
+
 /**
  * Class for user management in a SQL Database (e.g. MySQL, SQLite)
  */
 class OC_User_Database extends OC_User_Backend implements \OCP\IUserBackend {
-	private $cache = array();
+	/** @var CappedMemoryCache */
+	private $cache;
+
+	/**
+	 * OC_User_Database constructor.
+	 */
+	public function __construct() {
+		$this->cache = new CappedMemoryCache();
+	}
 
 	/**
 	 * Create a new user
@@ -211,7 +221,7 @@ class OC_User_Database extends OC_User_Backend implements \OCP\IUserBackend {
 			$result = $query->execute(array($uid));
 
 			if (OC_DB::isError($result)) {
-				OC_Log::write('core', OC_DB::getErrorMessage(), OC_Log::ERROR);
+				\OCP\Util::writeLog('core', OC_DB::getErrorMessage(), \OCP\Util::ERROR);
 				return false;
 			}
 
@@ -288,10 +298,24 @@ class OC_User_Database extends OC_User_Backend implements \OCP\IUserBackend {
 		$query = OC_DB::prepare('SELECT COUNT(*) FROM `*PREFIX*users`');
 		$result = $query->execute();
 		if (OC_DB::isError($result)) {
-			OC_Log::write('core', OC_DB::getErrorMessage(), OC_Log::ERROR);
+			\OCP\Util::writeLog('core', OC_DB::getErrorMessage(), \OCP\Util::ERROR);
 			return false;
 		}
 		return $result->fetchOne();
+	}
+
+	/**
+	 * returns the username for the given login name in the correct casing
+	 *
+	 * @param string $loginName
+	 * @return string|false
+	 */
+	public function loginName2UserName($loginName) {
+		if ($this->userExists($loginName)) {
+			return $this->cache[$loginName]['uid'];
+		}
+
+		return false;
 	}
 
 	/**
@@ -302,4 +326,22 @@ class OC_User_Database extends OC_User_Backend implements \OCP\IUserBackend {
 		return 'Database';
 	}
 
+	public static function preLoginNameUsedAsUserName($param) {
+		if(!isset($param['uid'])) {
+			throw new \Exception('key uid is expected to be set in $param');
+		}
+
+		$backends = \OC::$server->getUserManager()->getBackends();
+		foreach ($backends as $backend) {
+			if ($backend instanceof \OC_User_Database) {
+				/** @var \OC_User_Database $backend */
+				$uid = $backend->loginName2UserName($param['uid']);
+				if ($uid !== false) {
+					$param['uid'] = $uid;
+					return;
+				}
+			}
+		}
+
+	}
 }

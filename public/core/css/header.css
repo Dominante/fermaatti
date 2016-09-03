@@ -70,10 +70,12 @@
 }
 
 #header .logo {
-	background-image: url(../img/logo.png);
+	background-image: url(../img/logo-icon.svg);
 	background-repeat: no-repeat;
-	width: 170px;
-	height: 190px;
+	background-size: 175px;
+	background-position: center 30px;
+	width: 252px;
+	height: 120px;
 	margin: 0 auto;
 }
 
@@ -117,6 +119,7 @@
 	position: relative;
 	color: #fff;
 	font-size: 16px;
+	font-weight: 300;
 	margin: 0;
 	margin-top: -24px;
 	padding: 7px 0 7px 5px;
@@ -294,7 +297,7 @@
 }
 #expand {
 	display: block;
-	padding: 7px 30px 6px 22px;
+	padding: 7px 30px 6px 10px;
 	cursor: pointer;
 }
 #expand * {
@@ -350,3 +353,11 @@
 		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 		opacity: 1;
 	}
+
+/* do not show display name when profile picture is present */
+#header .avatardiv.avatardiv-shown + #expandDisplayName {
+	display: none;
+}
+#header #expand {
+	display: block;
+}

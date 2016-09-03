@@ -5,6 +5,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -60,6 +61,11 @@ class PublicAuth extends \Sabre\DAV\Auth\Backend\AbstractBasic {
 			return false;
 		}
 
+		if ((int)$linkItem['share_type'] === \OCP\Share::SHARE_TYPE_LINK &&
+			$this->config->getAppValue('core', 'shareapi_allow_public_upload', 'yes') !== 'yes') {
+			$this->share['permissions'] &= ~(\OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE);
+		}
+
 		// check if the share is password protected
 		if (isset($linkItem['share_with'])) {
 			if ($linkItem['share_type'] == \OCP\Share::SHARE_TYPE_LINK) {
@@ -82,10 +88,13 @@ class PublicAuth extends \Sabre\DAV\Auth\Backend\AbstractBasic {
 
 					}
 					return true;
+				} else if (\OC::$server->getSession()->exists('public_link_authenticated')
+					&& \OC::$server->getSession()->get('public_link_authenticated') === $linkItem['id']) {
+					return true;
 				} else {
 					return false;
 				}
-			} elseif ($linkItem['share_type'] == \OCP\Share::SHARE_TYPE_REMOTE) {
+			} else if ($linkItem['share_type'] == \OCP\Share::SHARE_TYPE_REMOTE) {
 				return true;
 			} else {
 				return false;

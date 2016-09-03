@@ -31,6 +31,7 @@ use \Sabre\DAV\PropFind;
 use \Sabre\DAV\PropPatch;
 use \Sabre\HTTP\RequestInterface;
 use \Sabre\HTTP\ResponseInterface;
+use OCP\Files\StorageNotAvailableException;
 
 class FilesPlugin extends \Sabre\DAV\ServerPlugin {
 
@@ -41,7 +42,7 @@ class FilesPlugin extends \Sabre\DAV\ServerPlugin {
 	const DOWNLOADURL_PROPERTYNAME = '{http://owncloud.org/ns}downloadURL';
 	const SIZE_PROPERTYNAME = '{http://owncloud.org/ns}size';
 	const GETETAG_PROPERTYNAME = '{DAV:}getetag';
-	const GETLASTMODIFIED_PROPERTYNAME = '{DAV:}getlastmodified';
+	const LASTMODIFIED_PROPERTYNAME = '{DAV:}lastmodified';
 
 	/**
 	 * Reference to main server object
@@ -56,10 +57,29 @@ class FilesPlugin extends \Sabre\DAV\ServerPlugin {
 	private $tree;
 
 	/**
-	 * @param \Sabre\DAV\Tree $tree
+	 * Whether this is public webdav.
+	 * If true, some returned information will be stripped off.
+	 *
+	 * @var bool
 	 */
-	public function __construct(\Sabre\DAV\Tree $tree) {
+	private $isPublic;
+
+	/**
+	 * @var \OC\Files\View
+	 */
+	private $fileView;
+
+	/**
+	 * @param \Sabre\DAV\Tree $tree
+	 * @param \OC\Files\View $view
+	 * @param bool $isPublic
+	 */
+	public function __construct(\Sabre\DAV\Tree $tree,
+	                            \OC\Files\View $view,
+	                            $isPublic = false) {
 		$this->tree = $tree;
+		$this->fileView = $view;
+		$this->isPublic = $isPublic;
 	}
 
 	/**
@@ -82,7 +102,7 @@ class FilesPlugin extends \Sabre\DAV\ServerPlugin {
 		$server->protectedProperties[] = self::DOWNLOADURL_PROPERTYNAME;
 
 		// normally these cannot be changed (RFC4918), but we want them modifiable through PROPPATCH
-		$allowedProperties = ['{DAV:}getetag', '{DAV:}getlastmodified'];
+		$allowedProperties = ['{DAV:}getetag'];
 		$server->protectedProperties = array_diff($server->protectedProperties, $allowedProperties);
 
 		$this->server = $server;
@@ -97,6 +117,30 @@ class FilesPlugin extends \Sabre\DAV\ServerPlugin {
 				fclose($body);
 			}
 		});
+		$this->server->on('beforeMove', [$this, 'checkMove']);
+	}
+
+	/**
+	 * Plugin that checks if a move can actually be performed.
+	 * @param string $source source path
+	 * @param string $destination destination path
+	 * @throws \Sabre\DAV\Exception\Forbidden
+	 */
+	function checkMove($source, $destination) {
+		list($sourceDir,) = \Sabre\HTTP\URLUtil::splitPath($source);
+		list($destinationDir,) = \Sabre\HTTP\URLUtil::splitPath($destination);
+
+		if ($sourceDir !== $destinationDir) {
+			$sourceFileInfo = $this->fileView->getFileInfo($source);
+
+			if ($sourceFileInfo === false) {
+				throw new \Sabre\DAV\Exception\NotFound($source . ' does not exist');
+			}
+
+			if (!$sourceFileInfo->isDeletable()) {
+				throw new \Sabre\DAV\Exception\Forbidden($source . " cannot be deleted");
+			}
+		}
 	}
 
 	/**
@@ -129,7 +173,12 @@ class FilesPlugin extends \Sabre\DAV\ServerPlugin {
 			});
 
 			$propFind->handle(self::PERMISSIONS_PROPERTYNAME, function() use ($node) {
-				return $node->getDavPermissions();
+				$perms = $node->getDavPermissions();
+				if ($this->isPublic) {
+					// remove mount information
+					$perms = str_replace(['S', 'M'], '', $perms);
+				}
+				return $perms;
 			});
 
 			$propFind->handle(self::GETETAG_PROPERTYNAME, function() use ($node) {
@@ -140,9 +189,14 @@ class FilesPlugin extends \Sabre\DAV\ServerPlugin {
 		if ($node instanceof \OC\Connector\Sabre\File) {
 			$propFind->handle(self::DOWNLOADURL_PROPERTYNAME, function() use ($node) {
 				/** @var $node \OC\Connector\Sabre\File */
-				$directDownloadUrl = $node->getDirectDownload();
-				if (isset($directDownloadUrl['url'])) {
-					return $directDownloadUrl['url'];
+				try {
+					$directDownloadUrl = $node->getDirectDownload();
+					if (isset($directDownloadUrl['url'])) {
+						return $directDownloadUrl['url'];
+					}
+				} catch (StorageNotAvailableException $e) {
+					// return empty download link when storage not available
+					return false;
 				}
 				return false;
 			});
@@ -164,7 +218,7 @@ class FilesPlugin extends \Sabre\DAV\ServerPlugin {
 	 * @return void
 	 */
 	public function handleUpdateProperties($path, PropPatch $propPatch) {
-		$propPatch->handle(self::GETLASTMODIFIED_PROPERTYNAME, function($time) use ($path) {
+		$propPatch->handle(self::LASTMODIFIED_PROPERTYNAME, function($time) use ($path) {
 			if (empty($time)) {
 				return false;
 			}

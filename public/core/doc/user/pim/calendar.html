@@ -1,18 +1,16 @@
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Using the Calendar App &mdash; ownCloud User Manual 8.2 documentation</title>
+    <title>Using the Calendar App &mdash; ownCloud 8.2 User Manual 8.2 documentation</title>
     
-    <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/style.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/main.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/styles.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -26,87 +24,41 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/bootstrap.js"></script>
-    <link rel="top" title="ownCloud User Manual 8.2 documentation" href="../index.html" />
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="ownCloud 8.2 User Manual 8.2 documentation" href="../contents.html" />
     <link rel="up" title="Contacts &amp; Calendar" href="index.html" />
     <link rel="next" title="iOS - Synchronize iPhone/iPad" href="sync_ios.html" />
     <link rel="prev" title="Using the Contacts App" href="contacts.html" />
-<script type="text/javascript">
-(function () {
-  /**
-   * Patch TOC list.
-   *
-   * Will mutate the underlying span to have a correct ul for nav.
-   *
-   * @param $span: Span containing nested UL's to mutate.
-   * @param minLevel: Starting level for nested lists. (1: global, 2: local).
-   */
-  var patchToc = function ($ul, minLevel) {
-    var findA;
-
-    // Find all a "internal" tags, traversing recursively.
-    findA = function ($elem, level) {
-      var level = level || 0,
-        $items = $elem.find("> li > a.internal, > ul, > li > ul");
-
-      // Iterate everything in order.
-      $items.each(function (index, item) {
-        var $item = $(item),
-          tag = item.tagName.toLowerCase(),
-          pad = 15 + ((level - minLevel) * 10);
-
-        if (tag === 'a' && level >= minLevel) {
-          // Add to existing padding.
-          $item.css('padding-left', pad + "px");
-          console.log(level, $item, 'padding-left', pad + "px");
-        } else if (tag === 'ul') {
-          // Recurse.
-          findA($item, level + 1);
-        }
-      });
-    };
-
-    console.log("HERE");
-    findA($ul);
-  };
-
-  $(document).ready(function () {
-    // Add styling, structure to TOC's.
-    $(".dropdown-menu").each(function () {
-      $(this).find("ul").each(function (index, item){
-        var $item = $(item);
-        $item.addClass('unstyled');
-      });
-      $(this).find("li").each(function () {
-        $(this).parent().append(this);
-      });
-    });
-
-    // Patch in level.
-    patchToc($("ul.globaltoc"), 2);
-    patchToc($("ul.localtoc"), 2);
-
-    // Enable dropdown.
-    $('.dropdown-toggle').dropdown();
-  });
-}());
-</script>
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1d2d44">
 
   </head>
-  <body>
-  
+  <body role="document">
 
-<div class="container">
-  <div class="content">
-    <div class="page-header">
-      <h1><a href="../contents.html">ownCloud User Manual</a></h1>
 
+<div class="wrap container not-front">
+  <div class="content row">
+  <main class="main">
+    <div class="row page-content-header">
+      <div class="col-md-5 col-md-offset-7">
+      
+        <form class="headersearch" style="margin-bottom:-3px;" action="../search.html" method="get">
+        <input type="text" value="" name="q" id="q" class="form-control" /> 
+        <button  class="btn btn-default" type="submit" id="searchsubmit">Search</button>
+        </form>
+      
+      </div>
     </div>
     
 			<div class="row">
-				<div class="span3">
+				<div class="col-md-3">
 					<div class="sidebar">
-						<div class="well">
 							<div class="menu-support-container">
 								<ul id="menu-support" class="menu">
 									<ul>
@@ -115,7 +67,7 @@
 									</ul>
                   <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 8.2 User Manual Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../whats_new.html">What&#8217;s New for Users in ownCloud 8.1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../whats_new.html">What&#8217;s New for Users in ownCloud 8.2</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../webinterface.html">The ownCloud Web Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../files/index.html">Files &amp; Synchronization</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Contacts &amp; Calendar</a><ul class="current">
@@ -140,35 +92,48 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../documents.html">Collaborative Document Editing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../bookmarks.html">Using the Bookmarks App</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bookmarks.html">The main interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bookmarks.html#the-bookmarklet">The Bookmarklet</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../userpreferences.html">Setting Your Preferences</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../external_storage/index.html">External Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bookmarks.html">The main interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bookmarks.html#the-bookmarklet">The Bookmarklet</a></li>
 </ul>
 
 								</ul>
 							</div>
-						</div>
 					</div>
 				</div>
         
 
-				<div class="span9">
+				<div class="col-md-9">
 					<div class="page-content">
+            
+<ul class="prevnext-title list-unstyled list-inline">
+  <li class="prev">
+    <a href="contacts.html" title="Previous Chapter: Using the Contacts App"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm">&laquo; Using the Con...</span>
+    </a>
+  </li>
+  <li class="next">
+    <a href="sync_ios.html" title="Next Chapter: iOS - Synchronize iPhone/iPad"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm">iOS - Synchro... &raquo;</span>
+    </a>
+  </li>
+</ul>
 						
   <div class="section" id="using-the-calendar-app">
 <h1>Using the Calendar App<a class="headerlink" href="#using-the-calendar-app" title="Permalink to this headline">¶</a></h1>
 <p>The Calendar app is not enabled by default in ownCloud 8 and needs to
 be enabled seperately. It is also not a supported core app. You may ask
 your ownCloud server admin to enable it, and if you are
-your own admin consult the <a class="reference external" href="https://doc.owncloud.org/server/8.0/admin_manual/installation/apps_management_installation.html">Installation &gt; Installing and Managing Apps</a>
-section of the <a class="reference external" href="https://doc.owncloud.org/server/8.0/admin_manual/html">ownCloud Server Administration Manual</a>.</p>
+your own admin consult the <a class="reference external" href="https://doc.owncloud.org/server/8.2/admin_manual/installation/apps_management_installation.html">Installation &gt; Installing and Managing Apps</a>
+section of the <a class="reference external" href="https://doc.owncloud.org/server/8.2/admin_manual/html">ownCloud Server Administration Manual</a>.</p>
 <p>The ownCloud Calendar app enables you to create and edit events, synchronize to
 other calendars you might use, and create new, personalized calendars.</p>
 <p>By default, when you access the Calendar app for the first time, you get a
 &#8220;Personal&#8221; calendar that you can use or modify as you like.</p>
-<div class="figure">
+<div class="figure" id="id1">
 <img alt="../_images/calendar_default.png" src="../_images/calendar_default.png" />
-<p class="caption"><strong>Calendar app (default)</strong></p>
+<p class="caption"><span class="caption-text"><strong>Calendar app (default)</strong></span></p>
 </div>
 <p>The Calendar app contains the following fields and controls:</p>
 <ul>
@@ -203,13 +168,13 @@ separately.</p>
 <p>To create a new calendar:</p>
 <ol class="arabic simple">
 <li>Access the Calendar app.</li>
-<li>Click the <tt class="docutils literal"><span class="pre">+</span> <span class="pre">New</span> <span class="pre">Calendar</span></tt> field.</li>
+<li>Click the <code class="docutils literal"><span class="pre">+</span> <span class="pre">New</span> <span class="pre">Calendar</span></code> field.</li>
 </ol>
 <blockquote>
 <div>A dialog opens to enable you to create a new calendar.</div></blockquote>
-<div class="figure">
+<div class="figure" id="id2">
 <img alt="../_images/calendar_create_new.png" src="../_images/calendar_create_new.png" />
-<p class="caption"><strong>New calendar</strong></p>
+<p class="caption"><span class="caption-text"><strong>New calendar</strong></span></p>
 </div>
 <ol class="arabic simple" start="3">
 <li>Specify a name for the new calendar.</li>
@@ -224,9 +189,9 @@ separately.</p>
 <p>The Calendar app settings provides global configuration that applies to all
 calendars that you have created in the Calendar app.</p>
 <blockquote>
-<div><div class="figure">
+<div><div class="figure" id="id3">
 <img alt="../_images/calendar_settings.png" src="../_images/calendar_settings.png" />
-<p class="caption"><strong>Calendar app settings</strong></p>
+<p class="caption"><span class="caption-text"><strong>Calendar app settings</strong></span></p>
 </div>
 </div></blockquote>
 <p>In the Calendar app settings, you can modify the following:</p>
@@ -254,7 +219,7 @@ using the address provided.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The Lightning Add-on doesn&#8217;t support using multiple accounts on a single
-server as a default. You need to set <tt class="docutils literal"><span class="pre">calendar.network.multirealm</span></tt> to <tt class="docutils literal"><span class="pre">true</span></tt>
+server as a default. You need to set <code class="docutils literal"><span class="pre">calendar.network.multirealm</span></code> to <code class="docutils literal"><span class="pre">true</span></code>
 in the Config Editor of Mozilla Thunderbird to be able to use multiple accounts.</p>
 </div>
 <div class="section" id="getting-the-caldav-link">
@@ -278,10 +243,10 @@ using the <img alt="gear" src="../_images/gear.png" /> icon on the bottom left o
 <p>To create a new event:</p>
 <ol class="arabic">
 <li><p class="first">Click a date in the month view or a time in either the week or day views.</p>
-<p>The <tt class="docutils literal"><span class="pre">Create</span> <span class="pre">a</span> <span class="pre">new</span> <span class="pre">event</span></tt> dialog box opens.</p>
-<div class="figure">
+<p>The <code class="docutils literal"><span class="pre">Create</span> <span class="pre">a</span> <span class="pre">new</span> <span class="pre">event</span></code> dialog box opens.</p>
+<div class="figure" id="id4">
 <img alt="../_images/calendar_create_event.png" src="../_images/calendar_create_event.png" />
-<p class="caption"><strong>Create a new event dialog box</strong></p>
+<p class="caption"><span class="caption-text"><strong>Create a new event dialog box</strong></span></p>
 </div>
 </li>
 <li><p class="first">Specify a title for the event.</p>
@@ -290,19 +255,19 @@ using the <img alt="gear" src="../_images/gear.png" /> icon on the bottom left o
 </li>
 <li><p class="first">(Optional) Provide advanced option details.  These details can include the
 event location, the event category, and an event description.</p>
-<div class="figure">
+<div class="figure" id="id5">
 <img alt="../_images/calendar_create_event.png" src="../_images/calendar_create_event.png" />
-<p class="caption"><strong>Create a new event dialog box</strong></p>
+<p class="caption"><span class="caption-text"><strong>Create a new event dialog box</strong></span></p>
 </div>
 </li>
 <li><p class="first">(Optional) Click the Repeating tab to define any repeat settings for the event.</p>
-<div class="figure">
+<div class="figure" id="id6">
 <img alt="../_images/calendar_create_event_repeat.png" src="../_images/calendar_create_event_repeat.png" />
-<p class="caption"><strong>Event Repeating tab</strong></p>
+<p class="caption"><span class="caption-text"><strong>Event Repeating tab</strong></span></p>
 </div>
 <p>The Repeating tab provides the option of not repeating the event(default) or
 repeating the event daily, weekly, every weekday, biweekly, monthly, or yearly.
-In addition, by selecting the <tt class="docutils literal"><span class="pre">Advanced</span></tt> button in the Repeating tab, each
+In addition, by selecting the <code class="docutils literal"><span class="pre">Advanced</span></code> button in the Repeating tab, each
 repeat option provides different levels of customization to better define your
 repeat requirements for the event.</p>
 <p>The following table helps to define the options for each repeat rule:</p>
@@ -312,58 +277,42 @@ repeat requirements for the event.</p>
 <col width="83%" />
 </colgroup>
 <thead valign="bottom">
-<tr class="row-odd"><th class="head"><p class="first last">Repeat Rule</p>
-</th>
-<th class="head"><p class="first last">Options</p>
-</th>
+<tr class="row-odd"><th class="head">Repeat Rule</th>
+<th class="head">Options</th>
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td><p class="first last">Does not repeat</p>
-</td>
-<td><p class="first last">n/a</p>
-</td>
+<tr class="row-even"><td>Does not repeat</td>
+<td>n/a</td>
 </tr>
-<tr class="row-odd"><td><p class="first last">Daily</p>
-</td>
-<td><p class="first last">Interval - Interval at which the event is repeated
-End - never, by occurrences, by date</p>
-</td>
+<tr class="row-odd"><td>Daily</td>
+<td>Interval - Interval at which the event is repeated
+End - never, by occurrences, by date</td>
 </tr>
-<tr class="row-even"><td><p class="first last">Weekly</p>
-</td>
-<td><p class="first last">Select weekdays - Weekday(s) on which the event is repeated
+<tr class="row-even"><td>Weekly</td>
+<td>Select weekdays - Weekday(s) on which the event is repeated
 Interval - Interval at which the event is repeated
-End - never, by occurrences, by date</p>
-</td>
+End - never, by occurrences, by date</td>
 </tr>
-<tr class="row-odd"><td><p class="first last">Every Weekday</p>
-</td>
-<td><p class="first last">Interval - Interval at which the event is repeated
-End - never, by occurrences, by date</p>
-</td>
+<tr class="row-odd"><td>Every Weekday</td>
+<td>Interval - Interval at which the event is repeated
+End - never, by occurrences, by date</td>
 </tr>
-<tr class="row-even"><td><p class="first last">Bi-Weekly</p>
-</td>
-<td><p class="first last">Interval - Interval at which the event is repeated
-End - never, by occurrences, by date</p>
-</td>
+<tr class="row-even"><td>Bi-Weekly</td>
+<td>Interval - Interval at which the event is repeated
+End - never, by occurrences, by date</td>
 </tr>
-<tr class="row-odd"><td><p class="first last">Monthly</p>
-</td>
-<td><p class="first last">Day choice &#8211; by monthday or by weekday
+<tr class="row-odd"><td>Monthly</td>
+<td>Day choice &#8211; by monthday or by weekday
 Events week of month - Weekday selection only; week of month on which event occurs
 Select weekdays - Weekday(s) on which the event is repeated
 Interval - Interval at which the event is repeated
-End - never, by occurrences, by date</p>
-</td>
+End - never, by occurrences, by date</td>
 </tr>
-<tr class="row-even"><td><p class="first last">Yearly</p>
-</td>
-<td><p class="first last">Date option - by event&#8217;s date, by year days, by week number, by day and month
+<tr class="row-even"><td>Yearly</td>
+<td>Date option - by event&#8217;s date, by year days, by week number, by day and month
 Interval - Interval at which the event is repeated
-End - never, by occurrences, by date</p>
-</td>
+End - never, by occurrences, by date</td>
 </tr>
 </tbody>
 </table>
@@ -381,13 +330,13 @@ automatically sets the repeat rule to &#8220;Bi-Weekly&#8221;.</p>
 <h2>Sharing Events<a class="headerlink" href="#sharing-events" title="Permalink to this headline">¶</a></h2>
 <p>Once an event has been saved, a new tab appears for the event that enables you
 to share it.</p>
-<div class="figure">
+<div class="figure" id="id7">
 <img alt="../_images/calendar_create_event_share.png" src="../_images/calendar_create_event_share.png" />
-<p class="caption"><strong>Event Share tab</strong></p>
+<p class="caption"><span class="caption-text"><strong>Event Share tab</strong></span></p>
 </div>
 <p>The options available in the Share tab include the following:</p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">Share</span> <span class="pre">with</span> <span class="pre">user</span> <span class="pre">or</span> <span class="pre">group</span></tt> field &#8211; Enables you to specify users or groups with whom you want to
+<li><code class="docutils literal"><span class="pre">Share</span> <span class="pre">with</span> <span class="pre">user</span> <span class="pre">or</span> <span class="pre">group</span></code> field &#8211; Enables you to specify users or groups with whom you want to
 share the event.</li>
 <li>Share visibility pulldown menu &#8211; Enables you to specify the level of
 information that is shared.  The possible levels include:<ul>
@@ -405,9 +354,9 @@ event details are provided.</li>
 </li>
 <li><p class="first">Define the level of visibility that you want the users or groups to have.</p>
 </li>
-<li><p class="first">(Optional) Click the <tt class="docutils literal"><span class="pre">Send</span> <span class="pre">Email</span></tt> button to share the event details using an email.</p>
+<li><p class="first">(Optional) Click the <code class="docutils literal"><span class="pre">Send</span> <span class="pre">Email</span></code> button to share the event details using an email.</p>
 </li>
-<li><p class="first">Click the <tt class="docutils literal"><span class="pre">Save</span> <span class="pre">event</span></tt> button to save your changes.</p>
+<li><p class="first">Click the <code class="docutils literal"><span class="pre">Save</span> <span class="pre">event</span></code> button to save your changes.</p>
 <p>The Calendar app saves and closes the event window.</p>
 </li>
 </ol>
@@ -418,24 +367,24 @@ event details are provided.</li>
 or from other calendars.</p>
 <div class="section" id="exporting-events-and-calendar">
 <h3>Exporting Events and Calendar<a class="headerlink" href="#exporting-events-and-calendar" title="Permalink to this headline">¶</a></h3>
-<div class="figure">
+<div class="figure" id="id8">
 <img alt="../_images/event_export.png" src="../_images/event_export.png" />
-<p class="caption"><strong>Exporting an event</strong></p>
+<p class="caption"><span class="caption-text"><strong>Exporting an event</strong></span></p>
 </div>
 <p>You can export either a single event or an entire calendar. If you want to export
 a single event, click on the event, select &#8220;Advanced&#8221; and press the &#8220;Export Event&#8221; button in the bottom left
 corner. If you want to export an entire calendar, use the <img alt="download" src="../_images/download.png" /> icon next to the calendar name as
 shown in the figure below:</p>
-<div class="figure">
+<div class="figure" id="id9">
 <img alt="../_images/calendar_export.png" src="../_images/calendar_export.png" />
-<p class="caption"><strong>Exporting calendar</strong></p>
+<p class="caption"><span class="caption-text"><strong>Exporting calendar</strong></span></p>
 </div>
 </div>
 <div class="section" id="importing-events">
 <h3>Importing Events<a class="headerlink" href="#importing-events" title="Permalink to this headline">¶</a></h3>
-<div class="figure">
+<div class="figure" id="id10">
 <img alt="../_images/calendar_import.png" src="../_images/calendar_import.png" />
-<p class="caption"><strong>Importing events</strong></p>
+<p class="caption"><span class="caption-text"><strong>Importing events</strong></span></p>
 </div>
 <p>You can import your calendar as an iCal file using the Files app. The Calendar app
 enables you to import the calendar into a new calendar or into an already existing calendar.</p>
@@ -443,7 +392,7 @@ enables you to import the calendar into a new calendar or into an already existi
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If the progress bar does not work properly, the folder
-<tt class="docutils literal"><span class="pre">apps/calendar/import_tmp/</span></tt> might not have write permission.</p>
+<code class="docutils literal"><span class="pre">apps/calendar/import_tmp/</span></code> might not have write permission.</p>
 </div>
 </div>
 </div>
@@ -454,12 +403,12 @@ calendar event:</p>
 <ol class="arabic">
 <li><p class="first">Click the event in the Calendar app.</p>
 <p>The Edit event dialog box opens.</p>
-<div class="figure">
+<div class="figure" id="id11">
 <img alt="../_images/calendar_edit_event.png" src="../_images/calendar_edit_event.png" />
-<p class="caption"><strong>Edit event dialog box</strong></p>
+<p class="caption"><span class="caption-text"><strong>Edit event dialog box</strong></span></p>
 </div>
 </li>
-<li><p class="first">Click the <tt class="docutils literal"><span class="pre">Delete</span> <span class="pre">event</span></tt> button.</p>
+<li><p class="first">Click the <code class="docutils literal"><span class="pre">Delete</span> <span class="pre">event</span></code> button.</p>
 <p>The Calendar app deletes the event.</p>
 </li>
 </ol>
@@ -477,9 +426,9 @@ calendar event:</p>
 <div class="section" id="calendar-app-faq">
 <h2>Calendar App FAQ<a class="headerlink" href="#calendar-app-faq" title="Permalink to this headline">¶</a></h2>
 <p><strong>Question:</strong> Why does the Calendar app request my current location?</p>
-<div class="figure">
+<div class="figure" id="id12">
 <img alt="../_images/calendar_newtimezone1.png" src="../_images/calendar_newtimezone1.png" />
-<p class="caption"><strong>Timezone set notification</strong></p>
+<p class="caption"><span class="caption-text"><strong>Timezone set notification</strong></span></p>
 </div>
 <p><strong>Answer:</strong> The calendar needs your current position to detect your timezone.
 Without the correct timezone, a time offset exists between the events in the
@@ -489,10 +438,21 @@ can also set the timezone manually in the personal settings.</p>
 </div>
 
 
+            
+<ul class="prevnext-title list-unstyled list-inline">
+  <li class="prev">
+    <a href="contacts.html" title="Previous Chapter: Using the Contacts App"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm">&laquo; Using the Con...</span>
+    </a>
+  </li>
+  <li class="next">
+    <a href="sync_ios.html" title="Next Chapter: iOS - Synchronize iPhone/iPad"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm">iOS - Synchro... &raquo;</span>
+    </a>
+  </li>
+</ul>
 					</div>
 				</div>
 			</div>
-    
+  </main>  
   </div>
 </div>
   </body>

@@ -22,6 +22,7 @@ OC.L10N.register(
     "Unable to change password" : "Nav iespējams nomainīt paroli",
     "Enabled" : "Pievienots",
     "Not enabled" : "Nav pievienots",
+    "Federated Cloud Sharing" : "Federatīva mākoņkoplietošana",
     "Group already exists." : "Grupa jau eksistē.",
     "Unable to add group." : "Nevar pievienot grupu.",
     "Unable to delete group." : "Nevar izdzēst grupu.",
@@ -104,7 +105,6 @@ OC.L10N.register(
     "Less" : "Mazāk",
     "Version" : "Versija",
     "by" : "līdz",
-    "User Documentation" : "Lietotāja dokumentācija",
     "Forum" : "Forums",
     "Get the apps to sync your files" : "Saņem lietotnes, lai sinhronizētu savas datnes",
     "Desktop client" : "Darbvirsmas klients",
@@ -137,6 +137,8 @@ OC.L10N.register(
     "Full Name" : "Pilns vārds",
     "Quota" : "Apjoms",
     "set new password" : "iestatīt jaunu paroli",
-    "Default" : "Noklusējuma"
+    "Default" : "Noklusējuma",
+    "No apps found for your version" : "Neatrada aplikāciju jūsu versijai",
+    "Sync clients" : "Sinhronizācijas lietotnes"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");

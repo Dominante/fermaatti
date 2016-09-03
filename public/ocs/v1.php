@@ -1,7 +1,6 @@
 <?php
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
- * @author Frank Karlitschek <frank@owncloud.org>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
@@ -43,6 +42,8 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 
 try {
+	OC_App::loadApps(['session']);
+	OC_App::loadApps(['authentication']);
 	// load all apps to get all api routes properly setup
 	OC_App::loadApps();
 
@@ -56,5 +57,7 @@ try {
 } catch (MethodNotAllowedException $e) {
 	OC_API::setContentType();
 	OC_Response::setStatus(405);
+} catch (\OC\OCS\Exception $ex) {
+	OC_API::respond($ex->getResult(), OC_API::requestedFormat());
 }
 

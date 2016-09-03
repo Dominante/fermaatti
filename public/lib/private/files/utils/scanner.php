@@ -2,6 +2,7 @@
 /**
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Olivier Paroz <github@oparoz.com>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
@@ -27,9 +28,13 @@ namespace OC\Files\Utils;
 
 use OC\Files\View;
 use OC\Files\Cache\ChangePropagator;
+use OC\Files\Cache\Cache;
 use OC\Files\Filesystem;
 use OC\ForbiddenException;
 use OC\Hooks\PublicEmitter;
+use OC\Lock\DBLockingProvider;
+use OCP\Files\StorageNotAvailableException;
+use OCP\ILogger;
 
 /**
  * Class Scanner
@@ -57,10 +62,17 @@ class Scanner extends PublicEmitter {
 	protected $db;
 
 	/**
+	 * @var ILogger
+	 */
+	protected $logger;
+
+	/**
 	 * @param string $user
 	 * @param \OCP\IDBConnection $db
+	 * @param ILogger $logger
 	 */
-	public function __construct($user, $db) {
+	public function __construct($user, $db, ILogger $logger) {
+		$this->logger = $logger;
 		$this->user = $user;
 		$this->propagator = new ChangePropagator(new View(''));
 		$this->db = $db;
@@ -76,11 +88,10 @@ class Scanner extends PublicEmitter {
 		//TODO: move to the node based fileapi once that's done
 		\OC_Util::tearDownFS();
 		\OC_Util::setupFS($this->user);
-		$absolutePath = Filesystem::getView()->getAbsolutePath($dir);
 
 		$mountManager = Filesystem::getMountManager();
-		$mounts = $mountManager->findIn($absolutePath);
-		$mounts[] = $mountManager->find($absolutePath);
+		$mounts = $mountManager->findIn($dir);
+		$mounts[] = $mountManager->find($dir);
 		$mounts = array_reverse($mounts); //start with the mount of $dir
 
 		return $mounts;
@@ -100,7 +111,12 @@ class Scanner extends PublicEmitter {
 		$scanner->listen('\OC\Files\Cache\Scanner', 'scanFolder', function ($path) use ($mount, $emitter) {
 			$emitter->emit('\OC\Files\Utils\Scanner', 'scanFolder', array($mount->getMountPoint() . $path));
 		});
-
+		$scanner->listen('\OC\Files\Cache\Scanner', 'postScanFile', function ($path) use ($mount, $emitter) {
+			$emitter->emit('\OC\Files\Utils\Scanner', 'postScanFile', array($mount->getMountPoint() . $path));
+		});
+		$scanner->listen('\OC\Files\Cache\Scanner', 'postScanFolder', function ($path) use ($mount, $emitter) {
+			$emitter->emit('\OC\Files\Utils\Scanner', 'postScanFolder', array($mount->getMountPoint() . $path));
+		});
 		// propagate etag and mtimes when files are changed or removed
 		$propagator = $this->propagator;
 		$propagatorListener = function ($path) use ($mount, $propagator) {
@@ -120,6 +136,10 @@ class Scanner extends PublicEmitter {
 			if (is_null($mount->getStorage())) {
 				continue;
 			}
+			// don't scan the root storage
+			if ($mount->getStorage()->instanceOfStorage('\OC\Files\Storage\Local') && $mount->getMountPoint() === '/') {
+				continue;
+			}
 			$scanner = $mount->getStorage()->getScanner();
 			$this->attachListener($mount);
 			$scanner->backgroundScan();
@@ -132,6 +152,9 @@ class Scanner extends PublicEmitter {
 	 * @throws \OC\ForbiddenException
 	 */
 	public function scan($dir = '') {
+		if (!Filesystem::isValidPath($dir)) {
+			throw new \InvalidArgumentException('Invalid path to scan');
+		}
 		$mounts = $this->getMounts($dir);
 		foreach ($mounts as $mount) {
 			if (is_null($mount->getStorage())) {
@@ -148,9 +171,25 @@ class Scanner extends PublicEmitter {
 			$scanner = $storage->getScanner();
 			$scanner->setUseTransactions(false);
 			$this->attachListener($mount);
-			$this->db->beginTransaction();
-			$scanner->scan($relativePath, \OC\Files\Cache\Scanner::SCAN_RECURSIVE, \OC\Files\Cache\Scanner::REUSE_ETAG | \OC\Files\Cache\Scanner::REUSE_SIZE);
-			$this->db->commit();
+			$isDbLocking = \OC::$server->getLockingProvider() instanceof DBLockingProvider;
+			if (!$isDbLocking) {
+				$this->db->beginTransaction();
+			}
+			try {
+				$scanner->scan($relativePath, \OC\Files\Cache\Scanner::SCAN_RECURSIVE, \OC\Files\Cache\Scanner::REUSE_ETAG | \OC\Files\Cache\Scanner::REUSE_SIZE);
+				$cache = $storage->getCache();
+				if ($cache instanceof Cache) {
+					// only re-calculate for the root folder we scanned, anything below that is taken care of by the scanner
+					$cache->correctFolderSize($relativePath);
+				}
+			} catch (StorageNotAvailableException $e) {
+				$this->logger->error('Storage ' . $storage->getId() . ' not available');
+				$this->logger->logException($e);
+				$this->emit('\OC\Files\Utils\Scanner', 'StorageNotAvailable', [$e]);
+			}
+			if (!$isDbLocking) {
+				$this->db->commit();
+			}
 		}
 		$this->propagator->propagateChanges(time());
 	}

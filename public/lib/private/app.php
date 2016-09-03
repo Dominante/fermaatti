@@ -18,6 +18,7 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Markus Goetz <markus@woboq.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author RealRancor <Fisch.666@gmx.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  * @author Sam Tuke <mail@samtuke.com>
@@ -74,6 +75,16 @@ class OC_App {
 	}
 
 	/**
+	 * Check if an app is loaded
+	 *
+	 * @param string $app
+	 * @return bool
+	 */
+	public static function isAppLoaded($app) {
+		return in_array($app, self::$loadedApps, true);
+	}
+
+	/**
 	 * loads all apps
 	 *
 	 * @param array $types
@@ -91,11 +102,19 @@ class OC_App {
 		}
 		// Load the enabled apps here
 		$apps = self::getEnabledApps();
+
+		// Add each apps' folder as allowed class path
+		foreach($apps as $app) {
+			$path = self::getAppPath($app);
+			if($path !== false) {
+				\OC::$loader->addValidRoot($path);
+			}
+		}
+
 		// prevent app.php from printing output
 		ob_start();
 		foreach ($apps as $app) {
 			if ((is_null($types) or self::isType($app, $types)) && !in_array($app, self::$loadedApps)) {
-				self::$loadedApps[] = $app;
 				self::loadApp($app);
 			}
 		}
@@ -112,6 +131,8 @@ class OC_App {
 	 * @throws \OC\NeedsUpdateException
 	 */
 	public static function loadApp($app, $checkUpgrade = true) {
+		self::$loadedApps[] = $app;
+		\OC::$loader->addValidRoot(self::getAppPath($app)); // in case someone calls loadApp() directly
 		if (is_file(self::getAppPath($app) . '/appinfo/app.php')) {
 			\OC::$server->getEventLogger()->start('load_app_' . $app, 'Load app: ' . $app);
 			if ($checkUpgrade and self::shouldUpgrade($app)) {
@@ -168,7 +189,7 @@ class OC_App {
 	private static function getAppTypes($app) {
 		//load the cache
 		if (count(self::$appTypes) == 0) {
-			self::$appTypes = OC_Appconfig::getValues(false, 'types');
+			self::$appTypes = \OC::$server->getAppConfig()->getValues(false, 'types');
 		}
 
 		if (isset(self::$appTypes[$app])) {
@@ -190,7 +211,7 @@ class OC_App {
 			$appTypes = '';
 		}
 
-		OC_Appconfig::setValue($app, 'types', $appTypes);
+		\OC::$server->getAppConfig()->setValue($app, 'types', $appTypes);
 	}
 
 	/**
@@ -375,29 +396,6 @@ class OC_App {
 	}
 
 	/**
-	 * Get the navigation entries for the $app
-	 *
-	 * @param string $app app
-	 * @return array an array of the $data added with addNavigationEntry
-	 *
-	 * Warning: destroys the existing entries
-	 */
-	public static function getAppNavigationEntries($app) {
-		if (is_file(self::getAppPath($app) . '/appinfo/app.php')) {
-			OC::$server->getNavigationManager()->clear();
-			try {
-				require $app . '/appinfo/app.php';
-			} catch (\OC\Encryption\Exceptions\ModuleAlreadyExistsException $e) {
-				// FIXME we should avoid getting this exception in first place,
-				// For now we just catch it, since we don't care about encryption modules
-				// when trying to find out, whether the app has a navigation entry.
-			}
-			return OC::$server->getNavigationManager()->getAll();
-		}
-		return array();
-	}
-
-	/**
 	 * gets the active Menu entry
 	 *
 	 * @return string id or empty string
@@ -414,7 +412,7 @@ class OC_App {
 	/**
 	 * Returns the Settings Navigation
 	 *
-	 * @return string
+	 * @return string[]
 	 *
 	 * This function returns an array containing all settings pages added. The
 	 * entries are sorted by the key 'order' ascending.
@@ -511,7 +509,7 @@ class OC_App {
 			}
 		}
 
-		OC_Log::write('core', 'No application directories are marked as writable.', OC_Log::ERROR);
+		\OCP\Util::writeLog('core', 'No application directories are marked as writable.', \OCP\Util::ERROR);
 		return null;
 	}
 
@@ -659,6 +657,12 @@ class OC_App {
 		if (is_array($data)) {
 			$data = OC_App::parseAppInfo($data);
 		}
+		if(isset($data['ocsid'])) {
+			$storedId = \OC::$server->getConfig()->getAppValue($appId, 'ocsid');
+			if($storedId !== '' && $storedId !== $data['ocsid']) {
+				$data['ocsid'] = $storedId;
+			}
+		}
 
 		self::$appInfo[$appId] = $data;
 
@@ -771,7 +775,7 @@ class OC_App {
 
 		foreach (OC::$APPSROOTS as $apps_dir) {
 			if (!is_readable($apps_dir['path'])) {
-				OC_Log::write('core', 'unable to read app folder : ' . $apps_dir['path'], OC_Log::WARN);
+				\OCP\Util::writeLog('core', 'unable to read app folder : ' . $apps_dir['path'], \OCP\Util::WARN);
 				continue;
 			}
 			$dh = opendir($apps_dir['path']);
@@ -779,7 +783,7 @@ class OC_App {
 			if (is_resource($dh)) {
 				while (($file = readdir($dh)) !== false) {
 
-					if ($file[0] != '.' and is_file($apps_dir['path'] . '/' . $file . '/appinfo/info.xml')) {
+					if ($file[0] != '.' and is_dir($apps_dir['path'] . '/' . $file) and is_file($apps_dir['path'] . '/' . $file . '/appinfo/info.xml')) {
 
 						$apps[] = $file;
 
@@ -817,11 +821,11 @@ class OC_App {
 				$info = OC_App::getAppInfo($app);
 
 				if (!isset($info['name'])) {
-					OC_Log::write('core', 'App id "' . $app . '" has no name in appinfo', OC_Log::ERROR);
+					\OCP\Util::writeLog('core', 'App id "' . $app . '" has no name in appinfo', \OCP\Util::ERROR);
 					continue;
 				}
 
-				$enabled = OC_Appconfig::getValue($app, 'enabled', 'no');
+				$enabled = \OC::$server->getAppConfig()->getValue($app, 'enabled', 'no');
 				$info['groups'] = null;
 				if ($enabled === 'yes') {
 					$active = true;
@@ -834,7 +838,7 @@ class OC_App {
 
 				$info['active'] = $active;
 
-				if (isset($info['shipped']) and ($info['shipped'] == 'true')) {
+				if (self::isShipped($app)) {
 					$info['internal'] = true;
 					$info['level'] = self::officialApp;
 					$info['removable'] = false;
@@ -1129,7 +1133,7 @@ class OC_App {
 
 			// check for required dependencies
 			$dependencyAnalyzer = new DependencyAnalyzer(new Platform($config), $l);
-			$missing = $dependencyAnalyzer->analyze($app);
+			$missing = $dependencyAnalyzer->analyze($info);
 			if (!empty($missing)) {
 				$missingMsg = join(PHP_EOL, $missing);
 				throw new \Exception(
@@ -1162,9 +1166,7 @@ class OC_App {
 			OC_DB::updateDbFromStructure(self::getAppPath($appId) . '/appinfo/database.xml');
 		}
 		unset(self::$appVersion[$appId]);
-		if (!self::isEnabled($appId)) {
-			return false;
-		}
+		// run upgrade code
 		if (file_exists(self::getAppPath($appId) . '/appinfo/update.php')) {
 			self::loadApp($appId, false);
 			include self::getAppPath($appId) . '/appinfo/update.php';
@@ -1173,21 +1175,21 @@ class OC_App {
 		//set remote/public handlers
 		$appData = self::getAppInfo($appId);
 		if (array_key_exists('ocsid', $appData)) {
-			OC_Appconfig::setValue($appId, 'ocsid', $appData['ocsid']);
-		} elseif(OC_Appconfig::getValue($appId, 'ocsid', null) !== null) {
-			OC_Appconfig::deleteKey($appId, 'ocsid');
+			\OC::$server->getConfig()->setAppValue($appId, 'ocsid', $appData['ocsid']);
+		} elseif(\OC::$server->getConfig()->getAppValue($appId, 'ocsid', null) !== null) {
+			\OC::$server->getConfig()->deleteAppValue($appId, 'ocsid');
 		}
 		foreach ($appData['remote'] as $name => $path) {
-			OCP\CONFIG::setAppValue('core', 'remote_' . $name, $appId . '/' . $path);
+			\OC::$server->getConfig()->setAppValue('core', 'remote_' . $name, $appId . '/' . $path);
 		}
 		foreach ($appData['public'] as $name => $path) {
-			OCP\CONFIG::setAppValue('core', 'public_' . $name, $appId . '/' . $path);
+			\OC::$server->getConfig()->setAppValue('core', 'public_' . $name, $appId . '/' . $path);
 		}
 
 		self::setAppTypes($appId);
 
 		$version = \OC_App::getAppVersion($appId);
-		\OC_Appconfig::setValue($appId, 'installed_version', $version);
+		\OC::$server->getAppConfig()->setValue($appId, 'installed_version', $version);
 
 		return true;
 	}
@@ -1205,11 +1207,11 @@ class OC_App {
 				}
 				return new \OC\Files\View('/' . OC_User::getUser() . '/' . $appId);
 			} else {
-				OC_Log::write('core', 'Can\'t get app storage, app ' . $appId . ', user not logged in', OC_Log::ERROR);
+				\OCP\Util::writeLog('core', 'Can\'t get app storage, app ' . $appId . ', user not logged in', \OCP\Util::ERROR);
 				return false;
 			}
 		} else {
-			OC_Log::write('core', 'Can\'t get app storage, app ' . $appId . ' not enabled', OC_Log::ERROR);
+			\OCP\Util::writeLog('core', 'Can\'t get app storage, app ' . $appId . ' not enabled', \OCP\Util::ERROR);
 			return false;
 		}
 	}
@@ -1225,23 +1227,27 @@ class OC_App {
 		// just modify the description if it is available
 		// otherwise this will create a $data element with an empty 'description'
 		if (isset($data['description'])) {
-			// sometimes the description contains line breaks and they are then also
-			// shown in this way in the app management which isn't wanted as HTML
-			// manages line breaks itself
+			if (is_string($data['description'])) {
+				// sometimes the description contains line breaks and they are then also
+				// shown in this way in the app management which isn't wanted as HTML
+				// manages line breaks itself
 
-			// first of all we split on empty lines
-			$paragraphs = preg_split("!\n[[:space:]]*\n!mu", $data['description']);
+				// first of all we split on empty lines
+				$paragraphs = preg_split("!\n[[:space:]]*\n!mu", $data['description']);
 
-			$result = [];
-			foreach ($paragraphs as $value) {
-				// replace multiple whitespace (tabs, space, newlines) inside a paragraph
-				// with a single space - also trims whitespace
-				$result[] = trim(preg_replace('![[:space:]]+!mu', ' ', $value));
+				$result = [];
+				foreach ($paragraphs as $value) {
+					// replace multiple whitespace (tabs, space, newlines) inside a paragraph
+					// with a single space - also trims whitespace
+					$result[] = trim(preg_replace('![[:space:]]+!mu', ' ', $value));
+				}
+
+				// join the single paragraphs with a empty line in between
+				$data['description'] = implode("\n\n", $result);
+
+			} else {
+				$data['description'] = '';
 			}
-
-			// join the single paragraphs with a empty line in between
-			$data['description'] = implode("\n\n", $result);
-
 		}
 
 		return $data;

@@ -1,47 +1,37 @@
-=====================================
-What's New for Admins in ownCloud 8.1
-=====================================
+===========================================
+What's New for Admins in ownCloud |version|
+===========================================
 
-ownCloud Server and Enterprise Subscription 8.1 are shipping with a batch of 
-improvements and new features, including:
+See the `ownCloud 8.2 
+Features page <https://github.com/owncloud/core/wiki/ownCloud-8.2-Features>`_ 
+on Github for a comprehensive list of new features and updates.
 
-* Improved performance, with faster file transfers, much faster file deletion, improved scalability   through improved handling of parallel requests, and up to 50% more users on each ownCloud server    instance. 
-* Better file locking
-* Updated encryption with support for multiple encryption backends and 
-  migration tools for 8.0 -> 8.1
-* Improved LDAP configuration wizard
-* WebDAV performance enhancements
-* SFTP external storage with SSH keys
-* SMB external storage is now based on ``libsmbclient``
-* Improved performance and better storage space management of preview 
-  generation
-* UI improvements for configurating external storage
-* The ownCloud Appstore shows now different trust levels, and allows enabling 
-  experimental apps
-* Deleted files & folders now keep the share info after restoring from trashbin 
-  (local shares only and not external storage)
+Some of the improvements of interest to ownCloud admins are:
 
+* New ownCloud package repositories (admins must manually change to these, see 
+  :doc:`maintenance/upgrade`)
+* Configurable temporary directory
+* Many new occ commands for logging, encryption, and apps 
+* Unavailable external storages are not rechecked every request; rather, their 
+  failed state is saved and they are tried again after 10 minutes
+* External storages now support modular authentication mechanisms
+* Transactional file locking prevents data corruption and race conditions on 
+  concurrent access
+* Files app new sidebar shows details about files
+* Admins can define custom mimetype mappings and aliases
+* Mimetypes in the database can be updated when changed
+* Downgrades are prevented because they are unsupported  
+* Admin page warning for EOL PHP version 
+* Show apps that will be updated on the DB update page
+* New optional second name attribute in the LDAP app, so that user names appear 
+  as ``User Foo (optional 2nd attribute)`` (:ref:`ldap_directory_settings`) 
 
-* Many more links from the administration UI to the relevant documention
-* ``occ`` command updated to allow installing ownCloud completely from the 
-  command line
-* User avatars are displayed in share dialogs
-* Font preview, 3D pictures media type (previewed as JPEG) and raw media type 
-  support without previews 
-* A new simple example theme is included
-* All shares now have at least read permissions, which prevents unpredictable 
-  server behavior
-* Support for shortened URLs
-* Users may not remove share expiration dates when the admin settings require 
-  them
-* Auto complete in share dialog works again when sharing is limited to groups
-* `Developer changelog 
-  <https://doc.owncloud.org/server/8.1/developer_manual/app/changelog.html>`_ 
-  is available in the Developer's Manual
+There are many security enhancements, including:
 
-* File IDs are now persistent when moving files across storages, deleted to 
-  trashbin or restored as version
-* Ship ca-bundle.crt to work around issues on systems that experience failed 
-  connections to the Appstore
-* Introduce new "OC-ETag" header fixing issues with server configs stripping off 
-  ETags "No E-Tag received from server" 
+* $.get and $.post cannot be used to execute remote JavaScript
+* Referers are not sent anymore to prevent leaking of potential sensitive 
+  information within the URL such as the filename
+* Autoloader will only allow loading files from enabled apps
+* Encrypt session data to ensure that sensitive data such as remote storage 
+  passwords or encryption keys are not written on disk
+* If the shareAPI is disabled link shares no longer work

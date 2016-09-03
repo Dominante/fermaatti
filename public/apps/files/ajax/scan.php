@@ -4,6 +4,7 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -46,13 +47,16 @@ $listener = new ScanListener($eventSource);
 
 foreach ($users as $user) {
 	$eventSource->send('user', $user);
-	$scanner = new \OC\Files\Utils\Scanner($user, \OC::$server->getDatabaseConnection());
+	$scanner = new \OC\Files\Utils\Scanner($user, \OC::$server->getDatabaseConnection(), \OC::$server->getLogger());
 	$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', array($listener, 'file'));
-	$scanner->listen('\OC\Files\Utils\Scanner', 'scanFolder', array($listener, 'folder'));
-	if ($force) {
-		$scanner->scan($dir);
-	} else {
-		$scanner->backgroundScan($dir);
+	try {
+		if ($force) {
+			$scanner->scan($dir);
+		} else {
+			$scanner->backgroundScan($dir);
+		}
+	} catch (\Exception $e) {
+		$eventSource->send('error', get_class($e) . ': ' . $e->getMessage());
 	}
 }
 
@@ -74,13 +78,6 @@ class ScanListener {
 	 */
 	public function __construct($eventSource) {
 		$this->eventSource = $eventSource;
-	}
-
-	/**
-	 * @param string $path
-	 */
-	public function folder($path) {
-		$this->eventSource->send('folder', $path);
 	}
 
 	public function file() {

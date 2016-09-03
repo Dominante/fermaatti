@@ -8,7 +8,6 @@
  * @author Markus Goetz <markus@woboq.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
@@ -100,6 +99,11 @@ class Auth extends AbstractBasic {
 		if($user && $this->isDavAuthenticated($user)) {
 			return $user;
 		}
+
+		if($user && is_null(\OC::$server->getSession()->get(self::DAV_AUTHENTICATED))) {
+			return $user;
+		}
+
 		return null;
 	}
 
@@ -115,6 +119,7 @@ class Auth extends AbstractBasic {
 	 * @param string $realm
 	 * @return bool
 	 * @throws ServiceUnavailable
+	 * @throws NotAuthenticated
 	 */
 	public function authenticate(\Sabre\DAV\Server $server, $realm) {
 
@@ -137,7 +142,10 @@ class Auth extends AbstractBasic {
 	 */
 	private function auth(\Sabre\DAV\Server $server, $realm) {
 		if (\OC_User::handleApacheAuth() ||
-			(\OC_User::isLoggedIn() && is_null(\OC::$server->getSession()->get(self::DAV_AUTHENTICATED)))
+			//Fix for broken webdav clients
+			(\OC_User::isLoggedIn() && is_null(\OC::$server->getSession()->get(self::DAV_AUTHENTICATED))) ||
+			//Well behaved clients that only send the cookie are allowed
+			(\OC_User::isLoggedIn() && \OC::$server->getSession()->get(self::DAV_AUTHENTICATED) === \OC_User::getUser())
 		) {
 			$user = \OC_User::getUser();
 			\OC_Util::setupFS($user);

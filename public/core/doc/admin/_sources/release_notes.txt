@@ -2,35 +2,56 @@
 ownCloud |version| Release Notes
 ================================
 
-Recommended Setup for Running ownCloud
---------------------------------------
+Changes in 8.2
+--------------
 
-For best performance, stability, support, and full functionality we recommend:
+Home folder rule is enforced in the user_ldap application in new ownCloud installations; see :doc:`configuration_user/user_auth_ldap`. This affects ownCloud 8.0.10, 8.1.5 and 8.2.0 and up.
 
-* Red Hat Enterprise Linux 7
-* MySQL/MariaDB
-* PHP 5.4 +
-* Apache 2.4
+New location for Linux package repositories; ownCloud admins must manually 
+change to the new repos. See :doc:`maintenance/upgrade`
 
-Supported Platforms
--------------------
+PHP 5.6.11+ breaks the LDAP wizard with a 'Could not connect to LDAP' error. See https://github.com/owncloud/core/issues/20020. 
 
-* Server: Linux (Debian 7, SUSE Linux Enterprise Server 11 SP3 & 12, 
-  Red Hat Enterprise Linux/Centos 6.5 and 7, Ubuntu 12.04 LTS, 14.04 LTS, 
-  14.10)
-* Webserver: Apache 2  
-* Databases: MySQL/MariaDB 5.x; Oracle 11g; PostgreSQL
-* PHP 5.4 + required
-* Hypervisors: Hyper-V, VMware ESX, Xen, KVM
-* Desktop: Windows XP SP3 (EoL Q2 2015), Windows 7+, Mac OS X 10.7+ (64-bit 
-  only), Linux (CentOS 6.5, 7, Ubuntu 12.04 LTS, 14.04 LTS, 14.10, Fedora 20, 
-  21, openSUSE 12.3, 13)
-* Mobile apps: iOS 7+, Android 4+
-* Web browser: IE8+ (but not compatibility mode), Firefox 14+, Chrome 18+, 
-  Safari 5+
+``filesystem_check_changes`` in ``config.php`` is set to 0 by default. This 
+prevents unnecessary update checks and improves performance. If you are using 
+external storage mounts such as NFS on a remote storage server, set this to 1 
+so that ownCloud will detect remote file changes.
+
+XSendFile support has been removed, so there is no longer support for `serving 
+static files
+<https://doc.owncloud.org/server/8.1/admin_manual/configuration_files/
+serving_static_files_configuration.html>`_ from your ownCloud server.
+
+LDAP issue: 8.2 uses the ``memberof`` attribute by default. If this is not 
+activated on your LDAP server your user groups will not be detected, and you 
+will see this message in your ownCloud log: ``Error PHP Array to string 
+conversion at /var/www/html/owncloud/lib/private/template/functions.php#36``. 
+Fix this by disabling the ``memberof`` attribute on your ownCloud server with 
+the ``occ`` command, like this example on Ubuntu Linux::
+
+ sudo -u www-data php occ ldap:set-config "s01" useMemberOfToDetectMembership 0
  
+Run ``sudo -u www-data php occ ldap:show-config`` to find the correct ``sNN`` 
+value; if there is not one then use empty quotes, ``""``. (See 
+:doc:`configuration_server/occ_command`.)
+
+Users of the Linux Package need to update their repository setup as described
+in this `blogpost <https://owncloud.org/blog/upgrading-to-owncloud-server-8-2/>`_.
+
+The log format for failed logins to the ``owncloud.log`` has a slight syntax change.
+If a tool relies on logging failed logins please revise its rule. For ``fail2ban``
+you will find an updated rule at the `forums <https://forum.owncloud.org/viewtopic.
+php?f=8&t=28678>`_.
+
 Changes in 8.1
 --------------
+
+Use APCu only if available in version 4.0.6 and higher. If you install an older version, you will see a ``APCu below version 4.0.6 is installed, for stability and performance reasons we recommend to update to a newer APCu version`` warning on your ownCloud admin page.
+
+SMB external storage now based on ``php5-libsmbclient``, which must be downloaded 
+from the ownCloud software repositories (`installation instructions 
+<https://software.opensuse.org/download.html?project=isv%3AownCloud%3Acommunity% 
+3A8.1&package=php5-libsmbclient>`_).
   
 "Download from link" feature has been removed.
 
@@ -49,30 +70,54 @@ A default set of security and privacy HTTP headers have been added to the
 ownCloud ``.htaccess`` file, and ownCloud administrators may now customize which 
 headers are sent.
 
+More strict SSL certificate checking improves security but can result in
+"cURL error 60: SSL certificate problem: unable to get local issuer certificate"
+errors with certain broken PHP versions. Please verify your SSL setup, update your
+PHP or contact your vendor if you receive these errors.
+
 The persistent file-based cache (e.g. used by LDAP integration) has been dropped and 
 replaced with a memory-only cache, which must be explicitly configured. See 
 :doc:`configuration_user/user_auth_ldap`. Memory cache configuration for the 
-ownCloud server is no longer automatic, requiring configuration in 
-``config.php```` with the keys memcache.local`` and/or 
-``memcache.distributed``; see :ref:`caching`. 
+ownCloud server is no longer automatic, requiring installation of 
+your desired cache backend and configuration in 
+``config.php`` (see :doc:`configuration_server/caching_configuration`.) 
 
 The OC_User_HTTP backend has been removed. Administrators are encouraged to use 
 the ``user_webdavauth`` application instead.
 
-ownCloud ships now with its own root certificate bundle derived from the 
-Mozilla. The system root certificate bundle will not be used anymore for most 
-requests.
+ownCloud ships now with its own root certificate bundle derived from Mozilla's 
+root certificates file. The system root certificate bundle will not be used 
+anymore for most requests.
   
 When you upgrade from ownCloud 8.0, with encryption enabled, to 8.1, you must 
 enable the new encryption backend and migrate your encryption keys. See 
 :doc:`configuration_files/encryption_configuration`
-  
+
+Encryption can no longer be disabled in ownCloud 8.1. It is planned to re-add
+this feature to the command line client for a future release.
+
+It is not recommended to upgrade encryption-enabled systems from ownCloud Server 8.0
+to version 8.1.0 as there is a chance the migration will break. We recommend 
+migrating to the first bugfix release, ownCloud Server 8.1.1.
+
 Due to various technical issues, by default desktop sync clients older than 
 1.7 are not allowed to connect and sync with the ownCloud server. This is 
 configurable via the ``minimum.supported.desktop.version`` switch in 
 ``config.php``.
 
+Previews are now generated at a maximum size of 2048 x 2048 pixels. This is configurable
+via the ``preview_max_x`` and ``preview_max_y`` switches in ``config.php``.
+
 The ownCloud 8 server is not supported on any version of Windows.
+
+The 8.1.0 release has a minor bug which makes app updates fail at first try. Reload the
+apps page and try again, and the update will succeed.
+
+The ``forcessl`` option within the ``config.php`` and the ``Enforce SSL`` option 
+within the Admin-Backend was removed. This now needs to be configured like 
+described in :ref:`use_https_label`.
+
+WebDAV file locking was removed in oC 8.1 which causes Finder on Mac OS X to mount WebDAV read-only.
 
 Enterprise 8.1 Only
 -------------------
@@ -109,10 +154,8 @@ Manually Migrate Encryption Keys after Upgrade
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If you are using the Encryption app and upgrading from older versions of 
-ownCloud to ownCloud 8.0, you must manually migrate your encryption keys with 
-the *occ* command after the upgrade is complete, like this example for CentOS: 
-*sudo -u apache php occ encryption:migrate-keys* You must run *occ* as your HTTP 
-user. See :doc:`../configuration_server/occ_command` to learn more about *occ*
+ownCloud to ownCloud 8.0, you must manually migrate your encryption keys.
+See :ref:`upgrading_encryption_label`.
 
 Windows Server Not Supported
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -257,11 +300,11 @@ Nate, then search for ``*te``::
 
  occ ldap:search "*te"
 
-Refine searches by adjusting your search attributes in the ``User Search 
-Attributes`` form in your LDAP configuration on the Admin page. For example, if 
-your search attributes are ``givenName`` and ``sn`` you can find users by first 
-name + last name very quickly. For example, you'll find Terri Hanson by 
-searching for ``te ha``. Trailing whitespaces are ignored.
+Refine searches by adjusting the ``User Search Attributes`` field of the 
+Advanced tab in your LDAP configuration on the Admin page. For example, if your 
+search attributes are ``givenName`` and ``sn`` you can find users by first name 
++ last name very quickly. For example, you'll find Terri Hanson by searching for 
+``te ha``. Trailing whitespaces are ignored.
 
 .. https://github.com/owncloud/core/issues/12647
 

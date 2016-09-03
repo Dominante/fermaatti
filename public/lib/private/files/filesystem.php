@@ -59,6 +59,7 @@
 namespace OC\Files;
 
 use OC\Cache\File;
+use OC\Cache\CappedMemoryCache;
 use OC\Files\Config\MountProviderCollection;
 use OC\Files\Storage\StorageFactory;
 use OCP\Files\Config\IMountProvider;
@@ -79,7 +80,7 @@ class Filesystem {
 
 	static private $usersSetup = array();
 
-	static private $normalizedPathCache = array();
+	static private $normalizedPathCache = null;
 
 	static private $listeningForProviders = false;
 
@@ -343,7 +344,7 @@ class Filesystem {
 		self::$defaultInstance = new View($root);
 
 		if (!self::$mounts) {
-			self::$mounts = new Mount\Manager();
+			self::$mounts = \OC::$server->getMountManager();
 		}
 
 		//load custom mount config
@@ -356,7 +357,7 @@ class Filesystem {
 
 	static public function initMountManager() {
 		if (!self::$mounts) {
-			self::$mounts = new Mount\Manager();
+			self::$mounts = \OC::$server->getMountManager();
 		}
 	}
 
@@ -786,6 +787,10 @@ class Filesystem {
 	 * @return string
 	 */
 	public static function normalizePath($path, $stripTrailingSlash = true, $isAbsolutePath = false) {
+		if (is_null(self::$normalizedPathCache)) {
+			self::$normalizedPathCache = new CappedMemoryCache();
+		}
+
 		/**
 		 * FIXME: This is a workaround for existing classes and files which call
 		 *        this function with another type than a valid string. This

@@ -5,8 +5,6 @@
  * See the COPYING-README file.
  */
 
-/* global OC, t */
-
 /**
  * The callback will be fired as soon as enter is pressed by the
  * user or 1 second after the last data entry
@@ -77,7 +75,10 @@ function changeDisplayName () {
 				$('#oldDisplayName').val($('#displayName').val());
 				// update displayName on the top right expand button
 				$('#expandDisplayName').text($('#displayName').val());
-				updateAvatar();
+				// update avatar if avatar is available
+				if($('#removeavatar').css('display') !== 'none') {
+					updateAvatar();
+				}
 			}
 			else {
 				$('#newdisplayname').val(data.data.displayName);
@@ -156,6 +157,9 @@ function cleanCropper () {
 }
 
 function avatarResponseHandler (data) {
+	if (typeof data === 'string') {
+		data = $.parseJSON(data);
+	}
 	var $warning = $('#avatar .warning');
 	$warning.hide();
 	if (data.status === "success") {
@@ -188,15 +192,15 @@ $(document).ready(function () {
 			$.post(OC.generateUrl('/settings/personal/changepassword'), post, function (data) {
 				if (data.status === "success") {
 					$('#pass1').val('');
-					$('#pass2').val('');
+					$('#pass2').val('').change();
 					// Hide a possible errormsg and show successmsg
 					$('#password-changed').removeClass('hidden').addClass('inlineblock');
 					$('#password-error').removeClass('inlineblock').addClass('hidden');
 				} else {
 					if (typeof(data.data) !== "undefined") {
-						$('#passworderror').html(data.data.message);
+						$('#password-error').html(data.data.message);
 					} else {
-						$('#passworderror').html(t('Unable to change password'));
+						$('#password-error').html(t('Unable to change password'));
 					}
 					// Hide a possible successmsg and show errormsg
 					$('#password-changed').removeClass('inlineblock').addClass('hidden');
@@ -233,13 +237,37 @@ $(document).ready(function () {
 
 	var uploadparms = {
 		done: function (e, data) {
-			avatarResponseHandler(data.result);
+			var response = data;
+			if (typeof data.result === 'string') {
+				response = $.parseJSON(data.result);
+			} else if (data.result && data.result.length) {
+				// fetch response from iframe
+				response = $.parseJSON(data.result[0].body.innerText);
+			} else {
+				response = data.result;
+			}
+			avatarResponseHandler(response);
+		},
+		submit: function(e, data) {
+			data.formData = _.extend(data.formData || {}, {
+				requesttoken: OC.requestToken
+			});
+		},
+		fail: function (e, data){
+			var msg = data.jqXHR.statusText + ' (' + data.jqXHR.status + ')';
+			if (!_.isUndefined(data.jqXHR.responseJSON) &&
+				!_.isUndefined(data.jqXHR.responseJSON.data) &&
+				!_.isUndefined(data.jqXHR.responseJSON.data.message)
+			) {
+				msg = data.jqXHR.responseJSON.data.message;
+			}
+			avatarResponseHandler({
+			data: {
+					message: t('settings', 'An error occurred: {message}', { message: msg })
+				}
+			});
 		}
 	};
-
-	$('#uploadavatarbutton').click(function () {
-		$('#uploadavatar').click();
-	});
 
 	$('#uploadavatar').fileupload(uploadparms);
 
@@ -247,7 +275,25 @@ $(document).ready(function () {
 		OC.dialogs.filepicker(
 			t('settings', "Select a profile picture"),
 			function (path) {
-				$.post(OC.generateUrl('/avatar/'), {path: path}, avatarResponseHandler);
+				$.ajax({
+					type: "POST",
+					url: OC.generateUrl('/avatar/'),
+					data: { path: path }
+				}).done(avatarResponseHandler)
+					.fail(function(jqXHR, status){
+						var msg = jqXHR.statusText + ' (' + jqXHR.status + ')';
+						if (!_.isUndefined(jqXHR.responseJSON) &&
+							!_.isUndefined(jqXHR.responseJSON.data) &&
+							!_.isUndefined(jqXHR.responseJSON.data.message)
+						) {
+							msg = jqXHR.responseJSON.data.message;
+						}
+						avatarResponseHandler({
+							data: {
+								message: t('settings', 'An error occurred: {message}', { message: msg })
+							}
+						});
+					});
 			},
 			false,
 			["image/png", "image/jpeg"]
@@ -289,7 +335,7 @@ $(document).ready(function () {
 	var url = OC.generateUrl(
 		'/avatar/{user}/{size}',
 		{user: OC.currentUser, size: 1}
-	) + '?requesttoken=' + encodeURIComponent(oc_requesttoken);
+	);
 	$.get(url, function (result) {
 		if (typeof(result) === 'object') {
 			$('#removeavatar').hide();
@@ -312,7 +358,24 @@ $(document).ready(function () {
 	$('#sslCertificate tr > td').tipsy({gravity: 'n', live: true});
 
 	$('#rootcert_import').fileupload({
+		submit: function(e, data) {
+			data.formData = _.extend(data.formData || {}, {
+				requesttoken: OC.requestToken
+			});
+		},
 		success: function (data) {
+			if (typeof data === 'string') {
+				data = $.parseJSON(data);
+			} else if (data && data.length) {
+				// fetch response from iframe
+				data = $.parseJSON(data[0].body.innerText);
+			}
+			if (!data || typeof(data) === 'string') {
+				// IE8 iframe workaround comes here instead of fail()
+				OC.Notification.showTemporary(
+					t('settings', 'An error occurred. Please upload an ASCII-encoded PEM certificate.'));
+				return;
+			}
 			var issueDate = new Date(data.validFrom * 1000);
 			var expireDate = new Date(data.validTill * 1000);
 			var now = new Date();
@@ -340,10 +403,6 @@ $(document).ready(function () {
 			OC.Notification.showTemporary(
 				t('settings', 'An error occurred. Please upload an ASCII-encoded PEM certificate.'));
 		}
-	});
-
-	$('#rootcert_import_button').click(function () {
-		$('#rootcert_import').click();
 	});
 
 	if ($('#sslCertificate > tbody > tr').length === 0) {

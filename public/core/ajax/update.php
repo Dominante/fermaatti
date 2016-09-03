@@ -28,19 +28,24 @@
 set_time_limit(0);
 require_once '../../lib/base.php';
 
-\OCP\JSON::callCheck();
+$l = \OC::$server->getL10N('core');
+
+$eventSource = \OC::$server->createEventSource();
+// need to send an initial message to force-init the event source,
+// which will then trigger its own CSRF check and produces its own CSRF error
+// message
+$eventSource->send('success', (string)$l->t('Preparing update'));
 
 if (OC::checkUpgrade(false)) {
 	// if a user is currently logged in, their session must be ignored to
 	// avoid side effects
 	\OC_User::setIncognitoMode(true);
 
-	$l = new \OC_L10N('core');
-	$eventSource = \OC::$server->createEventSource();
+	$logger = \OC::$server->getLogger();
 	$updater = new \OC\Updater(
 			\OC::$server->getHTTPHelper(),
 			\OC::$server->getConfig(),
-			\OC_Log::$object
+			$logger
 	);
 	$incompatibleApps = [];
 	$disabledThirdPartyApps = [];
@@ -54,11 +59,23 @@ if (OC::checkUpgrade(false)) {
 	$updater->listen('\OC\Updater', 'maintenanceActive', function () use ($eventSource, $l) {
 		$eventSource->send('success', (string)$l->t('Maintenance mode is kept active'));
 	});
+	$updater->listen('\OC\Updater', 'dbUpgradeBefore', function () use($eventSource, $l) {
+		$eventSource->send('success', (string)$l->t('Updating database schema'));
+	});
 	$updater->listen('\OC\Updater', 'dbUpgrade', function () use ($eventSource, $l) {
 		$eventSource->send('success', (string)$l->t('Updated database'));
 	});
+	$updater->listen('\OC\Updater', 'dbSimulateUpgradeBefore', function () use($eventSource, $l) {
+		$eventSource->send('success', (string)$l->t('Checking whether the database schema can be updated (this can take a long time depending on the database size)'));
+	});
 	$updater->listen('\OC\Updater', 'dbSimulateUpgrade', function () use ($eventSource, $l) {
 		$eventSource->send('success', (string)$l->t('Checked database schema update'));
+	});
+	$updater->listen('\OC\Updater', 'appUpgradeCheckBefore', function () use ($eventSource, $l) {
+		$eventSource->send('success', (string)$l->t('Checking updates of apps'));
+	});
+	$updater->listen('\OC\Updater', 'appSimulateUpdate', function ($app) use ($eventSource, $l) {
+		$eventSource->send('success', (string)$l->t('Checking whether the database schema for %s can be updated (this can take a long time depending on the database size)', [$app]));
 	});
 	$updater->listen('\OC\Updater', 'appUpgradeCheck', function () use ($eventSource, $l) {
 		$eventSource->send('success', (string)$l->t('Checked database schema update for apps'));
@@ -83,8 +100,20 @@ if (OC::checkUpgrade(false)) {
 		$eventSource->close();
 		OC_Config::setValue('maintenance', false);
 	});
+	$updater->listen('\OC\Updater', 'setDebugLogLevel', function ($logLevel, $logLevelName) use($eventSource, $l) {
+		$eventSource->send('success', (string)$l->t('Set log level to debug - current level: "%s"', [ $logLevelName ]));
+	});
+	$updater->listen('\OC\Updater', 'resetLogLevel', function ($logLevel, $logLevelName) use($eventSource, $l) {
+		$eventSource->send('success', (string)$l->t('Reset log level to  "%s"', [ $logLevelName ]));
+	});
 
-	$updater->upgrade();
+	try {
+		$updater->upgrade();
+	} catch (\Exception $e) {
+		$eventSource->send('failure', get_class($e) . ': ' . $e->getMessage());
+		$eventSource->close();
+		exit();
+	}
 
 	if (!empty($incompatibleApps)) {
 		$eventSource->send('notice',
@@ -92,9 +121,13 @@ if (OC::checkUpgrade(false)) {
 	}
 	if (!empty($disabledThirdPartyApps)) {
 		$eventSource->send('notice',
-			(string)$l->t('Following 3rd party apps have been disabled: %s', implode(', ', $disabledThirdPartyApps)));
+			(string)$l->t('Following apps have been disabled: %s', implode(', ', $disabledThirdPartyApps)));
 	}
 
-	$eventSource->send('done', '');
-	$eventSource->close();
+} else {
+	$eventSource->send('notice', (string)$l->t('Already up to date'));
 }
+
+$eventSource->send('done', '');
+$eventSource->close();
+

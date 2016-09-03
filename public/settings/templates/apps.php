@@ -81,14 +81,14 @@ script(
 		<p class="documentation">
 			<?php p($l->t("Documentation:"));?>
 			{{#if documentation.user}}
-			<span class="userDocumentation appslink">
-			<a id='userDocumentation' href='{{documentation.user}}' target="_blank"><?php p($l->t("User Documentation"));?></a>
+			<span class="userDocumentation">
+			<a id="userDocumentation" class="appslink" href="{{documentation.user}}" target="_blank"><?php p($l->t('User documentation'));?> ↗</a>
 			</span>
 			{{/if}}
 
 			{{#if documentation.admin}}
-			<span class="adminDocumentation appslink">
-			<a id='adminDocumentation' href='{{documentation.admin}}' target="_blank"><?php p($l->t("Admin Documentation"));?></a>
+			<span class="adminDocumentation">
+			<a id="adminDocumentation" class="appslink" href="{{documentation.admin}}" target="_blank"><?php p($l->t('Admin documentation'));?> ↗</a>
 			</span>
 			{{/if}}
 		</p>
@@ -137,7 +137,7 @@ script(
 		</div>
 
 		<div id="app-settings-content" class="apps-experimental">
-			<input type="checkbox" id="enable-experimental-apps" <?php if($_['experimentalEnabled']) { print_unescaped('checked="checked"'); }?>>
+			<input type="checkbox" id="enable-experimental-apps" <?php if($_['experimentalEnabled']) { print_unescaped('checked="checked"'); }?> class="checkbox">
 			<label for="enable-experimental-apps"><?php p($l->t('Enable experimental apps')) ?></label>
 			<p>
 				<small>

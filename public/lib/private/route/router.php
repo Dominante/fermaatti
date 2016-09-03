@@ -7,6 +7,7 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
@@ -29,8 +30,10 @@
 
 namespace OC\Route;
 
+use OCP\ILogger;
 use OCP\Route\IRouter;
 use OCP\AppFramework\App;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
@@ -77,7 +80,13 @@ class Router implements IRouter {
 
 	protected $loadedApps = array();
 
-	public function __construct() {
+	/**
+	 * @var ILogger
+	 */
+	protected $logger;
+
+	public function __construct(ILogger $logger) {
+		$this->logger = $logger;
 		$baseUrl = \OC_Helper::linkTo('', 'index.php');
 		if (!\OC::$CLI) {
 			$method = $_SERVER['REQUEST_METHOD'];
@@ -126,6 +135,7 @@ class Router implements IRouter {
 
 	/**
 	 * loads the api routes
+	 *
 	 * @return void
 	 */
 	public function loadRoutes($app = null) {
@@ -150,6 +160,12 @@ class Router implements IRouter {
 		\OC::$server->getEventLogger()->start('loadroutes' . $requestedApp, 'Loading Routes');
 		foreach ($routingFiles as $app => $file) {
 			if (!isset($this->loadedApps[$app])) {
+				if (!\OC_App::isAppLoaded($app)) {
+					// app MUST be loaded before app routes
+					// try again next time loadRoutes() is called
+					$this->loaded = false;
+					continue;
+				}
 				$this->loadedApps[$app] = true;
 				$this->useCollection($app);
 				$this->requireRouteFile($file, $app);
@@ -163,8 +179,9 @@ class Router implements IRouter {
 			$this->useCollection('root');
 			require_once 'settings/routes.php';
 			require_once 'core/routes.php';
-
-			// include ocs routes
+		}
+		if ($this->loaded) {
+			// include ocs routes, must be loaded last for /ocs prefix
 			require_once 'ocs/routes.php';
 			$collection = $this->getCollection('ocs');
 			$collection->addPrefix('/ocs');
@@ -282,6 +299,7 @@ class Router implements IRouter {
 
 	/**
 	 * Get the url generator
+	 *
 	 * @return \Symfony\Component\Routing\Generator\UrlGenerator
 	 *
 	 */
@@ -303,11 +321,17 @@ class Router implements IRouter {
 	 */
 	public function generate($name, $parameters = array(), $absolute = false) {
 		$this->loadRoutes();
-		return $this->getGenerator()->generate($name, $parameters, $absolute);
+		try {
+			return $this->getGenerator()->generate($name, $parameters, $absolute);
+		} catch (RouteNotFoundException $e) {
+			$this->logger->logException($e);
+			return '';
+		}
 	}
 
 	/**
 	 * To isolate the variable scope used inside the $file it is required in it's own method
+	 *
 	 * @param string $file the route file location to include
 	 * @param string $appName
 	 */
@@ -323,6 +347,7 @@ class Router implements IRouter {
 	 * \OCA\MyApp\AppInfo\Application. If that class does not exist, a default
 	 * App will be intialized. This makes it optional to ship an
 	 * appinfo/application.php by using the built in query resolver
+	 *
 	 * @param array $routes the application routes
 	 * @param string $appName the name of the app.
 	 */

@@ -1,18 +1,16 @@
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Email Configuration &mdash; ownCloud Server Administration Manual 8.2 documentation</title>
+    <title>Email Configuration &mdash; ownCloud 8.2 Server Administration Manual 8.2 documentation</title>
     
-    <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/style.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/main.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/styles.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -26,87 +24,41 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/bootstrap.js"></script>
-    <link rel="top" title="ownCloud Server Administration Manual 8.2 documentation" href="../index.html" />
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="ownCloud 8.2 Server Administration Manual 8.2 documentation" href="../contents.html" />
     <link rel="up" title="ownCloud Server Configuration" href="index.html" />
     <link rel="next" title="Linking External Sites" href="external_sites.html" />
     <link rel="prev" title="Config.php Parameters" href="config_sample_php_parameters.html" />
-<script type="text/javascript">
-(function () {
-  /**
-   * Patch TOC list.
-   *
-   * Will mutate the underlying span to have a correct ul for nav.
-   *
-   * @param $span: Span containing nested UL's to mutate.
-   * @param minLevel: Starting level for nested lists. (1: global, 2: local).
-   */
-  var patchToc = function ($ul, minLevel) {
-    var findA;
-
-    // Find all a "internal" tags, traversing recursively.
-    findA = function ($elem, level) {
-      var level = level || 0,
-        $items = $elem.find("> li > a.internal, > ul, > li > ul");
-
-      // Iterate everything in order.
-      $items.each(function (index, item) {
-        var $item = $(item),
-          tag = item.tagName.toLowerCase(),
-          pad = 15 + ((level - minLevel) * 10);
-
-        if (tag === 'a' && level >= minLevel) {
-          // Add to existing padding.
-          $item.css('padding-left', pad + "px");
-          console.log(level, $item, 'padding-left', pad + "px");
-        } else if (tag === 'ul') {
-          // Recurse.
-          findA($item, level + 1);
-        }
-      });
-    };
-
-    console.log("HERE");
-    findA($ul);
-  };
-
-  $(document).ready(function () {
-    // Add styling, structure to TOC's.
-    $(".dropdown-menu").each(function () {
-      $(this).find("ul").each(function (index, item){
-        var $item = $(item);
-        $item.addClass('unstyled');
-      });
-      $(this).find("li").each(function () {
-        $(this).parent().append(this);
-      });
-    });
-
-    // Patch in level.
-    patchToc($("ul.globaltoc"), 2);
-    patchToc($("ul.localtoc"), 2);
-
-    // Enable dropdown.
-    $('.dropdown-toggle').dropdown();
-  });
-}());
-</script>
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1d2d44">
 
   </head>
-  <body>
-  
+  <body role="document">
 
-<div class="container">
-  <div class="content">
-    <div class="page-header">
-      <h1><a href="../contents.html">ownCloud Server Administration Manual</a></h1>
 
+<div class="wrap container not-front">
+  <div class="content row">
+  <main class="main">
+    <div class="row page-content-header">
+      <div class="col-md-5 col-md-offset-7">
+      
+        <form class="headersearch" style="margin-bottom:-3px;" action="../search.html" method="get">
+        <input type="text" value="" name="q" id="q" class="form-control" /> 
+        <button  class="btn btn-default" type="submit" id="searchsubmit">Search</button>
+        </form>
+      
+      </div>
     </div>
     
 			<div class="row">
-				<div class="span3">
+				<div class="col-md-3">
 					<div class="sidebar">
-						<div class="well">
 							<div class="menu-support-container">
 								<ul id="menu-support" class="menu">
 									<ul>
@@ -116,16 +68,14 @@
                   <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 8.2 Server Administration Manual Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 8.2 Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 8.1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 8.2</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../configuration_user/index.html">User Management</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../configuration_files/index.html">File Sharing and Management</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">ownCloud Server Configuration</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="security_setup_warnings.html">Warnings on Admin Page</a></li>
 <li class="toctree-l2"><a class="reference internal" href="occ_command.html">Using the occ Command</a></li>
 <li class="toctree-l2"><a class="reference internal" href="activity_configuration.html">Configuring the Activity App</a></li>
 <li class="toctree-l2"><a class="reference internal" href="antivirus_configuration.html">Configuring the ClamAV Antivirus Scanner</a></li>
-<li class="toctree-l2"><a class="reference internal" href="automatic_configuration.html">Automatic Configuration Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caching_configuration.html">Configuring Memory Caching</a></li>
 <li class="toctree-l2"><a class="reference internal" href="background_jobs_configuration.html">Defining Background Jobs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="config_sample_php_parameters.html">Config.php Parameters</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">Email Configuration</a><ul>
@@ -139,40 +89,56 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="external_sites.html">Linking External Sites</a></li>
-<li class="toctree-l2"><a class="reference internal" href="js_css_asset_management_configuration.html">JavaScript and CSS Asset Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_client_repos.html">Custom Client Download Repositories</a></li>
 <li class="toctree-l2"><a class="reference internal" href="knowledgebase_configuration.html">Knowledge Base Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="language_configuration.html">Language Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logging_configuration.html">Logging Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="harden_server.html">Hardening and Security Guidance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="performance_tuning.html">Server Tuning &amp; Performance Tips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reverse_proxy_configuration.html">Reverse Proxy Configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="search_configuration.html">Enabling Full-Text Search</a></li>
 <li class="toctree-l2"><a class="reference internal" href="thirdparty_php_configuration.html">Using Third Party PHP Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="js_css_asset_management_configuration.html">JavaScript and CSS Asset Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="automatic_configuration.html">Automatic Configuration Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="oc_server_tuning.html">ownCloud Server Tuning</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration_user/index.html">User Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration_files/index.html">File Sharing and Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configuration_database/index.html">Database Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration_mimetypes/index.html">Mimetypes Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../maintenance/index.html">Maintenance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../operations/index.html">Operations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../issues/index.html">Issues and Troubleshooting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../videos/index.html">ownCloud Videos</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../enterprise_installation/index.html">Enterprise Subscription Installation (ES Only)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../enterprise_clients/index.html">Creating Branded ownCloud Clients (ES only)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../enterprise_external_storage/index.html">External Storage (ES only)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../enterprise_user_management/index.html">User Management (ES only)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../enterprise_files_drop/index.html">Enabling Anonymous Uploads with Files Drop (ES Only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_installation/index.html">Enterprise Edition Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_clients/index.html">Creating Branded ownCloud Clients (Enterprise only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_server_branding/index.html">Enterprise Server Branding (Enterprise only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_external_storage/index.html">External Storage (Enterprise only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_user_management/index.html">User Management (Enterprise only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_files_drop/index.html">Enabling Anonymous Uploads with Files Drop (Enterprise Only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_logging/index.html">Enterprise Logging Apps (Enterprise only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_troubleshooting.html">Enterprise Troubleshooting</a></li>
 </ul>
 
 								</ul>
 							</div>
-						</div>
 					</div>
 				</div>
         
 
-				<div class="span9">
+				<div class="col-md-9">
 					<div class="page-content">
+            
+<ul class="prevnext-title list-unstyled list-inline">
+  <li class="prev">
+    <a href="config_sample_php_parameters.html" title="Previous Chapter: Config.php Parameters"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm">&laquo; Config.php Pa...</span>
+    </a>
+  </li>
+  <li class="next">
+    <a href="external_sites.html" title="Next Chapter: Linking External Sites"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm">Linking Exter... &raquo;</span>
+    </a>
+  </li>
+</ul>
 						
   <div class="section" id="email-configuration">
 <h1>Email Configuration<a class="headerlink" href="#email-configuration" title="Permalink to this headline">¶</a></h1>
@@ -188,7 +154,7 @@ or it may be a remote server.</p>
 <img alt="../_images/smtp-config-wizard.png" src="../_images/smtp-config-wizard.png" />
 </div>
 <p>With the new wizard, connecting ownCloud to your mail server is fast and easy.
-The wizard fills in the values in <tt class="docutils literal"><span class="pre">config/config.php</span></tt>, so you may use either
+The wizard fills in the values in <code class="docutils literal"><span class="pre">config/config.php</span></code>, so you may use either
 or both as you prefer.</p>
 <p>The ownCloud Email wizard supports three types of mail server connections:
 SMTP, PHP, and Sendmail. Use the SMTP configurator for a remote server, and PHP
@@ -197,7 +163,7 @@ or Sendmail when your mail server is on the same machine as ownCloud.</p>
 <p class="first admonition-title">Note</p>
 <p class="last">The Sendmail option refers to the Sendmail SMTP server, and any
 drop-in Sendmail replacement such as Postfix, Exim, or Courier. All of
-these include a <tt class="docutils literal"><span class="pre">sendmail</span></tt> binary, and are freely-interchangeable.</p>
+these include a <code class="docutils literal"><span class="pre">sendmail</span></code> binary, and are freely-interchangeable.</p>
 </div>
 <div class="section" id="configuring-an-smtp-server">
 <h2>Configuring an SMTP Server<a class="headerlink" href="#configuring-an-smtp-server" title="Permalink to this headline">¶</a></h2>
@@ -217,11 +183,12 @@ connect ownCloud to a remote SMTP server:</p>
 <p>Your changes are saved immediately, and you can click the Send Email button to
 test your configuration. This sends a test message to the email address you
 configured on your Personal page. The test message says:</p>
-<div class="highlight-python"><pre>If you received this email, the settings seem to be correct.
+<div class="highlight-python"><div class="highlight"><pre>If you received this email, the settings seem to be correct.
 
 --
 ownCloud
-web services under your control</pre>
+web services under your control
+</pre></div>
 </div>
 </div>
 <div class="section" id="configuring-php-and-sendmail">
@@ -231,12 +198,12 @@ enter your desired return address.</p>
 <div class="figure">
 <img alt="../_images/smtp-config-php-sendmail.png" src="../_images/smtp-config-php-sendmail.png" />
 </div>
-<p>How do you decide which one to use? PHP mode uses your local <tt class="docutils literal"><span class="pre">sendmail</span></tt>
-binary. Use this if you want to use <tt class="docutils literal"><span class="pre">php.ini</span></tt> to control some of your mail
+<p>How do you decide which one to use? PHP mode uses your local <code class="docutils literal"><span class="pre">sendmail</span></code>
+binary. Use this if you want to use <code class="docutils literal"><span class="pre">php.ini</span></code> to control some of your mail
 server functions, such as setting paths, headers, or passing extra command
-options to the <tt class="docutils literal"><span class="pre">sendmail</span></tt> binary. These vary according to which server you
+options to the <code class="docutils literal"><span class="pre">sendmail</span></code> binary. These vary according to which server you
 are using, so consult your server&#8217;s documentation to see what your options are.</p>
-<p>In most cases the <tt class="docutils literal"><span class="pre">smtp</span></tt> option is best, because it removes the extra step of
+<p>In most cases the <code class="docutils literal"><span class="pre">smtp</span></code> option is best, because it removes the extra step of
 passing through PHP, and you can control all of your mail server options in one
 place, in your mail server configuration.</p>
 </div>
@@ -267,16 +234,16 @@ relevant variables such as username, share links, and filenames. You can, if you
 are careful, edit these even without knowing PHP or HTML; don&#8217;t touch any of the
 code, but you can edit the text portions of the messages. For example, this the
 lost password mail template:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight-python"><div class="highlight"><pre>&lt;?php
 
-   <span class="k">echo</span> <span class="nb">str_replace</span><span class="p">(</span><span class="s1">&#39;{link}&#39;</span><span class="p">,</span> <span class="nv">$_</span><span class="p">[</span><span class="s1">&#39;link&#39;</span><span class="p">],</span> <span class="nv">$l</span><span class="o">-&gt;</span><span class="na">t</span><span class="p">(</span><span class="s1">&#39;Use the following link to</span>
-<span class="s1">   reset your password: {link}&#39;</span><span class="p">));</span>
+   echo str_replace(&#39;{link}&#39;, $_[&#39;link&#39;], $l-&gt;t(&#39;Use the following link to
+   reset your password: {link}&#39;));
 </pre></div>
 </div>
-<p>You could change the text portion of the template, <tt class="docutils literal"><span class="pre">Use</span> <span class="pre">the</span> <span class="pre">following</span> <span class="pre">link</span> <span class="pre">to</span>
-<span class="pre">reset</span> <span class="pre">your</span> <span class="pre">password:</span></tt> to say something else, such as <tt class="docutils literal"><span class="pre">Click</span> <span class="pre">the</span> <span class="pre">following</span> <span class="pre">link</span>
+<p>You could change the text portion of the template, <code class="docutils literal"><span class="pre">Use</span> <span class="pre">the</span> <span class="pre">following</span> <span class="pre">link</span> <span class="pre">to</span>
+<span class="pre">reset</span> <span class="pre">your</span> <span class="pre">password:</span></code> to say something else, such as <code class="docutils literal"><span class="pre">Click</span> <span class="pre">the</span> <span class="pre">following</span> <span class="pre">link</span>
 <span class="pre">to</span> <span class="pre">reset</span> <span class="pre">your</span> <span class="pre">password.</span> <span class="pre">If</span> <span class="pre">you</span> <span class="pre">did</span> <span class="pre">not</span> <span class="pre">ask</span> <span class="pre">for</span> <span class="pre">a</span> <span class="pre">password</span> <span class="pre">reset,</span> <span class="pre">ignore</span> <span class="pre">this</span>
-<span class="pre">message.</span></tt></p>
+<span class="pre">message.</span></code></p>
 <p>Again, be very careful to change nothing but the message text, because the
 tiniest coding error will break the template.</p>
 <div class="admonition note">
@@ -288,43 +255,43 @@ paste them back to the template text box for use when you are done.</p>
 </div>
 <div class="section" id="setting-mail-server-parameters-in-config-php">
 <h2>Setting Mail Server Parameters in config.php<a class="headerlink" href="#setting-mail-server-parameters-in-config-php" title="Permalink to this headline">¶</a></h2>
-<p>If you prefer, you may set your mail server parameters in <tt class="docutils literal"><span class="pre">config/config.php</span></tt>.
+<p>If you prefer, you may set your mail server parameters in <code class="docutils literal"><span class="pre">config/config.php</span></code>.
 The following examples are for SMTP, PHP, Sendmail, and Qmail.</p>
 <div class="section" id="smtp">
 <h3>SMTP<a class="headerlink" href="#smtp" title="Permalink to this headline">¶</a></h3>
 <p>If you want to send email using a local or remote SMTP server it is necessary
 to enter the name or IP address of the server, optionally followed by a colon
 separated port number, e.g. <strong>:425</strong>. If this value is not given the default
-port 25/tcp will be used unless you will change that by modifying the
+port 25/tcp will be used unless you change that by modifying the
 <strong>mail_smtpport</strong> parameter. Multiple servers can be entered, separated by
 semicolons:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight-python"><div class="highlight"><pre>&lt;?php
 
-  <span class="s2">&quot;mail_smtpmode&quot;</span>     <span class="o">=&gt;</span> <span class="s2">&quot;smtp&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtphost&quot;</span>     <span class="o">=&gt;</span> <span class="s2">&quot;smtp-1.server.dom;smtp-2.server.dom:425&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtpport&quot;</span>     <span class="o">=&gt;</span> <span class="mi">25</span><span class="p">,</span>
+  &quot;mail_smtpmode&quot;     =&gt; &quot;smtp&quot;,
+  &quot;mail_smtphost&quot;     =&gt; &quot;smtp-1.server.dom;smtp-2.server.dom:425&quot;,
+  &quot;mail_smtpport&quot;     =&gt; 25,
 </pre></div>
 </div>
 <p>or</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight-python"><div class="highlight"><pre>&lt;?php
 
-  <span class="s2">&quot;mail_smtpmode&quot;</span>     <span class="o">=&gt;</span> <span class="s2">&quot;smtp&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtphost&quot;</span>     <span class="o">=&gt;</span> <span class="s2">&quot;smtp.server.dom&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtpport&quot;</span>     <span class="o">=&gt;</span> <span class="mi">425</span><span class="p">,</span>
+  &quot;mail_smtpmode&quot;     =&gt; &quot;smtp&quot;,
+  &quot;mail_smtphost&quot;     =&gt; &quot;smtp.server.dom&quot;,
+  &quot;mail_smtpport&quot;     =&gt; 425,
 </pre></div>
 </div>
 <p>If a malware or SPAM scanner is running on the SMTP server it might be
 necessary that you increase the SMTP timeout to e.g. 30s:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight-python"><div class="highlight"><pre>&lt;?php
 
-  <span class="s2">&quot;mail_smtptimeout&quot;</span>  <span class="o">=&gt;</span> <span class="mi">30</span><span class="p">,</span>
+  &quot;mail_smtptimeout&quot;  =&gt; 30,
 </pre></div>
 </div>
 <p>If the SMTP server accepts insecure connections, the default setting can be
 used:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight-python"><div class="highlight"><pre>&lt;?php
 
-<span class="s2">&quot;mail_smtpsecure&quot;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+&quot;mail_smtpsecure&quot;   =&gt; &#39;&#39;,
 </pre></div>
 </div>
 <p>If the SMTP server only accepts secure connections you can choose between
@@ -333,10 +300,10 @@ the following two variants:</p>
 <h4>SSL<a class="headerlink" href="#ssl" title="Permalink to this headline">¶</a></h4>
 <p>A secure connection will be initiated using the outdated SMTPS protocol
 which uses the port 465/tcp:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight-python"><div class="highlight"><pre>&lt;?php
 
-  <span class="s2">&quot;mail_smtphost&quot;</span>     <span class="o">=&gt;</span> <span class="s2">&quot;smtp.server.dom:465&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtpsecure&quot;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;ssl&#39;</span><span class="p">,</span>
+  &quot;mail_smtphost&quot;     =&gt; &quot;smtp.server.dom:465&quot;,
+  &quot;mail_smtpsecure&quot;   =&gt; &#39;ssl&#39;,
 </pre></div>
 </div>
 </div>
@@ -344,30 +311,30 @@ which uses the port 465/tcp:</p>
 <h4>TLS<a class="headerlink" href="#tls" title="Permalink to this headline">¶</a></h4>
 <p>A secure connection will be initiated using the STARTTLS protocol which
 uses the default port 25/tcp:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight-python"><div class="highlight"><pre>&lt;?php
 
-  <span class="s2">&quot;mail_smtphost&quot;</span>     <span class="o">=&gt;</span> <span class="s2">&quot;smtp.server.dom&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtpsecure&quot;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;tls&#39;</span><span class="p">,</span>
+  &quot;mail_smtphost&quot;     =&gt; &quot;smtp.server.dom&quot;,
+  &quot;mail_smtpsecure&quot;   =&gt; &#39;tls&#39;,
 </pre></div>
 </div>
 <p>And finally it is necessary to configure if the SMTP server requires
 authentication, if not, the default values can be taken as is.</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight-python"><div class="highlight"><pre>&lt;?php
 
-  <span class="s2">&quot;mail_smtpauth&quot;</span>     <span class="o">=&gt;</span> <span class="k">false</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtpname&quot;</span>     <span class="o">=&gt;</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtppassword&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  &quot;mail_smtpauth&quot;     =&gt; false,
+  &quot;mail_smtpname&quot;     =&gt; &quot;&quot;,
+  &quot;mail_smtppassword&quot; =&gt; &quot;&quot;,
 </pre></div>
 </div>
 <p>If SMTP authentication is required you have to set the required username
 and password and can optionally choose between the authentication types
 <strong>LOGIN</strong> (default) or <strong>PLAIN</strong>.</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight-python"><div class="highlight"><pre>&lt;?php
 
-  <span class="s2">&quot;mail_smtpauth&quot;</span>     <span class="o">=&gt;</span> <span class="k">true</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtpauthtype&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;LOGIN&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtpname&quot;</span>     <span class="o">=&gt;</span> <span class="s2">&quot;username&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtppassword&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span>
+  &quot;mail_smtpauth&quot;     =&gt; true,
+  &quot;mail_smtpauthtype&quot; =&gt; &quot;LOGIN&quot;,
+  &quot;mail_smtpname&quot;     =&gt; &quot;username&quot;,
+  &quot;mail_smtppassword&quot; =&gt; &quot;password&quot;,
 </pre></div>
 </div>
 </div>
@@ -379,17 +346,17 @@ email system on your server. Which program in detail is used to send email is
 defined by the configuration settings in the <strong>php.ini</strong> file. (On *nix
 systems this will most likely be Sendmail.) ownCloud should be able to send
 email out of the box.</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight-python"><div class="highlight"><pre>&lt;?php
 
-  <span class="s2">&quot;mail_smtpmode&quot;</span>     <span class="o">=&gt;</span> <span class="s2">&quot;php&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtphost&quot;</span>     <span class="o">=&gt;</span> <span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtpport&quot;</span>     <span class="o">=&gt;</span> <span class="mi">25</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtptimeout&quot;</span>  <span class="o">=&gt;</span> <span class="mi">10</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtpsecure&quot;</span>   <span class="o">=&gt;</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtpauth&quot;</span>     <span class="o">=&gt;</span> <span class="k">false</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtpauthtype&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;LOGIN&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtpname&quot;</span>     <span class="o">=&gt;</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtppassword&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  &quot;mail_smtpmode&quot;     =&gt; &quot;php&quot;,
+  &quot;mail_smtphost&quot;     =&gt; &quot;127.0.0.1&quot;,
+  &quot;mail_smtpport&quot;     =&gt; 25,
+  &quot;mail_smtptimeout&quot;  =&gt; 10,
+  &quot;mail_smtpsecure&quot;   =&gt; &quot;&quot;,
+  &quot;mail_smtpauth&quot;     =&gt; false,
+  &quot;mail_smtpauthtype&quot; =&gt; &quot;LOGIN&quot;,
+  &quot;mail_smtpname&quot;     =&gt; &quot;&quot;,
+  &quot;mail_smtppassword&quot; =&gt; &quot;&quot;,
 </pre></div>
 </div>
 </div>
@@ -399,17 +366,17 @@ email out of the box.</p>
 necessary to have an installed and working email system on your *nix server.
 The sendmail binary (<strong>/usr/sbin/sendmail</strong>) is usually part of that system.
 ownCloud should be able to send email out of the box.</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight-python"><div class="highlight"><pre>&lt;?php
 
-  <span class="s2">&quot;mail_smtpmode&quot;</span>     <span class="o">=&gt;</span> <span class="s2">&quot;sendmail&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtphost&quot;</span>     <span class="o">=&gt;</span> <span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtpport&quot;</span>     <span class="o">=&gt;</span> <span class="mi">25</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtptimeout&quot;</span>  <span class="o">=&gt;</span> <span class="mi">10</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtpsecure&quot;</span>   <span class="o">=&gt;</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtpauth&quot;</span>     <span class="o">=&gt;</span> <span class="k">false</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtpauthtype&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;LOGIN&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtpname&quot;</span>     <span class="o">=&gt;</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtppassword&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  &quot;mail_smtpmode&quot;     =&gt; &quot;sendmail&quot;,
+  &quot;mail_smtphost&quot;     =&gt; &quot;127.0.0.1&quot;,
+  &quot;mail_smtpport&quot;     =&gt; 25,
+  &quot;mail_smtptimeout&quot;  =&gt; 10,
+  &quot;mail_smtpsecure&quot;   =&gt; &quot;&quot;,
+  &quot;mail_smtpauth&quot;     =&gt; false,
+  &quot;mail_smtpauthtype&quot; =&gt; &quot;LOGIN&quot;,
+  &quot;mail_smtpname&quot;     =&gt; &quot;&quot;,
+  &quot;mail_smtppassword&quot; =&gt; &quot;&quot;,
 </pre></div>
 </div>
 </div>
@@ -419,17 +386,17 @@ ownCloud should be able to send email out of the box.</p>
 installed and working qmail email system on your server. The sendmail binary
 (<strong>/var/qmail/bin/sendmail</strong>) will then be used to send email. ownCloud should
 be able to send email out of the box.</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight-python"><div class="highlight"><pre>&lt;?php
 
-  <span class="s2">&quot;mail_smtpmode&quot;</span>     <span class="o">=&gt;</span> <span class="s2">&quot;qmail&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtphost&quot;</span>     <span class="o">=&gt;</span> <span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtpport&quot;</span>     <span class="o">=&gt;</span> <span class="mi">25</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtptimeout&quot;</span>  <span class="o">=&gt;</span> <span class="mi">10</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtpsecure&quot;</span>   <span class="o">=&gt;</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtpauth&quot;</span>     <span class="o">=&gt;</span> <span class="k">false</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtpauthtype&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;LOGIN&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtpname&quot;</span>     <span class="o">=&gt;</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;mail_smtppassword&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  &quot;mail_smtpmode&quot;     =&gt; &quot;qmail&quot;,
+  &quot;mail_smtphost&quot;     =&gt; &quot;127.0.0.1&quot;,
+  &quot;mail_smtpport&quot;     =&gt; 25,
+  &quot;mail_smtptimeout&quot;  =&gt; 10,
+  &quot;mail_smtpsecure&quot;   =&gt; &quot;&quot;,
+  &quot;mail_smtpauth&quot;     =&gt; false,
+  &quot;mail_smtpauthtype&quot; =&gt; &quot;LOGIN&quot;,
+  &quot;mail_smtpname&quot;     =&gt; &quot;&quot;,
+  &quot;mail_smtppassword&quot; =&gt; &quot;&quot;,
 </pre></div>
 </div>
 </div>
@@ -437,16 +404,16 @@ be able to send email out of the box.</p>
 <div class="section" id="send-a-test-email">
 <h2>Send a Test Email<a class="headerlink" href="#send-a-test-email" title="Permalink to this headline">¶</a></h2>
 <p>To test your email configuration, save your email address in your personal
-settings and then use the <strong>Send email</strong> button in <em>Email Server</em> section
+settings and then use the <strong>Send email</strong> button in the <em>Email Server</em> section
 of the Admin settings page.</p>
 </div>
 <div class="section" id="troubleshooting">
 <h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
 <p>If you are unable to send email, try turning on debugging. Do this by enabling
-the <tt class="docutils literal"><span class="pre">mail_smtpdebug</span> <span class="pre">parameter</span></tt> in <tt class="docutils literal"><span class="pre">config/config.php</span></tt>.</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+the <code class="docutils literal"><span class="pre">mail_smtpdebug</span> <span class="pre">parameter</span></code> in <code class="docutils literal"><span class="pre">config/config.php</span></code>.</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;?php
 
-  <span class="s2">&quot;mail_smtpdebug&quot;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">;</span>
+  &quot;mail_smtpdebug&quot; =&gt; true;
 </pre></div>
 </div>
 <div class="admonition note">
@@ -460,38 +427,42 @@ This is expected behavior and can be ignored.</p>
 where your ownCloud installation is served.  If you have a different mail domain
 name you can override this behavior by setting the following configuration
 parameter:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight-python"><div class="highlight"><pre>&lt;?php
 
-  <span class="s2">&quot;mail_domain&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;example.com&quot;</span><span class="p">,</span>
+  &quot;mail_domain&quot; =&gt; &quot;example.com&quot;,
 </pre></div>
 </div>
 <p>This setting results in every email sent by ownCloud (for example, the password
 reset email) having the domain part of the sender address appear as follows:</p>
-<div class="highlight-python"><pre>no-reply@example.com</pre>
+<div class="highlight-python"><div class="highlight"><pre>no-reply@example.com
+</pre></div>
 </div>
-<p><strong>Question</strong>: How can I find out if a SMTP server is reachable?</p>
+<p><strong>Question</strong>: How can I find out if an SMTP server is reachable?</p>
 <p><strong>Answer</strong>: Use the ping command to check the server availability:</p>
-<div class="highlight-python"><pre>ping smtp.server.dom</pre>
+<div class="highlight-python"><div class="highlight"><pre>ping smtp.server.dom
+</pre></div>
 </div>
-<div class="highlight-python"><pre>PING smtp.server.dom (ip-address) 56(84) bytes of data.
+<div class="highlight-python"><div class="highlight"><pre>PING smtp.server.dom (ip-address) 56(84) bytes of data.
 64 bytes from your-server.local.lan (192.168.1.10): icmp_req=1 ttl=64
-time=3.64ms</pre>
+time=3.64ms
+</pre></div>
 </div>
 <p><strong>Question</strong>: How can I find out if the SMTP server is listening on a specific
 TCP port?</p>
 <p><strong>Answer</strong>: The best way to get mail server information is to ask your mail
 server admin. If you are the mail server admin, or need information in a
-hurry, you can use the <tt class="docutils literal"><span class="pre">netstat</span></tt> command. This example shows all active
+hurry, you can use the <code class="docutils literal"><span class="pre">netstat</span></code> command. This example shows all active
 servers on your system, and the ports they are listening on. The SMTP server is
 listening on localhost port 25.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># netstat -pant</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="c1"># netstat -pant</span>
 </pre></div>
 </div>
-<div class="highlight-python"><pre>Active Internet connections (servers and established)
+<div class="highlight-python"><div class="highlight"><pre>Active Internet connections (servers and established)
 Proto Recv-Q Send-Q Local Address   Foreign Address  State  ID/Program name
 tcp    0      0    0.0.0.0:631     0.0.0.0:*        LISTEN   4418/cupsd
 tcp    0      0    127.0.0.1:25    0.0.0.0:*        LISTEN   2245/exim4
-tcp    0      0    127.0.0.1:3306  0.0.0.0:*        LISTEN   1524/mysqld</pre>
+tcp    0      0    127.0.0.1:3306  0.0.0.0:*        LISTEN   1524/mysqld
+</pre></div>
 </div>
 <ul class="simple">
 <li>25/tcp is unencrypted smtp</li>
@@ -509,16 +480,17 @@ is that it is listening on port <strong>465</strong>.</p>
 the mail server supports?</p>
 <p><strong>Answer</strong>: SMTP servers usually announce the availability of STARTTLS
 immediately after a connection has been established. You can easily check this
-using the <tt class="docutils literal"><span class="pre">telnet</span></tt> command.</p>
+using the <code class="docutils literal"><span class="pre">telnet</span></code> command.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">You must enter the marked lines to obtain the information displayed.</p>
 </div>
-<div class="highlight-python"><pre>telnet smtp.domain.dom 25</pre>
+<div class="highlight-python"><div class="highlight"><pre>telnet smtp.domain.dom 25
+</pre></div>
 </div>
-<div class="highlight-python"><pre>Trying 192.168.1.10...
+<div class="highlight-python"><div class="highlight"><pre>Trying 192.168.1.10...
 Connected to smtp.domain.dom.
-Escape character is '^]'.
+Escape character is &#39;^]&#39;.
 220 smtp.domain.dom ESMTP Exim 4.80.1 Tue, 22 Jan 2013 22:39:55 +0100
 EHLO your-server.local.lan                   # &lt;&lt;&lt; enter this command
 250-smtp.domain.dom Hello your-server.local.lan [ip-address]
@@ -530,16 +502,17 @@ EHLO your-server.local.lan                   # &lt;&lt;&lt; enter this command
 250 HELP
 QUIT                                          # &lt;&lt;&lt; enter this command
 221 smtp.domain.dom closing connection
-Connection closed by foreign host.</pre>
+Connection closed by foreign host.
+</pre></div>
 </div>
 </div>
 <div class="section" id="enabling-debug-mode">
 <h2>Enabling Debug Mode<a class="headerlink" href="#enabling-debug-mode" title="Permalink to this headline">¶</a></h2>
 <p>If you are unable to send email, it might be useful to activate further debug
 messages by enabling the mail_smtpdebug parameter:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<div class="highlight-python"><div class="highlight"><pre>&lt;?php
 
-  <span class="s2">&quot;mail_smtpdebug&quot;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">,</span>
+  &quot;mail_smtpdebug&quot; =&gt; true,
 </pre></div>
 </div>
 <div class="admonition note">
@@ -552,10 +525,21 @@ This is expected behavior and can be ignored.</p>
 </div>
 
 
+            
+<ul class="prevnext-title list-unstyled list-inline">
+  <li class="prev">
+    <a href="config_sample_php_parameters.html" title="Previous Chapter: Config.php Parameters"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm">&laquo; Config.php Pa...</span>
+    </a>
+  </li>
+  <li class="next">
+    <a href="external_sites.html" title="Next Chapter: Linking External Sites"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm">Linking Exter... &raquo;</span>
+    </a>
+  </li>
+</ul>
 					</div>
 				</div>
 			</div>
-    
+  </main>  
   </div>
 </div>
   </body>

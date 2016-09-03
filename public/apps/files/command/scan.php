@@ -26,6 +26,7 @@
 namespace OCA\Files\Command;
 
 use OC\ForbiddenException;
+use OCP\Files\StorageNotAvailableException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -74,13 +75,16 @@ class Scan extends Command {
 	}
 
 	protected function scanFiles($user, $path, $quiet, OutputInterface $output) {
-		$scanner = new \OC\Files\Utils\Scanner($user, \OC::$server->getDatabaseConnection());
+		$scanner = new \OC\Files\Utils\Scanner($user, \OC::$server->getDatabaseConnection(), \OC::$server->getLogger());
 		if (!$quiet) {
 			$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', function ($path) use ($output) {
 				$output->writeln("Scanning file   <info>$path</info>");
 			});
 			$scanner->listen('\OC\Files\Utils\Scanner', 'scanFolder', function ($path) use ($output) {
 				$output->writeln("Scanning folder <info>$path</info>");
+			});
+			$scanner->listen('\OC\Files\Utils\Scanner', 'StorageNotAvailable', function (StorageNotAvailableException $e) use ($output) {
+				$output->writeln("Error while scanning, storage not available (" . $e->getMessage() . ")");
 			});
 		}
 		try {
@@ -92,10 +96,10 @@ class Scan extends Command {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$path = $input->getOption('path');
-		if ($path) {
-			$path = '/'.trim($path, '/');
-			list (, $user, ) = explode('/', $path, 3);
+		$inputPath = $input->getOption('path');
+		if ($inputPath) {
+			$inputPath = '/' . trim($inputPath, '/');
+			list (, $user,) = explode('/', $inputPath, 3);
 			$users = array($user);
 		} else if ($input->getOption('all')) {
 			$users = $this->userManager->search('');
@@ -114,6 +118,7 @@ class Scan extends Command {
 			if (is_object($user)) {
 				$user = $user->getUID();
 			}
+			$path = $inputPath ? $inputPath : '/' . $user;
 			if ($this->userManager->userExists($user)) {
 				$this->scanFiles($user, $path, $quiet, $output);
 			} else {

@@ -2,18 +2,16 @@
 Configuring External Storage (Configuration File)
 =================================================
 
-Since ownCloud 4.0 it is possible to configure the filesystem to mount external
-storage providers into ownCloud's virtual file system. You can configure these
-file systems by creating and editing :file:`data/mount.json`. This file contains
-all settings in JSON (JavaScript Object Notation) format. At the moment two
-different types of entries exist:
+You may configure external storage mounts by creating and editing the 
+:file:`data/mount.json`. This file contains all settings in JSON (JavaScript 
+Object Notation) format. At the moment two different types of entries exist:
 
 -  **Group mounts:** each entry configures a mount for each user in group.
 -  **User mounts:** each entry configures a mount for a single user or for all
    users.
 
 For each type, there is a JSON array with the user/group name as key, and an
-array of configuration entries as value. Each entry consist of the class name
+array of configuration entries as value. Each entry consists of the class name
 of the storage backend and an array of backend specific options and will be
 replaced by the user login. The template **$user** can be used in the mount
 point or backend options. As of writing the following storage backends are
@@ -29,13 +27,25 @@ available for use:
 -  `Google Drive`_
 -  `OpenStack Swift`_
 
-.. note:: You need to enable the `External storage support` app first before you
-   can use the examples below. See the section :doc:`external_storage_configuration_gui`
-   how to do this.
+You need to enable the `External storage support` app first. You can 
+do this on the Apps page of your ownCloud Web GUI, or use the ``occ`` command. 
+This example shows how to list apps, and how to enable the `External storage 
+support` app on Debian Linux and its derivatives::
 
-Please keep in mind that some formatting has been applied and carriage returns
-have been added for better readability. In the :file:`data/mount.json` all
-values need to be concatenated and written in a row without these modifications!
+ $ sudo -u www-data php occ app:list
+ Enabled:                                                                        
+  [snip]
+ Disabled:
+ - files_external
+  [snip]
+
+  $ sudo -u www-data php occ app:enable files_external
+  files_external enabled
+
+See :doc:`../configuration_server/occ_command` to learn more about ``occ``.
+
+.. note:: A non-blocking or correctly configured SELinux setup is needed
+   for these backends to work. Please refer to the :ref:`selinux-config-label`.
 
 It is recommended to use the :doc:`Web-GUI <external_storage_configuration_gui>` in the
 administrator panel to add, remove or modify mount options to prevent any problems!
@@ -43,9 +53,10 @@ administrator panel to add, remove or modify mount options to prevent any proble
 Using self-signed certificates
 ------------------------------
 
-When using self-signed certificates for external storage mounts the certificate
-needs to be imported in the personal settings of the user. Please refer to `this <http://ownclouden.blogspot.de/2014/11/owncloud-https-external-mount.html>`_
-blogpost for more informations.
+When using self-signed certificates for external storage mounts the certificate 
+needs to be imported in the personal settings of the user. Please refer to `this 
+<http://ownclouden.blogspot.de/2014/11/owncloud-https-external-mount.html>`_ 
+blogpost for more information.
 
 Adding files to external storages
 ---------------------------------
@@ -53,47 +64,49 @@ Adding files to external storages
 In general it is recommended to configure the background job ``Webcron`` or
 ``Cron`` as described in :doc:`../configuration_server/background_jobs_configuration`
 so ownCloud is able to detect files added to your external storages without the need
-that a users is browsing your ownCloud installation.
+for a user to be browsing your ownCloud installation.
 
 Please also be aware that ownCloud might not always be able to find out what has been
-changed remotely (files changes without going through ownCloud), especially
+changed remotely (files changed without going through ownCloud), especially
 when it's very deep in the folder hierarchy of the external storage.
 
-You might need to setup a cron job that runs ``sudo -u www-data php occ files:scan --all``
-(or replace "--all" with the user name, see also :doc:`../configuration_server/occ_command`)
-to trigger a rescan of the user's files periodically (for example every 15 minutes), which includes
-the mounted external storage.
+You might need to setup a cron job that runs ``sudo -u www-data php occ 
+files:scan --all`` (or replace "--all" with the user name, see also 
+:doc:`../configuration_server/occ_command`) to trigger a rescan of the user's 
+files periodically (for example every 15 minutes), which includes the mounted 
+external storage.
 
 Example
 -------
 
-.. code-block:: json
+::
 
-    {"group":{
+    {
+      "group":{
         "admin":{
             "\/$user\/files\/Admin_Stuff":{
                 "class":"\\OC\\Files\\Storage\\Local",
                 "options":{ ... },
                 "priority":150
-                }
             }
-        }
-     "user":{
+         }
+      },
+      "user":{
         "all":{
             "\/$user\/files\/Pictures":{
                 "class":"\\OC\\Files\\Storage\\DAV",
                 "options":{ ... },
                 "priority":100
-                }
             }
+         },
         "someuser":{
             "\/someuser\/files\/Music":{
                 "class":"\\OC\\Files\\Storage\\FTP",
                 "options":{ ... },
                 "priority":100
-                }
             }
-        }
+         }
+      }
     }
 
 Priorities
@@ -119,6 +132,37 @@ following order, with later mount types always overriding a previous mount type:
 -  user (not all) : per-user mount configurations
 -  :file:`data/$user/mount.json` : personal mount configurations
 
+Configuring Temporary Disk Space Needs
+--------------------------------------
+
+Not all external storage types are currently enabled for, or support 
+streaming. Therefore ownCloud needs temporary space to buffer data for 
+transfers. This can occur when there are many concurrent users transferring data 
+with a higher volume over small bandwidth. ownCloud may need, in these 
+cases, additional temporary space.
+
+Example: 100 concurrent users uploading each a 300MB file with a 
+total transfer time of 6000s (1h 40min). The temporary space needed by ownCloud 
+for this period of time is 30GB. Even though it is not mandatory, the location 
+of the temp directory used by ownCloud can be configured manually. To do so, 
+you need to maintain the ``tempdirectory`` parameter described in 
+``config.sample.php``
+
+As of writing, following external storage list uses temp files for up/download:
+
+* FTP
+* SMB / SMB_OC
+* WebDAV
+* Amazon S3
+* Dropbox
+* Google Drive
+* OpenStack SWIFT
+
+External storage list that uses direct file streaming:
+
+* Local
+* SFTP
+
 Backends
 --------
 
@@ -135,7 +179,7 @@ takes the following options:
 Example
 ^^^^^^^
 
-.. code-block:: json
+::
 
     { "class":"\\OC\\Files\\Storage\\Local",
       "options":{ "datadir":"\/mnt\/additional_storage" },
@@ -153,8 +197,8 @@ to be used is **\\OC\\Files\\Storage\\FTP**\  and takes the following
 options:
 
 -  **host**: the hostname of the ftp server, and optionally the port number
--  **user**: the username used to login on the ftp server
--  **password**: the password to login on the ftp server
+-  **user**: the username used to login to the ftp server
+-  **password**: the password to login to the ftp server
 -  **secure**: whether to use ftps:// (FTP over TLS) to connect to the ftp
    server instead of ftp:// (optional, defaults to false)
 -  **root**: the remote subfolder inside the ftp server to mount (optional, defaults
@@ -164,7 +208,7 @@ options:
 Example
 ^^^^^^^
 
-.. code-block:: json
+::
 
     {   "class":"\\OC\\Files\\Storage\\FTP",
         "options":{
@@ -177,10 +221,11 @@ Example
         "priority":100
     }
 
-.. note:: PHP needs to be build with FTP support for this backend to work.
+.. note:: PHP needs to be built with FTP support for this backend to work.
 
-.. note:: A non-blocking or correctly configured SELinux setup is needed
-   for this backend to work.
+.. note:: The external storage ``FTP/FTPS/SFTP`` needs the ``allow_url_fopen`` PHP
+   setting to be set to ``1``. When having connection problems make sure that it is
+   not set to ``0`` in your ``php.ini``.
 
 SFTP
 ~~~~
@@ -192,7 +237,7 @@ options:
 
 -  **host**: the hostname of the SSH server
 -  **user**: the username used to login to the SSH server
--  **password**: the password to login on the SSH server
+-  **password**: the password to login to the SSH server
 -  **root**: the remote subfolder inside the SSH server to mount (optional, defaults
    to ‘/’)
 
@@ -200,7 +245,7 @@ options:
 Example
 ^^^^^^^
 
-.. code-block:: json
+::
 
     {   "class":"\\OC\\Files\\Storage\\SFTP",
         "options":{
@@ -212,29 +257,32 @@ Example
         "priority":100
     }
 
-.. note:: PHP needs to be build with SFTP support for this backend to work.
+.. note:: PHP needs to be built with SFTP support for this backend to work.
+
+.. note:: The external storage ``FTP/FTPS/SFTP`` needs the ``allow_url_fopen`` PHP
+   setting to be set to ``1``. When having connection problems make sure that it is
+   not set to ``0`` in your ``php.ini``.
 
 SMB
 ~~~
 The SMB backend mounts a folder on a remote Samba server, a NAS appliance or
-a Windows machine into the virtual file system. It is part of the ‘External
-storage support’ app, the class to be used is **\\OC\\Files\\Storage\\SMB**\  and
-takes the following options:
+a Windows machine into the virtual file system. This requires 
+``php5-libsmbclient`` (`installation instructions 
+<https://download.owncloud.org/download/repositories/stable/owncloud/>`_).
+It is part of the ‘External storage support’ app, the class to be used
+is **\\OC\\Files\\Storage\\SMB**\  and takes the following options:
 
 -  **host**: the host name of the samba server
--  **user**: the username or domain/username to login on the samba server
--  **password**: the password to login on the samba server
+-  **user**: the username or domain/username to login to the samba server
+-  **password**: the password to login to the samba server
 -  **share**: the share on the samba server to mount
 -  **root**: the remote subfolder inside the samba share to mount (optional, defaults
    to ‘/’). To assign the ownCloud logon username automatically to the subfolder, use ``$user`` instead of a particular subfolder name.
 
-.. note:: The SMB backend requires **smbclient** to be installed on the server.
-
 Example
 ^^^^^^^
-With username only:
 
-.. code-block:: json
+With username only::
 
     {   "class":"\\OC\\Files\\Storage\\SMB",
         "options":{
@@ -247,9 +295,8 @@ With username only:
         "priority":100
     }
     
-With domainname and username:
+With domainname and username::
 
-.. code-block:: json
 
     {   "class":"\\OC\\Files\\Storage\\SMB",
         "options":{
@@ -271,8 +318,8 @@ the class to be used is **\\OC\\Files\\Storage\\DAV**\  and takes the
 following options:
 
 -  **host**: the hostname of the webdav server.
--  **user**: the username used to login on the webdav server
--  **password**: the password to login on the webdav server
+-  **user**: the username used to login to the webdav server
+-  **password**: the password to login to the webdav server
 -  **secure**: whether to use https:// to connect to the webdav server
    instead of http:// (optional, defaults to false)
 -  **root**: the remote subfolder inside the webdav server to mount (optional,
@@ -282,7 +329,7 @@ following options:
 Example
 ^^^^^^^
 
-.. code-block:: json
+::
 
     {   "class":"\\OC\\Files\\Storage\\DAV",
         "options":{
@@ -310,7 +357,7 @@ options:
 Example
 ^^^^^^^
 
-.. code-block:: json
+::
 
     {   "class":"\\OC\\Files\\Storage\\AmazonS3",
         "options":{
@@ -338,7 +385,7 @@ be used is **\\OC\\Files\\Storage\\Dropbox**\  and takes the following options:
 Example
 ^^^^^^^
 
-.. code-block:: json
+::
 
     {   "class":"\\OC\\Files\\Storage\\Dropbox",
         "options":{
@@ -369,7 +416,7 @@ It takes the following options:
 Example
 ^^^^^^^
 
-.. code-block:: json
+::
 
     {   "class":"\\OC\\Files\\Storage\\Google",
         "options":{
@@ -391,8 +438,8 @@ the following options:
 
 -  **host**: the hostname of the authentication server for the swift
    storage.
--  **user**: the username used to login on the swift server
--  **token**: the authentication token to login on the swift server
+-  **user**: the username used to login to the swift server
+-  **token**: the authentication token to login to the swift server
 -  **secure**: whether to use ftps:// to connect to the swift server instead
    of ftp:// (optional, defaults to false)
 -  **root**: the container inside the swift server to mount (optional,
@@ -401,7 +448,7 @@ the following options:
 Example
 ^^^^^^^
 
-.. code-block:: json
+::
 
     {   "class":"\\OC\\Files\\Storage\\SWIFT",
         "options":{

@@ -1,24 +1,25 @@
 =============================================================
 Configuring S3 and OpenStack Swift Objects as Primary Storage
 =============================================================
+
 In ownCloud Enterprise Subscription, you can configure S3 objects as primary 
-storage. This replaces the default data directory, which is 
-``/var/www/owncloud/data`` on default Linux installations, and 
-``C:\inetpub\wwwroot\owncloud\data`` on Windows servers. However, you may need 
-to keep the ``data/`` directory for these reasons:
+storage. This replaces the default ownCloud ``owncloud/data`` directory. You 
+may 
+still need to keep the ``owncloud/data`` directory for these reasons:
 
 * The ownCloud log file is saved in the data directory
-* Legacy apps may not support using anything but the ``data/`` directory
+* Legacy apps may not support using anything but the ``owncloud/data`` directory
 
-You can move your logfile by changing its location in ``config.php``. You may still need 
-``data/`` for backwards compatibility with some apps.
+You can move your logfile by changing its location in ``config.php``. You may 
+still need 
+``owncloud/data`` for backwards compatibility with some apps.
 
 Implications
 ------------
-It is important to note that ownCloud in object store mode will expect exclusive 
-access to the object store container, because it only stores the binary data 
-for each file. The metadata is currently kept in the local database for 
-performance reasons.
+
+ownCloud in object store mode expects exclusive access to the object store 
+container, because it only stores the binary data for each file. The metadata 
+are kept in the local database for performance reasons.
 
 The current implementation is incompatible with any app that uses 
 direct file I/O and circumvents the ownCloud virtual filesystem. That includes 
@@ -28,68 +29,99 @@ to be fetched in addition to any requested file.
 
 Configuration
 -------------
+
 Look in ``config.sample.php`` for a example configurations. Copy the 
-relevant part to your ``config.php`` file. Any objectstore needs to implement
+relevant part to your ``config.php`` file. Any object store needs to implement
 ``\\OCP\\Files\\ObjectStore\\IObjectStore`` and can be passed parameters in the
 constructor with the ``arguments`` key:
 
 ::
 
-    'objectstore' => array(
+    'objectstore' => [
         'class' => 'Implementation\\Of\\OCP\\Files\\ObjectStore\\IObjectStore',
-        'arguments' => array(
+        'arguments' => [
             ...
-        ),
-    ),
+        ],
+    ],
 
 Amazon S3
 ~~~~~~~~~
+
 The S3 backend mounts a bucket of the Amazon S3 object store
 into the virtual filesystem. The class to be used is ``OCA\ObjectStore\S3``:
 
 ::
 
-  'objectstore' => array(
-    'class' => 'OCA\ObjectStore\S3',
-        'arguments' => array(
-          'key' => 'yourkey',
-          'secret' => 'yoursecret',
-          'bucket' => 'your-oc-bucket',
-        ),
-  ),
+  'objectstore' => [
+      'class' => 'OCA\ObjectStore\S3',
+      'arguments' => [
+          // replace with your bucket
+          'bucket' => 'owncloud',
+          'autocreate' => true,
+          // uncomment to enable server side encryption
+          //'serversideencryption' => 'AES256',
+          'options' => [
+              // version and region are required
+              'version' => '2006-03-01',
+              // change to your region
+              'region'  => 'eu-central-1',
+              'credentials' => [
+                  // replace key and secret with your credentials
+                  'key' => 'EJ39ITYZEUH5BGWDRUFY',
+                  'secret' => 'M5MrXTRjkyMaxXPe2FRXMTfTfbKEnZCu+7uRTVSj',
+              ],
+          ],
+      ],
+  ],
 
 
 Ceph S3
 ~~~~~~~
-The S3 backend can also be used to mount the bucket of a ceph object store via the s3 API
+
+The S3 backend can also be used to mount the bucket of a ceph object store via 
+the s3 API
 into the virtual filesystem. The class to be used is ``OCA\ObjectStore\S3``:
 
 ::
 
-  'objectstore' => array(
-    'class' => 'OCA\ObjectStore\S3',
-	'arguments' => array(
-	  'key' => 'GEZ550B06Z2ZDB52CT21',
-	  'secret' => '6Vdo7ObSMBlI4TMRw0jpRE75K6qS9QNTk6nBboxP',
-	  'bucket' => 'devobjectstore',
-	  'base_url' => 'http://ceph/',
-	  'hostname' => 'ceph',
-	  // you must use this region or the amazon lib will overwrite
-	  // the path style when resetting the region
-	  'region' => 's3-eu-west-1.amazonaws.com'
-	),
-  ),
+    'objectstore' => [
+        'class' => 'OCA\ObjectStore\S3',
+        'arguments' => [
+            // replace with your bucket
+            'bucket' => 'owncloud',
+            'autocreate' => true,
+            'options' => [
+                // version and region are required
+                'version' => '2006-03-01',
+                'region'  => '',
+                // replace key, secret and bucket with your credentials
+                'credentials' => [
+                    // replace key and secret with your credentials
+                    'key'    => 'EJ39ITYZEUH5BGWDRUFY',
+                    'secret' => 'M5MrXTRjkyMaxXPe2FRXMTfTfbKEnZCu+7uRTVSj',
+                ],
+                // replace the ceph endpoint with your rgw url
+                'endpoint' => 'http://cephhost:8000/',
+                // Use path style when talking to ceph
+                'command.params' => [
+                    'PathStyle' => true,
+                ],
+            ],
+        ],
+    ],
 
 OpenStack Swift
 ~~~~~~~~~~~~~~~
+
 The Swift backend mounts a container on an OpenStack Object Storage server
-into the virtual filesystem. The class to be used is ``\\OC\\Files\\ObjectStore\\Swift``:
+into the virtual filesystem. The class to be used is 
+``\\OC\\Files\\ObjectStore\\Swift``:
 
 ::
 
-    'objectstore' => array(
+    'objectstore' => [
         'class' => 'OC\\Files\\ObjectStore\\Swift',
-        'arguments' => array(
+        'arguments' => [
             'username' => 'demo', 
             'password' => 'password', 
             'container' => 'owncloud', 
@@ -98,7 +130,9 @@ into the virtual filesystem. The class to be used is ``\\OC\\Files\\ObjectStore\
             'url' => 'http://devstack:5000/v2.0',
             'tenantName' => 'demo', 
             'serviceName' => 'swift', 
-        ),
-    ),
+            // url Type, optional, public, internal or admin
+	    'urlType' => 'internal'
+        ],
+    ],
 
 

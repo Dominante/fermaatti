@@ -1,6 +1,5 @@
 <?php
 /**
- * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -25,7 +24,11 @@ namespace OCA\Files_Sharing\Propagation;
 use OC\Files\Filesystem;
 use OC\Files\View;
 use OCP\IConfig;
+use OCP\IGroupManager;
+use OCP\IUser;
+use OCP\IUserManager;
 use OCP\IUserSession;
+use OCP\Util;
 
 
 /**
@@ -56,9 +59,21 @@ class PropagationManager {
 	 */
 	private $sharePropagators = [];
 
-	public function __construct(IUserSession $userSession, IConfig $config) {
+	/**
+	 * @var IGroupManager
+	 */
+	private $groupManager;
+
+	/**
+	 * @var IUserManager
+	 */
+	private $userManager;
+
+	public function __construct(IUserSession $userSession, IConfig $config, IGroupManager $groupManager, IUserManager $userManager) {
 		$this->userSession = $userSession;
 		$this->config = $config;
+		$this->groupManager = $groupManager;
+		$this->userManager = $userManager;
 	}
 
 	/**
@@ -82,15 +97,33 @@ class PropagationManager {
 	}
 
 	/**
+	 * Propagates etag changes for the given shares to the given user
+	 *
+	 * @param array array of shares for which to trigger etag change
 	 * @param string $user
+	 */
+	public function propagateSharesToUser($shares, $user) {
+		$changePropagator = $this->getChangePropagator($user);
+		foreach ($shares as $share) {
+			$changePropagator->addChange($share['file_target']);
+		}
+		$time = microtime(true);
+		$changePropagator->propagateChanges(floor($time));
+	}
+
+	/**
+	 * @param IUser|string $user
 	 * @return \OCA\Files_Sharing\Propagation\RecipientPropagator
 	 */
 	public function getSharePropagator($user) {
-		if (isset($this->sharePropagators[$user])) {
-			return $this->sharePropagators[$user];
+		if (!$user instanceof IUser) {
+			$user = $this->userManager->get($user);
 		}
-		$this->sharePropagators[$user] = new RecipientPropagator($user, $this->getChangePropagator($user), $this->config, $this);
-		return $this->sharePropagators[$user];
+		if (isset($this->sharePropagators[$user->getUID()])) {
+			return $this->sharePropagators[$user->getUID()];
+		}
+		$this->sharePropagators[$user->getUID()] = new RecipientPropagator($user, $this->getChangePropagator($user->getUID()), $this->config, $this, $this->groupManager);
+		return $this->sharePropagators[$user->getUID()];
 	}
 
 	/**
@@ -115,13 +148,14 @@ class PropagationManager {
 		if (!$user) {
 			return;
 		}
-		$recipientPropagator = $this->getSharePropagator($user->getUID());
+		$recipientPropagator = $this->getSharePropagator($user);
 		$watcher = new ChangeWatcher(Filesystem::getView(), $recipientPropagator);
 
 		// for marking shares owned by the active user as dirty when a file inside them changes
 		$this->listenToOwnerChanges($user->getUID(), $user->getUID());
-		\OC_Hook::connect('OC_Filesystem', 'post_write', $watcher, 'writeHook');
-		\OC_Hook::connect('OC_Filesystem', 'post_delete', $watcher, 'writeHook');
-		\OC_Hook::connect('OC_Filesystem', 'post_rename', $watcher, 'renameHook');
+		Util::connectHook('OC_Filesystem', 'post_write', $watcher, 'writeHook');
+		Util::connectHook('OC_Filesystem', 'post_delete', $watcher, 'writeHook');
+		Util::connectHook('OC_Filesystem', 'post_rename', $watcher, 'renameHook');
+		Util::connectHook('OCP\Share', 'post_update_permissions', $watcher, 'permissionsHook');
 	}
 }

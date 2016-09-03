@@ -44,9 +44,41 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 	private $share;   // the shared resource
 	private $files = array();
 	private static $isInitialized = array();
+	private $local = null;
+
+	/**
+	 * @var \OC\Files\View
+	 */
+	private $ownerView;
+
+	/**
+	 * @var \OCA\Files_Sharing\Propagation\PropagationManager
+	 */
+	private $propagationManager;
+
+	/**
+	 * @var string
+	 */
+	private $user;
+
+	private $initialized = false;
 
 	public function __construct($arguments) {
 		$this->share = $arguments['share'];
+		$this->ownerView = $arguments['ownerView'];
+		$this->propagationManager = $arguments['propagationManager'];
+		$this->user = $arguments['user'];
+	}
+
+	private function init() {
+		if ($this->initialized) {
+			return;
+		}
+		$this->initialized = true;
+		Filesystem::initMountPoints($this->share['uid_owner']);
+
+		// for updating our etags when changes are made to the share from the owners side (probably indirectly by us trough another share)
+		$this->propagationManager->listenToOwnerChanges($this->share['uid_owner'], $this->user);
 	}
 
 	/**
@@ -74,17 +106,18 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 	 * @return array Returns array with the keys path, permissions, and owner or false if not found
 	 */
 	public function getFile($target) {
+		$this->init();
 		if (!isset($this->files[$target])) {
 			// Check for partial files
 			if (pathinfo($target, PATHINFO_EXTENSION) === 'part') {
-				$source = \OC_Share_Backend_File::getSource(substr($target, 0, -5), $this->getMountPoint(), $this->getItemType());
+				$source = \OC_Share_Backend_File::getSource(substr($target, 0, -5), $this->getShare());
 				if ($source) {
 					$source['path'] .= '.part';
 					// All partial files have delete permission
 					$source['permissions'] |= \OCP\Constants::PERMISSION_DELETE;
 				}
 			} else {
-				$source = \OC_Share_Backend_File::getSource($target, $this->getMountPoint(), $this->getItemType());
+				$source = \OC_Share_Backend_File::getSource($target, $this->getShare());
 			}
 			$this->files[$target] = $source;
 		}
@@ -236,7 +269,7 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 	}
 
 	public function isSharable($path) {
-		if (\OCP\Util::isSharingDisabledForUser()) {
+		if (\OCP\Util::isSharingDisabledForUser() || !\OC\Share\Share::isResharingAllowed()) {
 			return false;
 		}
 		return ($this->getPermissions($path) & \OCP\Constants::PERMISSION_SHARE);
@@ -313,7 +346,7 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 	}
 
 	public function rename($path1, $path2) {
-
+		$this->init();
 		// we need the paths relative to data/user/files
 		$relPath1 = $this->getMountPoint() . '/' . $path1;
 		$relPath2 = $this->getMountPoint() . '/' . $path2;
@@ -551,9 +584,6 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 	}
 
 	public function getETag($path) {
-		if ($path == '') {
-			$path = $this->getMountPoint();
-		}
 		if ($source = $this->getSourcePath($path)) {
 			list($storage, $internalPath) = \OC\Files\Filesystem::resolvePath($source);
 			return $storage->getETag($internalPath);
@@ -623,6 +653,11 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 		/** @var \OCP\Files\Storage $targetStorage */
 		list($targetStorage, $targetInternalPath) = $this->resolvePath($path);
 		$targetStorage->acquireLock($targetInternalPath, $type, $provider);
+		// lock the parent folders of the owner when locking the share as recipient
+		if ($path === '') {
+			$sourcePath = $this->ownerView->getPath($this->share['file_source']);
+			$this->ownerView->lockFile(dirname($sourcePath), ILockingProvider::LOCK_SHARED, true);
+		}
 	}
 
 	/**
@@ -634,6 +669,11 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 		/** @var \OCP\Files\Storage $targetStorage */
 		list($targetStorage, $targetInternalPath) = $this->resolvePath($path);
 		$targetStorage->releaseLock($targetInternalPath, $type, $provider);
+		// unlock the parent folders of the owner when unlocking the share as recipient
+		if ($path === '') {
+			$sourcePath = $this->ownerView->getPath($this->share['file_source']);
+			$this->ownerView->unlockFile(dirname($sourcePath), ILockingProvider::LOCK_SHARED, true);
+		}
 	}
 
 	/**
@@ -645,5 +685,33 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 		/** @var \OCP\Files\Storage $targetStorage */
 		list($targetStorage, $targetInternalPath) = $this->resolvePath($path);
 		$targetStorage->changeLock($targetInternalPath, $type, $provider);
+	}
+
+	/**
+	 * @return array [ available, last_checked ]
+	 */
+	public function getAvailability() {
+		// shares do not participate in availability logic
+		return [
+			'available' => true,
+			'last_checked' => 0
+		];
+	}
+
+	/**
+	 * @param bool $available
+	 */
+	public function setAvailability($available) {
+		// shares do not participate in availability logic
+	}
+
+	public function isLocal() {
+		if (!is_null($this->local)) {
+			$this->init();
+			$ownerPath = $this->ownerView->getPath($this->share['item_source']);
+			list($targetStorage) = $this->ownerView->resolvePath($ownerPath);
+			$this->local = $targetStorage->isLocal();
+		}
+		return $this->local;
 	}
 }

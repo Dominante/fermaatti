@@ -14,7 +14,7 @@ use
  * This backend is used to store calendar-data in a PDO database, such as
  * sqlite or MySQL
  *
- * @copyright Copyright (C) 2007-2015 fruux GmbH (https://fruux.com/).
+ * @copyright Copyright (C) fruux GmbH (https://fruux.com/)
  * @author Evert Pot (http://evertpot.com/)
  * @license http://sabre.io/license/ Modified BSD License
  */
@@ -321,7 +321,7 @@ class PDO extends AbstractBackend implements SyncSupport, SubscriptionSupport, S
         $stmt = $this->pdo->prepare('DELETE FROM '.$this->calendarTableName.' WHERE id = ?');
         $stmt->execute([$calendarId]);
 
-        $stmt = $this->pdo->prepare('DELETE FROM '.$this->calendarChangesTableName.' WHERE id = ?');
+        $stmt = $this->pdo->prepare('DELETE FROM '.$this->calendarChangesTableName.' WHERE calendarid = ?');
         $stmt->execute([$calendarId]);
 
     }

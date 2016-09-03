@@ -49,7 +49,7 @@ use
  *
  * iSchedule is something for later.
  *
- * @copyright Copyright (C) 2007-2015 fruux GmbH (https://fruux.com/).
+ * @copyright Copyright (C) fruux GmbH (https://fruux.com/)
  * @author Evert Pot (http://evertpot.com/)
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
@@ -123,7 +123,8 @@ class Plugin extends ServerPlugin {
             $ns . 'schedule-inbox-URL',
             $ns . 'schedule-outbox-URL',
             $ns . 'calendar-user-address-set',
-            $ns . 'calendar-user-type'
+            $ns . 'calendar-user-type',
+            $ns . 'schedule-default-calendar-URL'
         );
 
     }

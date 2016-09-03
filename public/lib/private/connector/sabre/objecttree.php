@@ -41,7 +41,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 	protected $fileView;
 
 	/**
-	 * @var \OC\Files\Mount\Manager
+	 * @var  \OCP\Files\Mount\IMountManager
 	 */
 	protected $mountManager;
 
@@ -54,9 +54,9 @@ class ObjectTree extends \Sabre\DAV\Tree {
 	/**
 	 * @param \Sabre\DAV\INode $rootNode
 	 * @param \OC\Files\View $view
-	 * @param \OC\Files\Mount\Manager $mountManager
+	 * @param  \OCP\Files\Mount\IMountManager $mountManager
 	 */
-	public function init(\Sabre\DAV\INode $rootNode, \OC\Files\View $view, \OC\Files\Mount\Manager $mountManager) {
+	public function init(\Sabre\DAV\INode $rootNode, \OC\Files\View $view, \OCP\Files\Mount\IMountManager $mountManager) {
 		$this->rootNode = $rootNode;
 		$this->fileView = $view;
 		$this->mountManager = $mountManager;
@@ -188,7 +188,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 		$targetNodeExists = $this->nodeExists($destinationPath);
 		$sourceNode = $this->getNodeForPath($sourcePath);
 		if ($sourceNode instanceof \Sabre\DAV\ICollection && $targetNodeExists) {
-			throw new \Sabre\DAV\Exception\Forbidden('Could not copy directory ' . $sourceNode . ', target exists');
+			throw new \Sabre\DAV\Exception\Forbidden('Could not copy directory ' . $sourceNode->getName() . ', target exists');
 		}
 		list($sourceDir,) = \Sabre\HTTP\URLUtil::splitPath($sourcePath);
 		list($destinationDir,) = \Sabre\HTTP\URLUtil::splitPath($destinationPath);
@@ -268,6 +268,11 @@ class ObjectTree extends \Sabre\DAV\Tree {
 			$this->fileView->verifyPath($destinationDir, $destinationName);
 		} catch (\OCP\Files\InvalidPathException $ex) {
 			throw new InvalidPath($ex->getMessage());
+		}
+
+		// Webdav's copy will implicitly do a delete+create, so only create+delete permissions are required
+		if (!$this->fileView->isCreatable($destinationDir)) {
+			throw new \Sabre\DAV\Exception\Forbidden();
 		}
 
 		try {

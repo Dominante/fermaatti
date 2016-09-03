@@ -52,9 +52,11 @@ abstract class Job implements IJob {
 			$this->run($this->argument);
 		} catch (\Exception $e) {
 			if ($logger) {
-				$logger->error('Error while running background job: ' . $e->getMessage());
+				$logger->logException($e, [
+					'app' => 'core',
+					'message' => 'Error while running background job (class: ' . get_class($this) . ', arguments: ' . print_r($this->argument, true) . ')'
+				]);
 			}
-			$jobList->remove($this, $this->argument);
 		}
 	}
 

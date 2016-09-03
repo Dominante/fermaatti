@@ -4,6 +4,7 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -139,6 +140,13 @@ class AppManager implements IAppManager {
 			return false;
 		} else {
 			$groupIds = json_decode($enabled);
+
+			if (!is_array($groupIds)) {
+				$jsonError = json_last_error();
+				\OC::$server->getLogger()->warning('AppManger::checkAppForUser - can\'t decode group IDs: ' . print_r($enabled, true) . ' - json error code: ' . $jsonError, ['app' => 'lib']);
+				return false;
+			}
+
 			$userGroups = $this->groupManager->getUserGroupIds($user);
 			foreach ($userGroups as $groupId) {
 				if (array_search($groupId, $groupIds) !== false) {
@@ -209,4 +217,73 @@ class AppManager implements IAppManager {
 		$settingsMemCache = $this->memCacheFactory->create('settings');
 		$settingsMemCache->clear('listApps');
 	}
+
+	/**
+	 * Returns a list of apps that need upgrade
+	 *
+	 * @param array $version ownCloud version as array of version components
+	 * @return array list of app info from apps that need an upgrade
+	 *
+	 * @internal
+	 */
+	public function getAppsNeedingUpgrade($ocVersion) {
+		$appsToUpgrade = [];
+		$apps = $this->getInstalledApps();
+		foreach ($apps as $appId) {
+			$appInfo = $this->getAppInfo($appId);
+			$appDbVersion = $this->appConfig->getValue($appId, 'installed_version');
+			if ($appDbVersion
+				&& isset($appInfo['version'])
+				&& version_compare($appInfo['version'], $appDbVersion, '>')
+				&& \OC_App::isAppCompatible($ocVersion, $appInfo)
+			) {
+				$appsToUpgrade[] = $appInfo;
+			}
+		}
+
+		return $appsToUpgrade;
+	}
+
+	/**
+	 * Returns the app information from "appinfo/info.xml".
+	 *
+	 * If no version was present in "appinfo/info.xml", reads it
+	 * from the external "appinfo/version" file instead.
+	 *
+	 * @param string $appId app id
+	 *
+	 * @return array app iinfo
+	 *
+	 * @internal
+	 */
+	public function getAppInfo($appId) {
+		$appInfo = \OC_App::getAppInfo($appId);
+		if (!isset($appInfo['version'])) {
+			// read version from separate file
+			$appInfo['version'] = \OC_App::getAppVersion($appId);
+		}
+		return $appInfo;
+	}
+
+	/**
+	 * Returns a list of apps incompatible with the given version
+	 *
+	 * @param array $version ownCloud version as array of version components
+	 *
+	 * @return array list of app info from incompatible apps
+	 *
+	 * @internal
+	 */
+	public function getIncompatibleApps($version) {
+		$apps = $this->getInstalledApps();
+		$incompatibleApps = array();
+		foreach ($apps as $appId) {
+			$info = $this->getAppInfo($appId);
+			if (!\OC_App::isAppCompatible($version, $info)) {
+				$incompatibleApps[] = $info;
+			}
+		}
+		return $incompatibleApps;
+	}
+
 }

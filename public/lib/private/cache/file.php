@@ -1,8 +1,8 @@
 <?php
 /**
  * @author Lukas Reschke <lukas@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -54,7 +54,7 @@ class File implements ICache {
 			$this->storage = new View('/' . $user->getUID() . '/cache');
 			return $this->storage;
 		} else {
-			\OC_Log::write('core', 'Can\'t get cache storage, user not logged in', \OC_Log::ERROR);
+			\OCP\Util::writeLog('core', 'Can\'t get cache storage, user not logged in', \OCP\Util::ERROR);
 			throw new \OC\ForbiddenException('Can\t get cache storage, user not logged in');
 		}
 	}
@@ -170,16 +170,25 @@ class File implements ICache {
 	public function gc() {
 		$storage = $this->getStorage();
 		if ($storage and $storage->is_dir('/')) {
-			$now = time();
+			// extra hour safety, in case of stray part chunks that take longer to write,
+			// because touch() is only called after the chunk was finished
+			$now = time() - 3600;
 			$dh = $storage->opendir('/');
 			if (!is_resource($dh)) {
 				return null;
 			}
 			while (($file = readdir($dh)) !== false) {
 				if ($file != '.' and $file != '..') {
-					$mtime = $storage->filemtime('/' . $file);
-					if ($mtime < $now) {
-						$storage->unlink('/' . $file);
+					try {
+						$mtime = $storage->filemtime('/' . $file);
+						if ($mtime < $now) {
+							$storage->unlink('/' . $file);
+						}
+					} catch (\OCP\Lock\LockedException $e) {
+						// ignore locked chunks
+						\OC::$server->getLogger()->debug('Could not cleanup locked chunk "' . $file . '"', array('app' => 'core'));
+					} catch (\OCP\Files\LockNotAcquiredException $e) {
+						\OC::$server->getLogger()->debug('Could not cleanup locked chunk "' . $file . '"', array('app' => 'core'));
 					}
 				}
 			}

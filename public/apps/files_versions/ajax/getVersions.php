@@ -5,6 +5,7 @@
  * @author Frank Karlitschek <frank@owncloud.org>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Sam Tuke <mail@samtuke.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -40,10 +41,15 @@ if( $versions ) {
 
 	$versions = array_slice($versions, $start, $count);
 
+	// remove owner path from request to not disclose it to the recipient
+	foreach ($versions as $version) {
+		unset($version['path']);
+	}
+
 	\OCP\JSON::success(array('data' => array('versions' => $versions, 'endReached' => $endReached)));
 
 } else {
 
-	\OCP\JSON::success(array('data' => array('versions' => false, 'endReached' => true)));
+	\OCP\JSON::success(array('data' => array('versions' => [], 'endReached' => true)));
 
 }
