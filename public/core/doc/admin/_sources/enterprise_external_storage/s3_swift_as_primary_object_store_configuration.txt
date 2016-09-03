@@ -2,16 +2,14 @@
 Configuring S3 and OpenStack Swift Objects as Primary Storage
 =============================================================
 
-In ownCloud Enterprise Subscription, you can configure S3 objects as primary 
-storage. This replaces the default ownCloud ``owncloud/data`` directory. You 
-may 
+In ownCloud Enterprise edition, you can configure S3 objects as primary 
+storage. This replaces the default ownCloud ``owncloud/data`` directory. You may 
 still need to keep the ``owncloud/data`` directory for these reasons:
 
 * The ownCloud log file is saved in the data directory
 * Legacy apps may not support using anything but the ``owncloud/data`` directory
 
-You can move your logfile by changing its location in ``config.php``. You may 
-still need 
+You can move your logfile by changing its location in ``config.php``. You may still need 
 ``owncloud/data`` for backwards compatibility with some apps.
 
 Implications
@@ -78,8 +76,7 @@ into the virtual filesystem. The class to be used is ``OCA\ObjectStore\S3``:
 Ceph S3
 ~~~~~~~
 
-The S3 backend can also be used to mount the bucket of a ceph object store via 
-the s3 API
+The S3 backend can also be used to mount the bucket of a ceph object store via the s3 API
 into the virtual filesystem. The class to be used is ``OCA\ObjectStore\S3``:
 
 ::
@@ -114,8 +111,7 @@ OpenStack Swift
 ~~~~~~~~~~~~~~~
 
 The Swift backend mounts a container on an OpenStack Object Storage server
-into the virtual filesystem. The class to be used is 
-``\\OC\\Files\\ObjectStore\\Swift``:
+into the virtual filesystem. The class to be used is ``\\OC\\Files\\ObjectStore\\Swift``:
 
 ::
 

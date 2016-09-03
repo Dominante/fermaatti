@@ -299,8 +299,11 @@ the default site. Open a terminal and run::
      a2ensite default-ssl
      service apache2 reload
 
-.. note:: See :ref:`security_commands_label` for help on managing self-signed 
-   certificates.   
+.. note:: Self-signed certificates have their drawbacks - especially when you
+          plan to make your ownCloud server publicly accessible. You might want
+          to consider getting a certificate signed by a commercial signing
+          authority. Check with your domain name registrar or hosting service 
+          for good deals on commercial certificates.   
     
 .. _installation_wizard_label:
     
@@ -379,7 +382,7 @@ When you are using ``php-fpm``, system environment variables like
 PATH, TMP or others are not automatically populated in the same way as 
 when using ``php-cli``. A PHP call like ``getenv('PATH');`` can therefore 
 return an empty result. So you may need to manually configure environment 
-varibles in the appropropriate ``php-fpm`` ini/config file. 
+variables in the appropropriate ``php-fpm`` ini/config file. 
 
 Here are some example root paths for these ini/config files:
 

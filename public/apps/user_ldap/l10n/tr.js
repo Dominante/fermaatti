@@ -13,6 +13,7 @@ OC.L10N.register(
     " Could not set configuration %s" : "%s yapılandırması ayarlanamadı",
     "Action does not exist" : "Eylem mevcut değil",
     "The Base DN appears to be wrong" : "Base DN yanlış gibi görünüyor",
+    "Testing configuration…" : "Yapılandırma sınanıyor...",
     "Configuration incorrect" : "Yapılandırma geçersiz",
     "Configuration incomplete" : "Yapılandırma tamamlanmamış",
     "Configuration OK" : "Yapılandırma tamam",
@@ -95,7 +96,6 @@ OC.L10N.register(
     "Test Base DN" : "Base DN'i Sına",
     "Avoids automatic LDAP requests. Better for bigger setups, but requires some LDAP knowledge." : "Otomatik LDAP isteklerinden kaçın. Büyük kurulumlar için daha iyi ancak LDAP bilgisi gerektirir.",
     "Manually enter LDAP filters (recommended for large directories)" : "LDAP filtrelerini el ile girin (büyük dizinler için önerilir)",
-    "Limit %s access to users meeting these criteria:" : "%s erişimini, şu kriterlerle eşleşen kullanıcılara sınırla:",
     "The most common object classes for users are organizationalPerson, person, user, and inetOrgPerson. If you are not sure which object class to select, please consult your directory admin." : "Kullanıcılar için en çok ortak nesne sınıfları organizationalPerson, person, user ve inetOrgPerson sınıflarıdır. Hangi nesne sınıfını seçeceğinizden emin değilseniz lütfen dizin yöneticinize danışın.",
     "The filter specifies which LDAP users shall have access to the %s instance." : "Filtre, %s örneğine erişmesi gereken LDAP kullanıcılarını belirtir.",
     "Verify settings and count users" : "Ayarları doğrula ve kullanıcıları say",
@@ -157,8 +157,6 @@ OC.L10N.register(
     "Username-LDAP User Mapping" : "Kullanıcı Adı-LDAP Kullanıcısı Eşleştirme",
     "Usernames are used to store and assign (meta) data. In order to precisely identify and recognize users, each LDAP user will have an internal username. This requires a mapping from username to LDAP user. The created username is mapped to the UUID of the LDAP user. Additionally the DN is cached as well to reduce LDAP interaction, but it is not used for identification. If the DN changes, the changes will be found. The internal username is used all over. Clearing the mappings will have leftovers everywhere. Clearing the mappings is not configuration sensitive, it affects all LDAP configurations! Never clear the mappings in a production environment, only in a testing or experimental stage." : "Kullanıcı adları, (üst) veri depolaması ve ataması için kullanılır. Kullanıcıları kesin olarak tanımlamak ve algılamak için, her LDAP kullanıcısı bir dahili kullanıcı adına sahip olacak. Bu kullanıcı adı ile LDAP kullanıcısı arasında bir eşleşme gerektirir. Oluşturulan kullanıcı adı LDAP kullanıcısının UUID'si ile eşleştirilir. Ek olarak LDAP etkileşimini azaltmak için DN de önbelleğe alınır ancak bu kimlik tanıma için kullanılmaz. Eğer DN değişirse, değişiklikler tespit edilir. Dahili kullanıcı her yerde kullanılır. Eşleştirmeleri temizlemek, her yerde kalıntılar bırakacaktır. Eşleştirmeleri temizlemek yapılandırmaya hassas bir şekilde bağlı değildir, tüm LDAP yapılandırmalarını etkiler! Üretim ortamında eşleştirmeleri asla temizlemeyin, sadece sınama veya deneysel aşamada kullanın.",
     "Clear Username-LDAP User Mapping" : "Kullanıcı Adı-LDAP Kullanıcısı Eşleştirmesini Temizle",
-    "Clear Groupname-LDAP Group Mapping" : "Grup Adı-LDAP Grubu Eşleştirmesini Temizle",
-    "Anonymous bind is not allowed. Please provide a User DN and Password." : "Anonim atamaya izin verilmiyor. Lütfen bir Kullanıcı DN ve Parola sağlayın.",
-    "{nthServer}. Server" : "{nthServer}. Sunucu"
+    "Clear Groupname-LDAP Group Mapping" : "Grup Adı-LDAP Grubu Eşleştirmesini Temizle"
 },
 "nplurals=2; plural=(n > 1);");

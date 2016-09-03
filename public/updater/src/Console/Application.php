@@ -22,6 +22,7 @@
 
 namespace Owncloud\Updater\Console;
 
+use Owncloud\Updater\Utils\DocLink;
 use Owncloud\Updater\Utils\Locator;
 use Pimple\Container;
 use Symfony\Component\Console\Logger\ConsoleLogger;
@@ -151,6 +152,11 @@ class Application extends \Symfony\Component\Console\Application {
 			$commandName = $this->getCommandName($input);
 			try{
 				$configReader->init();
+				$this->diContainer['utils.docLink'] = function($c){
+					$locator = $c['utils.locator'];
+					$installedVersion = implode('.', $locator->getInstalledVersion());
+					return new DocLink($installedVersion);
+				};
 			} catch (ProcessFailedException $e){
 				if (!in_array($commandName, $this->allowFailure)){
 					$this->logException($e);
@@ -228,7 +234,7 @@ class Application extends \Symfony\Component\Console\Application {
 		// assert minimum version
 		$installedVersion = implode('.', $locator->getInstalledVersion());
 		if (version_compare($installedVersion, '9.0.0', '<')){
-			throw new \RuntimeException("Minimum ownCloud version 9.0.0 is required for the updater - $installedVersion was found in " . $locator->getOwncloudRootPath());
+			throw new \RuntimeException("Minimum ownCloud version 9.0.0 is required for the updater - $installedVersion was found in " . $locator->getOwnCloudRootPath());
 		}
 
 		// has to be installed

@@ -95,7 +95,6 @@ OC.L10N.register(
     "Test Base DN" : "기본 DN 시험",
     "Avoids automatic LDAP requests. Better for bigger setups, but requires some LDAP knowledge." : "자동 LDAP 요청을 줄입니다. 대형 사이트에서 유용하지만 LDAP에 관한 지식이 필요합니다.",
     "Manually enter LDAP filters (recommended for large directories)" : "수동으로 LDAP 필터 입력(대형 사이트에 추천)",
-    "Limit %s access to users meeting these criteria:" : "다음 조건을 만족하는 사용자만 %s 접근 허용:",
     "The most common object classes for users are organizationalPerson, person, user, and inetOrgPerson. If you are not sure which object class to select, please consult your directory admin." : "일반적인 객체 클래스는 organizationalPerson, person, user, inetOrgPerson입니다. 어떤 객체 클래스를 사용해야 할 지 모르겠으면 디렉터리 서비스 관리자에게 연락하십시오.",
     "The filter specifies which LDAP users shall have access to the %s instance." : "이 필터는 %s에 접근할 수 있는 LDAP 사용자를 설정합니다.",
     "Verify settings and count users" : "설정을 확인하고 사용자 수 계산",
@@ -122,6 +121,8 @@ OC.L10N.register(
     "Directory Settings" : "디렉터리 설정",
     "User Display Name Field" : "사용자의 표시 이름 필드",
     "The LDAP attribute to use to generate the user's display name." : "사용자 표시 이름을 생성할 때 사용할 LDAP 속성입니다.",
+    "2nd User Display Name Field" : "보조 사용자 표시 이름 필드",
+    "Optional. An LDAP attribute to be added to the display name in brackets. Results in e.g. »John Doe (john.doe@example.org)«." : "선택 사항입니다. 괄호 안에 추가로 표시할 정보를 포함하는 LDAP 속성입니다. 예: 홍길동(gildong.hong@example.org)",
     "Base User Tree" : "기본 사용자 트리",
     "One User Base DN per line" : "사용자 DN을 한 줄에 하나씩 입력하십시오",
     "User Search Attributes" : "사용자 검색 속성",
@@ -132,6 +133,8 @@ OC.L10N.register(
     "One Group Base DN per line" : "그룹 기본 DN을 한 줄에 하나씩 입력하십시오",
     "Group Search Attributes" : "그룹 검색 속성",
     "Group-Member association" : "그룹-구성원 연결",
+    "Dynamic Group Member URL" : "동적 그룹 구성원 URL",
+    "The LDAP attribute that on group objects contains an LDAP search URL that determines what objects belong to the group. (An empty setting disables dynamic group membership functionality.)" : "그룹에 포함될 객체를 결정하는 LDAP 검색 URL을 포함하는 그룹 객체의 LDAP 속성입니다.(비워 두면 동적 그룹 구성원 기능을 사용하지 않습니다.)",
     "Nested Groups" : "그룹 안의 그룹",
     "When switched on, groups that contain groups are supported. (Only works if the group member attribute contains DNs.)" : "이 설정을 사용하면 그룹 안의 그룹을 지원합니다.(그룹 구성원 속성이 DN을 포함하는 경우에만 사용 가능)",
     "Paging chunksize" : "페이지 청크 크기",
@@ -153,10 +156,6 @@ OC.L10N.register(
     "Username-LDAP User Mapping" : "사용자 이름-LDAP 사용자 매핑",
     "Usernames are used to store and assign (meta) data. In order to precisely identify and recognize users, each LDAP user will have an internal username. This requires a mapping from username to LDAP user. The created username is mapped to the UUID of the LDAP user. Additionally the DN is cached as well to reduce LDAP interaction, but it is not used for identification. If the DN changes, the changes will be found. The internal username is used all over. Clearing the mappings will have leftovers everywhere. Clearing the mappings is not configuration sensitive, it affects all LDAP configurations! Never clear the mappings in a production environment, only in a testing or experimental stage." : "사용자 이름은 (메타)데이터를 저장하고 할당하는 데 사용됩니다. 사용자를 정확히 식별하기 위해서 모든 LDAP 사용자는 내부 사용자 이름을 갖고 있습니다. 이 정보에 접근하려면 사용자 이름과 LDAP 사용자 사이의 연결을 알아야 합니다. 생성된 사용자 이름은 LDAP 사용자의 UUID에 연결됩니다. LDAP에 연결하는 횟수를 줄이기 위하여 DN을 캐시에 저장하지만, 식별에는 사용하지 않습니다. DN이 변경되었을 때 변경 사항이 적용됩니다. 내부 사용자 이름은 항상 사용됩니다. 매핑을 비우면 과거 매핑의 흔적이 남습니다. 매핑을 비우는 것은 설정에 관계 없이 적용되므로 모든 LDAP 설정에 영향을 줍니다! 테스트 및 실험 단계에서만 매핑을 비우고, 상용 환경에서는 매핑을 비우지 마십시오.",
     "Clear Username-LDAP User Mapping" : "사용자 이름-LDAP 사용자 매핑 비우기",
-    "Clear Groupname-LDAP Group Mapping" : "그룹 이름-LDAP 그룹 매핑 비우기",
-    "2nd User Display Name Field" : "보조 사용자 표시 이름 필드",
-    "Dynamic Group Member URL" : "동적 그룹 구성원 URL",
-    "Anonymous bind is not allowed. Please provide a User DN and Password." : "익명 연결은 허용되지 않습니다. 사용자 DN과 암호를 입력하십시오.",
-    "{nthServer}. Server" : "{nthServer}. 서버"
+    "Clear Groupname-LDAP Group Mapping" : "그룹 이름-LDAP 그룹 매핑 비우기"
 },
 "nplurals=1; plural=0;");

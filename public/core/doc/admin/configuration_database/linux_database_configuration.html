@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Database Configuration &mdash; ownCloud 9.0 Server Administration Manual 9.0 documentation</title>
+    <title>Database Configuration &mdash; ownCloud 9.1 Server Administration Manual 9.1 documentation</title>
     
     <link rel="stylesheet" href="../_static/" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '9.0',
+        VERSION:     '9.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="ownCloud 9.0 Server Administration Manual 9.0 documentation" href="../contents.html" />
+    <link rel="top" title="ownCloud 9.1 Server Administration Manual 9.1 documentation" href="../contents.html" />
     <link rel="up" title="Database Configuration" href="index.html" />
     <link rel="next" title="Mimetypes Management" href="../configuration_mimetypes/index.html" />
     <link rel="prev" title="Converting Database Type" href="db_conversion.html" />
@@ -66,9 +66,9 @@
 <li><a href="../contents.html">Table of Contents</a></li>
 									</ul>
                   <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 9.0 Server Administration Manual Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 9.0 Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 9.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 9.1 Server Administration Manual Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 9.1 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 9.1</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configuration_server/index.html">ownCloud Server Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configuration_user/index.html">User Management</a></li>
@@ -334,7 +334,18 @@ this:</p>
 </div>
 </div>
 <div class="section" id="troubleshooting">
-<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
+<span id="db-troubleshooting-label"></span><h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="how-to-workaround-general-error-2006-mysql-server-has-gone-away">
+<h3>How to workaround General error: 2006 MySQL server has gone away<a class="headerlink" href="#how-to-workaround-general-error-2006-mysql-server-has-gone-away" title="Permalink to this headline">¶</a></h3>
+<p>The database request takes too long and therefore the MySQL server times out. Its
+also possible that the server is dropping a packet that is too large. Please
+refer to the manual of your database for how to raise the configuration options
+<code class="docutils literal"><span class="pre">wait_timeout</span></code> and/or <code class="docutils literal"><span class="pre">max_allowed_packet</span></code>.</p>
+<p>Some shared hosters are not allowing the access to these config options. For such
+systems ownCloud is providing a <code class="docutils literal"><span class="pre">dbdriveroptions</span></code> configuration option within your
+<code class="file docutils literal"><span class="pre">config/config.php</span></code> where you can pass such options to the database driver.
+Please refer to <a class="reference internal" href="../configuration_server/config_sample_php_parameters.html"><em>Config.php Parameters</em></a> for an example.</p>
+</div>
 <div class="section" id="how-can-i-find-out-if-my-mysql-postgresql-server-is-reachable">
 <h3>How can I find out if my MySQL/PostgreSQL server is reachable?<a class="headerlink" href="#how-can-i-find-out-if-my-mysql-postgresql-server-is-reachable" title="Permalink to this headline">¶</a></h3>
 <p>To check the server&#8217;s network availability, use the ping command on

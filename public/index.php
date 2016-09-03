@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
@@ -39,7 +39,7 @@ try {
 	OC::handleRequest();
 
 } catch(\OC\ServiceUnavailableException $ex) {
-	\OCP\Util::logException('index', $ex);
+	\OC::$server->getLogger()->logException($ex, ['app' => 'index']);
 
 	//show the user a detailed error page
 	OC_Response::setStatus(OC_Response::STATUS_SERVICE_UNAVAILABLE);
@@ -48,9 +48,13 @@ try {
 	OC_Response::setStatus(OC_Response::STATUS_SERVICE_UNAVAILABLE);
 	OC_Template::printErrorPage($ex->getMessage(), $ex->getHint());
 } catch (Exception $ex) {
-	\OCP\Util::logException('index', $ex);
+	\OC::$server->getLogger()->logException($ex, ['app' => 'index']);
 
 	//show the user a detailed error page
+	OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
+	OC_Template::printExceptionErrorPage($ex);
+} catch (Error $ex) {
+	\OC::$server->getLogger()->logException($ex, ['app' => 'index']);
 	OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
 	OC_Template::printExceptionErrorPage($ex);
 }

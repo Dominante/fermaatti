@@ -13,6 +13,7 @@ OC.L10N.register(
     " Could not set configuration %s" : "Kon configuratie %s niet instellen",
     "Action does not exist" : "Actie bestaat niet",
     "The Base DN appears to be wrong" : "De Basis DN lijkt onjuist",
+    "Testing configuration…" : "Testen van de configuratie…",
     "Configuration incorrect" : "Configuratie onjuist",
     "Configuration incomplete" : "Configuratie incompleet",
     "Configuration OK" : "Configuratie OK",
@@ -45,7 +46,7 @@ OC.L10N.register(
     "A connection error to LDAP / AD occurred, please check host, port and credentials." : "Er trad een verbindingsfout naar LDAP / AD op, verifieer servernaam, poort en inloggegevens.",
     "The %uid placeholder is missing. It will be replaced with the login name when querying LDAP / AD." : "De %uid opvultekst ontbreekt. Die wordt vervangen door de inlognaam bij het bevragen van LDAP / AD.",
     "Please provide a login name to test against" : "Geef een inlognaam op om opnieuw tegen te testen",
-    "The group box was disabled, because the LDAP / AD server does not support memberOf." : "De groepsbox was uitgeschakeld omdat de LDAP / AD server het attribuut memberOf niet ondersteunt.",
+    "The group box was disabled, because the LDAP / AD server does not support memberOf." : "De groepsbox was uitgeschakeld, omdat de LDAP / AD server het attribuut memberOf niet ondersteunt.",
     "_%s group found_::_%s groups found_" : ["%s groep gevonden","%s groepen gevonden"],
     "_%s user found_::_%s users found_" : ["%s gebruiker gevonden","%s gebruikers gevonden"],
     "Could not detect user display name attribute. Please specify it yourself in advanced ldap settings." : "Kon het weergavenaam attribuut van de gebruiker niet vinden. Geef het zelf op in de geavanceerde ldap instellingen.",
@@ -95,7 +96,7 @@ OC.L10N.register(
     "Test Base DN" : "Testen basis DN",
     "Avoids automatic LDAP requests. Better for bigger setups, but requires some LDAP knowledge." : "Voorkom automatische LDAP opvragingen. Weliswaar beter voor grote installaties, maar vergt LDAP kennis.",
     "Manually enter LDAP filters (recommended for large directories)" : "Handmatig invoeren LDAP filters (aanbevolen voor grote directories)",
-    "Limit %s access to users meeting these criteria:" : "Beperk %s toegang tot gebruikers die voldoen aan deze criteria:",
+    "%s access is limited to users meeting these criteria:" : "%s toegang is beperkt tot gebruikers die voldoen aan deze criteria:",
     "The most common object classes for users are organizationalPerson, person, user, and inetOrgPerson. If you are not sure which object class to select, please consult your directory admin." : "De meest gebruikeliujke objectklassen voor gebruikers zijn organizationalPerson, persoon, gebruiker, en inetOrgPerson. Als u niet zeker weet welke objectklasse moet worden geselecteerd, raadpleeg dan uw directorybeheerder.",
     "The filter specifies which LDAP users shall have access to the %s instance." : "Dit filter geeft aan welke LDAP gebruikers toegang hebben tot %s.",
     "Verify settings and count users" : "Verifiëren instellingen en tellen gebruikers",
@@ -157,8 +158,6 @@ OC.L10N.register(
     "Username-LDAP User Mapping" : "Gebruikersnaam-LDAP gebruikers vertaling",
     "Usernames are used to store and assign (meta) data. In order to precisely identify and recognize users, each LDAP user will have an internal username. This requires a mapping from username to LDAP user. The created username is mapped to the UUID of the LDAP user. Additionally the DN is cached as well to reduce LDAP interaction, but it is not used for identification. If the DN changes, the changes will be found. The internal username is used all over. Clearing the mappings will have leftovers everywhere. Clearing the mappings is not configuration sensitive, it affects all LDAP configurations! Never clear the mappings in a production environment, only in a testing or experimental stage." : "ownCloud maakt gebruik van gebruikersnamen om (meta) data op te slaan en toe te wijzen. Om gebruikers uniek te identificeren, krijgt elke LDAP-gebruiker ook een interne gebruikersnaam. Dit vereist een koppeling van de ownCloud gebruikersnaam aan een ​​LDAP-gebruiker. De gecreëerde gebruikersnaam is gekoppeld aan de UUID van de LDAP-gebruiker. Aanvullend wordt ook de 'DN' gecached om het aantal LDAP-interacties te verminderen, maar dit wordt niet gebruikt voor identificatie. Als de DN verandert, zullen de veranderingen worden gevonden. De interne naam wordt overal gebruikt. Het wissen van de koppeling zal overal resten achterlaten. Het wissen van koppelingen is niet configuratiegevoelig, maar het raakt wel alle LDAP instellingen! Zorg ervoor dat deze koppelingen nooit in een productieomgeving gewist worden. Maak ze alleen leeg in een test- of ontwikkelomgeving.",
     "Clear Username-LDAP User Mapping" : "Leegmaken Gebruikersnaam-LDAP gebruikers vertaling",
-    "Clear Groupname-LDAP Group Mapping" : "Leegmaken Groepsnaam-LDAP groep vertaling",
-    "Anonymous bind is not allowed. Please provide a User DN and Password." : "Anonieme bind is niet toegestaan. Geef een gebruikers DN en wachrwoord op.",
-    "{nthServer}. Server" : "{nthServer}. Server"
+    "Clear Groupname-LDAP Group Mapping" : "Leegmaken Groepsnaam-LDAP groep vertaling"
 },
 "nplurals=2; plural=(n != 1);");

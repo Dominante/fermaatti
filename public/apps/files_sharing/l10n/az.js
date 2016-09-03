@@ -55,12 +55,6 @@ OC.L10N.register(
     "Add to your ownCloud" : "Öz ownCloud-nuza əlavə edin",
     "Download" : "Yüklə",
     "Download %s" : "Endir %s",
-    "Direct link" : "Birbaşa link",
-    "Federated Cloud Sharing" : "Federal Cloud Paylaşım",
-    "Open documentation" : "Sənədləri aç",
-    "Allow users on this server to send shares to other servers" : "Bu serverdən digər serverlərə istifadəçilər tərəfindən paylaşımın göndərilməsinə izin vermək",
-    "Allow users on this server to receive shares from other servers" : "Digər serverlərdən bu serverə istifadəçilər tərəfindən paylaşımın ötürülməsinə izin vermək",
-    "Public shared file %1$s was downloaded" : "Ümumi paylaşılmış fayl %1$s endirilmişdir",
-    "Public shared folder %1$s was downloaded" : "Ümumi paylaşılmış qovluq %1$s endirilmişdir"
+    "Direct link" : "Birbaşa link"
 },
 "nplurals=2; plural=(n != 1);");

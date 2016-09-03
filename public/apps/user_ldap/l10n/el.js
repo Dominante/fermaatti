@@ -95,7 +95,6 @@ OC.L10N.register(
     "Test Base DN" : "Δοκιμή ",
     "Avoids automatic LDAP requests. Better for bigger setups, but requires some LDAP knowledge." : "Αποφυγή αυτόματων αιτημάτων LDAP. Προτιμότερο για μεγαλύτερες εγκαταστάσεις, αλλά απαιτεί κάποιες γνώσεις  LDAP.",
     "Manually enter LDAP filters (recommended for large directories)" : "Εισάγετε με μη αυτόματο τρόπο φίλτρα LDAP (προτείνεται για μεγάλους καταλόγους)",
-    "Limit %s access to users meeting these criteria:" : "Περιορισμός της πρόσβασης %s σε χρήστες που πληρούν τα κριτήρια:",
     "The most common object classes for users are organizationalPerson, person, user, and inetOrgPerson. If you are not sure which object class to select, please consult your directory admin." : "Οι πιο συνηθισμένες κλάσεις αντικειμένων για τους χρήστες είναι οι organizationalPerson, person, user, και inetOrgPerson. Εάν δεν είσαστε σίγουροι πιο κλάση να επιλέξετε, παρακαλώ συμβουλευτείτε τον διαχειριστή του καταλόγου σας.",
     "The filter specifies which LDAP users shall have access to the %s instance." : "Το φίλτρο καθορίζει ποιοι χρήστες LDAP θα έχουν πρόσβαση στην εγκατάσταση %s.",
     "Verify settings and count users" : "Επαλήθευση ρυθμίσεων και καταμέτρηση χρηστών",
@@ -153,8 +152,6 @@ OC.L10N.register(
     "Username-LDAP User Mapping" : "Αντιστοίχιση Χρηστών Όνομα Χρήστη-LDAP",
     "Usernames are used to store and assign (meta) data. In order to precisely identify and recognize users, each LDAP user will have an internal username. This requires a mapping from username to LDAP user. The created username is mapped to the UUID of the LDAP user. Additionally the DN is cached as well to reduce LDAP interaction, but it is not used for identification. If the DN changes, the changes will be found. The internal username is used all over. Clearing the mappings will have leftovers everywhere. Clearing the mappings is not configuration sensitive, it affects all LDAP configurations! Never clear the mappings in a production environment, only in a testing or experimental stage." : "Τα ονόματα χρηστών χρησιμοποιούνται για την αποθήκευση και τον προσδιορισμό των  (μετα) δεδομένων. Προκειμένου να προσδιοριστούν με ακρίβεια και να αναγνωριστούν οι χρήστες, κάθε χρήστης LDAP θα έχει ένα εσωτερικό όνομα. Αυτό απαιτεί μια αντιστοίχιση του ονόματος χρήστη με το χρήστη LDAP. Το όνομα χρήστη που δημιουργήθηκαν αντιστοιχίζεται στην UUID του χρήστη LDAP. Επιπροσθέτως, το DN αποθηκεύεται προσωρινά (cache) ώστε να μειωθεί η αλληλεπίδραση LDAP, αλλά δεν χρησιμοποιείται για την ταυτοποίηση. Αν το DN αλλάξει, οι αλλαγές θα εντοπιστούν. Το εσωτερικό όνομα χρήστη χρησιμοποιείται παντού. Η εκκαθάριση των αντιστοιχίσεων θα αφήσει υπολείμματα παντού. Η εκκαθάριση των αντιστοιχίσεων δεν επηρεάζεται από τη διαμόρφωση, επηρεάζει όλες τις διαμορφώσεις LDAP! Μην διαγράψετε ποτέ τις αντιστοιχίσεις σε ένα λειτουργικό περιβάλλον παρά μόνο σε δοκιμές ή σε πειραματικό στάδιο.",
     "Clear Username-LDAP User Mapping" : "Διαγραφή αντιστοίχησης Ονόματος Χρήστη LDAP-Χρήστη",
-    "Clear Groupname-LDAP Group Mapping" : "Διαγραφή αντιστοίχησης Ονόματος Ομάδας-LDAP Ομάδας",
-    "Anonymous bind is not allowed. Please provide a User DN and Password." : "Η ανώνυμη δέσμευση δεν επιτρέπεται. Παρακαλούμε δώστε ένα DN χρήστη και Κωδικό Πρόσβασης.",
-    "{nthServer}. Server" : "{nthServer}. Διακομιστής"
+    "Clear Groupname-LDAP Group Mapping" : "Διαγραφή αντιστοίχησης Ονόματος Ομάδας-LDAP Ομάδας"
 },
 "nplurals=2; plural=(n != 1);");

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Encryption Configuration &mdash; ownCloud 9.0 Server Administration Manual 9.0 documentation</title>
+    <title>Encryption Configuration &mdash; ownCloud 9.1 Server Administration Manual 9.1 documentation</title>
     
     <link rel="stylesheet" href="../_static/" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '9.0',
+        VERSION:     '9.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="ownCloud 9.0 Server Administration Manual 9.0 documentation" href="../contents.html" />
+    <link rel="top" title="ownCloud 9.1 Server Administration Manual 9.1 documentation" href="../contents.html" />
     <link rel="up" title="File Sharing and Management" href="index.html" />
     <link rel="next" title="Transactional File Locking" href="files_locking_transactional.html" />
     <link rel="prev" title="External Storage Authentication mechanisms" href="external_storage/auth_mechanisms.html" />
@@ -66,9 +66,9 @@
 <li><a href="../contents.html">Table of Contents</a></li>
 									</ul>
                   <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 9.0 Server Administration Manual Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 9.0 Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 9.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 9.1 Server Administration Manual Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 9.1 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 9.1</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configuration_server/index.html">ownCloud Server Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configuration_user/index.html">User Management</a></li>
@@ -153,10 +153,10 @@ server.</p>
 newly encrypted files. See <a class="reference external" href="https://hackerone.com/reports/108082">https://hackerone.com/reports/108082</a> for more
 technical information about the impact.</p>
 <p class="last">For maximum security make sure to configure external storage with &#8220;Check for
-changes: Never&#8221;. This will let ownCloud ignore new files not added via
-ownCloud, so a malicious external storage administrator could not add new
-files to the storage without your knowledge. Of course, this is not wise if
-your external storage is subject to legitimate external changes.</p>
+changes: Never&#8221;. This will let ownCloud ignore new files not added via ownCloud,
+so a malicious external storage administrator could not add new files to the
+storage without your knowledge. Of course, this is not wise if your external
+storage is subject to legitimate external changes.</p>
 </div>
 <p>ownCloud server-side encryption encrypts files stored on the ownCloud server,
 and files on remote storage that is connected to your ownCloud server.
@@ -201,8 +201,8 @@ would require client-side encryption, which this app does not provide. If
 your ownCloud server is not connected to any external storage services then
 it is better to use other encryption tools, such as file-level or
 whole-disk encryption.</p>
-<p class="last">Note also that SSL terminates at or before Apache on the ownCloud server,
-and all files will exist in an unencrypted state between the SSL connection
+<p class="last">Note also that SSL terminates at or before Apache on the ownCloud server, and
+all files will exist in an unencrypted state between the SSL connection
 termination and the ownCloud code that encrypts and decrypts files. This is
 also potentially exploitable by anyone with administrator access to your
 server. Read <a class="reference external" href="https://owncloud.org/blog/how-owncloud-uses-encryption-to-protect-your-data/">How ownCloud uses encryption to protect your data</a> for more information.</p>
@@ -254,8 +254,7 @@ log-out and log-in again.&#8221;</p>
 <p>Share owners may need to re-share files after encryption is enabled; users
 trying to access the share will see a message advising them to ask the share
 owner to re-share the file with them. For individual shares, un-share and
-re-share the file. For group shares, share with any individuals who can&#8217;t
-access
+re-share the file. For group shares, share with any individuals who can&#8217;t access
 the share. This updates the encryption, and then the share owner can remove the
 individual shares.</p>
 <div class="figure">
@@ -423,14 +422,10 @@ their new password.</p>
 </div>
 <div class="section" id="encryption-migration-to-owncloud-8-0">
 <span id="upgrading-encryption-label"></span><h2>Encryption migration to ownCloud 8.0<a class="headerlink" href="#encryption-migration-to-owncloud-8-0" title="Permalink to this headline">¶</a></h2>
-<p>When you upgrade from older versions of ownCloud to ownCloud 8.0, you must
-manually migrate
-your encryption keys with the <em>occ</em> command after the upgrade is complete, like
-this
-example for CentOS: <em>sudo -u apache php occ encryption:migrate-keys</em> You must
-run <em>occ</em> as
-your HTTP user. See <a class="reference internal" href="../configuration_server/occ_command.html"><em>Using the occ Command</em></a> to learn more
-about <em>occ</em>.</p>
+<p>When you upgrade from older versions of ownCloud to ownCloud 8.0, you must manually migrate
+your encryption keys with the <em>occ</em> command after the upgrade is complete, like this
+example for CentOS: <em>sudo -u apache php occ encryption:migrate-keys</em> You must run <em>occ</em> as
+your HTTP user. See <a class="reference internal" href="../configuration_server/occ_command.html"><em>Using the occ Command</em></a> to learn more about <em>occ</em>.</p>
 </div>
 <div class="section" id="encryption-migration-to-owncloud-8-1">
 <h2>Encryption migration to ownCloud 8.1<a class="headerlink" href="#encryption-migration-to-owncloud-8-1" title="Permalink to this headline">¶</a></h2>

@@ -270,6 +270,14 @@ Enabling this sends a "heartbeat" to the server to keep it from timing out.
 
 ::
 
+	'token_auth_enforced' => false,
+
+Enforce token authentication for clients, which blocks requests using the user
+password for enhanced security. Users need to generate tokens in personal settings
+which can be used as passwords on their clients.
+
+::
+
 	'skeletondirectory' => '/path/to/owncloud/core/skeleton',
 
 The directory where the skeleton files are located. These files will be
@@ -564,8 +572,8 @@ Available values:
 
 * ``auto``
     default setting. Automatically expire versions according to expire
-    rules. Please refer to Files_versions online documentation for more
-    info.
+    rules. Please refer to :doc:`../configuration_files/file_versioning` for
+    more information.
 * ``D, auto``
     keep versions at least for D days, apply expire rules to all versions
     that are older than D days
@@ -739,19 +747,6 @@ Log successful cron runs.
 
 ::
 
-	'cron.lockfile.location' => '',
-
-Location of the lock file for cron executions can be specified here.
-
-Default is within the tmp directory. The file is named in the following way:
-owncloud-server-$INSTANCEID-cron.lock
-where $INSTANCEID is the string specified in the ``instanceid`` field.
-Because the cron lock file is accessed at regular intervals, it may prevent
-enabled disk drives from spinning down. A different location for this file
-can solve such issues.
-
-::
-
 	'log_rotate_size' => false,
 
 Enables log rotation and limits the total size of logfiles. The default is 0,
@@ -768,26 +763,8 @@ Some of the ownCloud code may be stored in alternate locations.
 
 ::
 
-	'3rdpartyroot' => '',
-
-ownCloud uses some 3rd party PHP components to provide certain functionality.
-
-These components are shipped as part of the software package and reside in
-``owncloud/3rdparty``. Use this option to configure a different location.
-For example, if your location is /var/www/owncloud/foo/3rdparty, then the
-correct configuration is '3rdpartyroot' => '/var/www/owncloud/foo/',
-
-::
-
-	'3rdpartyurl' => '',
-
-If you have an alternate ``3rdpartyroot``, you must also configure the URL as
-seen by a Web browser.
-
-::
-
 	'customclient_desktop' =>
-		'http://owncloud.org/sync-clients/',
+		'https://owncloud.org/install/#install-clients',
 	'customclient_android' =>
 		'https://play.google.com/store/apps/details?id=com.owncloud.android',
 	'customclient_ios' =>
@@ -919,7 +896,7 @@ custom path for LibreOffice/OpenOffice binary
 
 	'preview_office_cl_parameters' =>
 		' --headless --nologo --nofirststartwizard --invisible --norestore '.
-		'-convert-to pdf -outdir ',
+		'--convert-to pdf --outdir ',
 
 Use this if LibreOffice/OpenOffice requires additional arguments.
 
@@ -1127,12 +1104,46 @@ Server details for one or more memcached servers to use for memory caching.
 
 ::
 
+	'memcached_options' => array(
+		// Set timeouts to 50ms
+		\Memcached::OPT_CONNECT_TIMEOUT => 50,
+		\Memcached::OPT_RETRY_TIMEOUT =>   50,
+		\Memcached::OPT_SEND_TIMEOUT =>    50,
+		\Memcached::OPT_RECV_TIMEOUT =>    50,
+		\Memcached::OPT_POLL_TIMEOUT =>    50,
+	
+		// Enable compression
+		\Memcached::OPT_COMPRESSION =>          true,
+	
+		// Turn on consistent hashing
+		\Memcached::OPT_LIBKETAMA_COMPATIBLE => true,
+	
+		// Enable Binary Protocol
+		\Memcached::OPT_BINARY_PROTOCOL =>      true,
+	
+		// Binary serializer vill be enabled if the igbinary PECL module is available
+		//\Memcached::OPT_SERIALIZER => \Memcached::SERIALIZER_IGBINARY,
+	),
+
+Connection options for memcached, see http://apprize.info/php/scaling/15.html
+
+::
+
 	'cache_path' => '',
 
 Location of the cache folder, defaults to ``data/$user/cache`` where
 ``$user`` is the current user. When specified, the format will change to
 ``$cache_path/$user`` where ``$cache_path`` is the configured cache directory
 and ``$user`` is the user.
+
+::
+
+	'cache_chunk_gc_ttl' => 86400, // 60*60*24 = 1 day
+
+TTL of chunks located in the cache folder before they're removed by
+garbage collection (in seconds). Increase this value if users have
+issues uploading very large files via the ownCloud Client as upload isn't
+completed within one day.
 
 Using Object Store with ownCloud
 --------------------------------
@@ -1204,10 +1215,11 @@ All other configuration options
 
 	'dbdriveroptions' => array(
 		PDO::MYSQL_ATTR_SSL_CA => '/file/path/to/ca_cert.pem',
+		PDO::MYSQL_ATTR_INIT_COMMAND => 'SET wait_timeout = 28800'
 	),
 
 Additional driver options for the database connection, eg. to enable SSL
-encryption in MySQL.
+encryption in MySQL or specify a custom wait timeout on a cheap hoster.
 
 ::
 
@@ -1320,7 +1332,7 @@ general use if outside changes might happen.
 
 	'part_file_in_storage' => true,
 
-On default ownCloud will store the part files created during upload in the
+By default ownCloud will store the part files created during upload in the
 same storage as the upload target. Setting this to false will store the part
 files in the root of the users folder which might be required to work with certain
 external storage setups that have limited rename capabilities.
@@ -1414,6 +1426,16 @@ shared files.
 
 ::
 
+	'filelocking.ttl' => 3600,
+
+Set the time-to-live for locks in secconds.
+
+Any lock older than this will be automatically cleaned up.
+
+If not set this defaults to either 1 hour or the php max_execution_time, whichever is higher.
+
+::
+
 	'memcache.locking' => '\\OC\\Memcache\\Redis',
 
 Memory caching backend for file locking
@@ -1423,12 +1445,32 @@ is highly recommended to *avoid data loss*.
 
 ::
 
+	'upgrade.disable-web' => false,
+
+Disable the web based updater
+
+::
+
 	'debug' => false,
 
 Set this ownCloud instance to debugging mode
 
 Only enable this for local development and not in production environments
 This will disable the minifier and outputs some additional debug information
+
+::
+
+	'data-fingerprint' => '',
+
+Sets the data-fingerprint of the current data served
+
+This is a property used by the clients to find out if a backup has been
+restored on the server. Once a backup is restored run
+./occ maintenance:data-fingerprint
+To set this to a new value.
+
+Updating/Deleting this value can make connected clients stall until
+the user has resolved conflicts.
 
 ::
 

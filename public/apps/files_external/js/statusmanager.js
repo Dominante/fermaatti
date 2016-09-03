@@ -78,7 +78,7 @@ OCA.External.StatusManager = {
 			defObj = $.ajax({
 				type: 'GET',
 				url: OC.webroot + '/index.php/apps/files_external/' + ((mountData.type === 'personal') ? 'userstorages' : 'userglobalstorages') + '/' + mountData.id,
-				data: {'testOnly': false},
+				data: {'testOnly' : false},
 				success: function (response) {
 					if (response && response.status === 0) {
 						self.mountStatus[mountData.mount_point] = response;
@@ -498,7 +498,7 @@ OCA.External.StatusManager.Utils = {
 		if (folder instanceof $) {
 			trFolder = folder;
 		} else {
-			// cant use here FileList.findFileEl(OCA.External.StatusManager.Utils.jqSelEscape(folder)); return incorrect instance of filelist
+			// can't use here FileList.findFileEl(OCA.External.StatusManager.Utils.jqSelEscape(folder)); return incorrect instance of filelist
 			trFolder = $('#fileList tr[data-file=\"' + OCA.External.StatusManager.Utils.jqSelEscape(folder) + '\"]');
 		}
 		trFolder.removeClass('externalErroredRow').removeClass('externalDisabledRow');

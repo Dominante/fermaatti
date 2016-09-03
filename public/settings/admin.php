@@ -1,15 +1,16 @@
 <?php
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
- * @author Björn Schießle <schiessle@owncloud.com>
- * @author Frank Karlitschek <frank@owncloud.org>
+ * @author Björn Schießle <bjoern@schiessle.org>
+ * @author Frank Karlitschek <frank@karlitschek.de>
  * @author Georg Ehrke <georg@owncloud.com>
  * @author Jan-Christoph Borchardt <hey@jancborchardt.net>
  * @author Joas Schilling <nickvergessen@owncloud.com>
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Martin Mattel <martin.mattel@diemattels.at>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -38,20 +39,22 @@ $template = new OC_Template('settings', 'admin', 'user');
 $l = \OC::$server->getL10N('settings');
 
 OC_Util::addScript('settings', 'certificates');
-OC_Util::addScript('files', 'jquery.iframe-transport');
 OC_Util::addScript('files', 'jquery.fileupload');
+
+\OC::$server->getEventDispatcher()->dispatch('OC\Settings\Admin::loadAdditionalScripts');
 
 $showLog = (\OC::$server->getConfig()->getSystemValue('log_type', 'owncloud') === 'owncloud');
 $numEntriesToLoad = 3;
-$entries = OC_Log_Owncloud::getEntries($numEntriesToLoad + 1);
+$entries = \OC\Log\Owncloud::getEntries($numEntriesToLoad + 1);
 $entriesRemaining = count($entries) > $numEntriesToLoad;
 $entries = array_slice($entries, 0, $numEntriesToLoad);
-$logFilePath = OC_Log_Owncloud::getLogFilePath();
+$logFilePath = \OC\Log\Owncloud::getLogFilePath();
 $doesLogFileExist = file_exists($logFilePath);
 $logFileSize = 0;
 if($doesLogFileExist) {
 	$logFileSize = filesize($logFilePath);
 }
+
 $config = \OC::$server->getConfig();
 $appConfig = \OC::$server->getAppConfig();
 $request = \OC::$server->getRequest();

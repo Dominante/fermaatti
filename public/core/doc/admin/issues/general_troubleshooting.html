@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>General Troubleshooting &mdash; ownCloud 9.0 Server Administration Manual 9.0 documentation</title>
+    <title>General Troubleshooting &mdash; ownCloud 9.1 Server Administration Manual 9.1 documentation</title>
     
     <link rel="stylesheet" href="../_static/" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '9.0',
+        VERSION:     '9.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="ownCloud 9.0 Server Administration Manual 9.0 documentation" href="../contents.html" />
+    <link rel="top" title="ownCloud 9.1 Server Administration Manual 9.1 documentation" href="../contents.html" />
     <link rel="up" title="Issues and Troubleshooting" href="index.html" />
     <link rel="next" title="Code Signing" href="code_signing.html" />
     <link rel="prev" title="Issues and Troubleshooting" href="index.html" />
@@ -66,9 +66,9 @@
 <li><a href="../contents.html">Table of Contents</a></li>
 									</ul>
                   <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 9.0 Server Administration Manual Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 9.0 Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 9.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 9.1 Server Administration Manual Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 9.1 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 9.1</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configuration_server/index.html">ownCloud Server Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configuration_user/index.html">User Management</a></li>
@@ -238,11 +238,8 @@ for more information.</li>
 which can&#8217;t handle a lot of parallel requests. Please consider converting to
 another database like described in
 <a class="reference internal" href="../configuration_database/db_conversion.html"><em>Converting Database Type</em></a>.</li>
-<li><code class="docutils literal"><span class="pre">SQLSTATE[HY000]:</span> <span class="pre">General</span> <span class="pre">error:</span> <span class="pre">2006</span> <span class="pre">MySQL</span> <span class="pre">server</span> <span class="pre">has</span> <span class="pre">gone</span> <span class="pre">away</span></code> -&gt; The
-database request takes too long and therefore the MySQL server times out. Its
-also possible that the server is dropping a packet that is too large. Please
-refer to the manual of your database for how to raise the config options
-<code class="docutils literal"><span class="pre">wait_timeout</span></code> and/or <code class="docutils literal"><span class="pre">max_allowed_packet</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">SQLSTATE[HY000]:</span> <span class="pre">General</span> <span class="pre">error:</span> <span class="pre">2006</span> <span class="pre">MySQL</span> <span class="pre">server</span> <span class="pre">has</span> <span class="pre">gone</span> <span class="pre">away</span></code> -&gt; Please
+refer to <a class="reference internal" href="../configuration_database/linux_database_configuration.html#db-troubleshooting-label"><span>Troubleshooting</span></a> for more information.</li>
 <li><code class="docutils literal"><span class="pre">SQLSTATE[HY000]</span> <span class="pre">[2002]</span> <span class="pre">No</span> <span class="pre">such</span> <span class="pre">file</span> <span class="pre">or</span> <span class="pre">directory</span></code> -&gt; There is a problem
 accessing your SQLite database file in your data directory
 (<code class="docutils literal"><span class="pre">data/owncloud.db</span></code>). Please check the permissions of this folder/file or

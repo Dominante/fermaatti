@@ -1,11 +1,10 @@
 <?php
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
- * @author Christian Kampka <christian@kampka.net>
  * @author Edward Crompton <edward.crompton@gmail.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jost Baron <Jost.Baron@gmx.de>
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Philippe Le Brouster <plb@nebkha.net>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
@@ -42,6 +41,11 @@ if (version_compare(PHP_VERSION, '5.4.0') === -1) {
 	return;
 }
 
+function exceptionHandler($exception) {
+	echo "An unhandled exception has been thrown:" . PHP_EOL;
+	echo $exception;
+	exit(1);
+}
 try {
 	require_once 'lib/base.php';
 
@@ -52,6 +56,8 @@ try {
 		echo "This script can be run from the command line only" . PHP_EOL;
 		exit(0);
 	}
+
+	set_exception_handler('exceptionHandler');
 
 	if (!OC_Util::runningOnWindows())  {
 		if (!function_exists('posix_getuid')) {
@@ -87,7 +93,7 @@ try {
 	$application->loadCommands(new ArgvInput(), new ConsoleOutput());
 	$application->run();
 } catch (Exception $ex) {
-	echo "An unhandled exception has been thrown:" . PHP_EOL;
-	echo $ex;
-	exit(1);
+	exceptionHandler($ex);
+} catch (Error $ex) {
+	exceptionHandler($ex);
 }

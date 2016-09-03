@@ -8,10 +8,23 @@
 }
 
 #app-sidebar .mainFileInfoView {
-	margin-right: 20px; /* accomodate for close icon */
+	margin-right: 20px; /* accommodate for close icon */
 	float:left;
 	display:block;
 	width: 100%;
+}
+
+#app-sidebar .mainFileInfoView .icon {
+	display: inline-block;
+}
+
+#app-sidebar .mainFileInfoView .permalink {
+	margin-left: 10px;
+	opacity: .5;
+}
+#app-sidebar .mainFileInfoView .permalink-field>input {
+	clear: both;
+	width: 90%;
 }
 
 #app-sidebar .file-details-container {
@@ -26,7 +39,7 @@
 }
 
 #app-sidebar .thumbnailContainer.image.portrait {
-	margin: 0; /* if we dont fit the image anyway we give it back the margin */
+	margin: 0; /* if we don't fit the image anyway we give it back the margin */
 }
 
 #app-sidebar .image .thumbnail {

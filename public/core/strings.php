@@ -2,6 +2,7 @@
 /**
  * @author Jan-Christoph Borchardt <hey@jancborchardt.net>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Stefan Weil <sw@weilnetz.de>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -19,7 +20,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-//some strings that are used in /lib but wont be translatable unless they are in /core too
+//some strings that are used in /lib but won't be translatable unless they are in /core too
 $l = \OC::$server->getL10N('core');
 $l->t("Personal");
 $l->t("Users");

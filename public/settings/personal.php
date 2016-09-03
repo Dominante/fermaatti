@@ -1,14 +1,15 @@
 <?php
 /**
- * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
  * @author Bart Visscher <bartv@thisnet.nl>
- * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Björn Schießle <bjoern@schiessle.org>
+ * @author Christoph Wurst <christoph@owncloud.com>
  * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Georg Ehrke <georg@owncloud.com>
  * @author Jakob Sack <mail@jakobsack.de>
  * @author Jan-Christoph Borchardt <hey@jancborchardt.net>
  * @author Joas Schilling <nickvergessen@owncloud.com>
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Marvin Thomas Rabe <mrabe@marvinrabe.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
@@ -42,17 +43,21 @@ $config = \OC::$server->getConfig();
 $urlGenerator = \OC::$server->getURLGenerator();
 
 // Highlight navigation entry
+OC_Util::addScript('settings', 'authtoken');
+OC_Util::addScript('settings', 'authtoken_collection');
+OC_Util::addScript('settings', 'authtoken_view');
 OC_Util::addScript( 'settings', 'personal' );
 OC_Util::addScript('settings', 'certificates');
 OC_Util::addStyle( 'settings', 'settings' );
 \OC_Util::addVendorScript('strengthify/jquery.strengthify');
 \OC_Util::addVendorStyle('strengthify/strengthify');
-\OC_Util::addScript('files', 'jquery.iframe-transport');
 \OC_Util::addScript('files', 'jquery.fileupload');
 if ($config->getSystemValue('enable_avatars', true) === true) {
 	\OC_Util::addVendorScript('jcrop/js/jquery.Jcrop');
 	\OC_Util::addVendorStyle('jcrop/css/jquery.Jcrop');
 }
+
+\OC::$server->getEventDispatcher()->dispatch('OC\Settings\Personal::loadAdditionalScripts');
 
 // Highlight navigation entry
 OC::$server->getNavigationManager()->setActiveEntry('personal');
@@ -171,6 +176,8 @@ $tmpl->assign('groups', $groups2);
 // add hardcoded forms from the template
 $formsAndMore = [];
 $formsAndMore[]= ['anchor' => 'avatar', 'section-name' => $l->t('Personal info')];
+$formsAndMore[]= ['anchor' => 'sessions', 'section-name' => $l->t('Sessions')];
+$formsAndMore[]= ['anchor' => 'apppasswords', 'section-name' => $l->t('App passwords')];
 $formsAndMore[]= ['anchor' => 'clientsbox', 'section-name' => $l->t('Sync clients')];
 
 $forms=OC_App::getForms('personal');

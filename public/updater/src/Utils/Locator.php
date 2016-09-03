@@ -29,7 +29,7 @@ class Locator {
 	 * absolute path to ownCloud root
 	 * @var string 
 	 */
-	protected $owncloudRootPath;
+	protected $ownCloudRootPath;
 
 	/**
 	 * absolute path to updater root
@@ -43,11 +43,11 @@ class Locator {
 	 */
 	public function __construct($baseDir){
 		$this->updaterRootPath = $baseDir;
-		$this->owncloudRootPath = dirname($baseDir);
+		$this->ownCloudRootPath = dirname($baseDir);
 	}
 
-	public function getOwncloudRootPath(){
-		return $this->owncloudRootPath;
+	public function getOwnCloudRootPath(){
+		return $this->ownCloudRootPath;
 	}
 
 	/**
@@ -112,7 +112,7 @@ class Locator {
 	public function getRootDirItems(){
 		$items = $this->getRootDirContent();
 		$items = array_map(
-			function($item){ return $this->owncloudRootPath . "/" . $item;	},
+			function($item){ return $this->ownCloudRootPath . "/" . $item;	},
 			$items
 		);
 		return $items;
@@ -177,7 +177,7 @@ class Locator {
 	 * @return string
 	 */
 	public function getPathToOccFile(){
-		return $this->owncloudRootPath . '/occ';
+		return $this->ownCloudRootPath . '/occ';
 	}
 
 	/**
@@ -227,12 +227,12 @@ class Locator {
 	public function getPathtoConfigFiles($filePostfix = 'config.php'){
 		// Only config.php for now
 		return [
-			$this->owncloudRootPath . '/config/' . $filePostfix
+			$this->ownCloudRootPath . '/config/' . $filePostfix
 		];
 	}
 
 	public function getPathToConfigFile(){
-		return $this->owncloudRootPath . '/config/config.php';
+		return $this->ownCloudRootPath . '/config/config.php';
 	}
 
 	/**
@@ -240,7 +240,7 @@ class Locator {
 	 * @return string
 	 */
 	public function getPathToVersionFile(){
-		return $this->owncloudRootPath . '/version.php';
+		return $this->ownCloudRootPath . '/version.php';
 	}
 
 }

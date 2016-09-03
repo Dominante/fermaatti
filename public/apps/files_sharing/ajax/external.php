@@ -1,8 +1,8 @@
 <?php
 /**
- * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Björn Schießle <bjoern@schiessle.org>
  * @author Joas Schilling <nickvergessen@owncloud.com>
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
@@ -31,8 +31,11 @@ OCP\JSON::checkAppEnabled('files_sharing');
 
 $l = \OC::$server->getL10N('files_sharing');
 
+$federatedSharingApp = new \OCA\FederatedFileSharing\AppInfo\Application('federatedfilesharing');
+$federatedShareProvider = $federatedSharingApp->getFederatedShareProvider();
+
 // check if server admin allows to mount public links from other servers
-if (OCA\Files_Sharing\Helper::isIncomingServer2serverShareEnabled() === false) {
+if ($federatedShareProvider->isIncomingServer2serverShareEnabled() === false) {
 	\OCP\JSON::error(array('data' => array('message' => $l->t('Server to server sharing is not enabled on this server'))));
 	exit();
 }
@@ -74,7 +77,10 @@ $externalManager = new \OCA\Files_Sharing\External\Manager(
 // check for ssl cert
 if (substr($remote, 0, 5) === 'https') {
 	try {
-		\OC::$server->getHTTPClientService()->newClient()->get($remote)->getBody();
+		\OC::$server->getHTTPClientService()->newClient()->get($remote, [
+			'timeout' => 10,
+			'connect_timeout' => 10,
+		])->getBody();
 	} catch (\Exception $e) {
 		\OCP\JSON::error(array('data' => array('message' => $l->t('Invalid or untrusted SSL certificate'))));
 		exit;

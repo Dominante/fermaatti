@@ -13,6 +13,7 @@ OC.L10N.register(
     " Could not set configuration %s" : "Klarte ikke å sette konfigurasjon %s",
     "Action does not exist" : "Aksjonen eksisterer ikke",
     "The Base DN appears to be wrong" : "Basis-DN ser ut til å være feil",
+    "Testing configuration…" : "Tester konfigurasjonen...",
     "Configuration incorrect" : "Konfigurasjon feil",
     "Configuration incomplete" : "Konfigurasjon ufullstendig",
     "Configuration OK" : "Konfigurasjon OK",
@@ -95,7 +96,7 @@ OC.L10N.register(
     "Test Base DN" : "Test basis-DN",
     "Avoids automatic LDAP requests. Better for bigger setups, but requires some LDAP knowledge." : "Unngår automatiske LDAP-forespørsler. Bedre for store oppsett men krever litt LDAP-kunnskap.",
     "Manually enter LDAP filters (recommended for large directories)" : "Legg inn LDAP-filtre manuelt (anbefalt for store kataloger)",
-    "Limit %s access to users meeting these criteria:" : "Begrens %s-tilgang til brukere som tilfredsstiller disse kriteriene:",
+    "%s access is limited to users meeting these criteria:" : "%s-tilgang er begrenset til brukere som tilfredsstiller disse kriteriene:",
     "The most common object classes for users are organizationalPerson, person, user, and inetOrgPerson. If you are not sure which object class to select, please consult your directory admin." : "De mest vanlige objektklassene for brukere er organizationalPerson, person, user og inetOrgPerson. Kontakt katalogadministratoren hvis du er usikker på hvilken objektklasse du skal velge.",
     "The filter specifies which LDAP users shall have access to the %s instance." : "Filteret spesifiserer hvilke LDAP-brukere som skal ha tilgang til %s-instansen.",
     "Verify settings and count users" : "Sjekk innstillinger og tell brukere",
@@ -157,8 +158,6 @@ OC.L10N.register(
     "Username-LDAP User Mapping" : "Tilknytning av brukernavn til LDAP-bruker",
     "Usernames are used to store and assign (meta) data. In order to precisely identify and recognize users, each LDAP user will have an internal username. This requires a mapping from username to LDAP user. The created username is mapped to the UUID of the LDAP user. Additionally the DN is cached as well to reduce LDAP interaction, but it is not used for identification. If the DN changes, the changes will be found. The internal username is used all over. Clearing the mappings will have leftovers everywhere. Clearing the mappings is not configuration sensitive, it affects all LDAP configurations! Never clear the mappings in a production environment, only in a testing or experimental stage." : "Brukernavn brukes til å lagre og tilordne (meta)data. For at brukere skal identifiseres og gjenkjennes presist, vil hver LDAP-bruker ha et internt brukernavn. Dette krever en tilknytning fra brukernavn til LDAP-bruker. Brukernavn som opprettes blir knyttet til LDAP-brukerens UUID. I tillegg mellomlagres DN for å redusere LDAP-kommunikasjon, men det brukes ikke til identifisering. Hvis DN endres vil endringene bli oppdaget. Det interne brukernavnet brukes alle steder. Nullstilling av tilknytningene vil etterlate seg rester overalt. Nullstilling av tilknytningene skjer ikke pr. konfigurasjon, det påvirker alle LDAP-konfigurasjoner! Nullstill aldri tilknytningene i et produksjonsmiljø, kun ved testing eller eksperimentering.",
     "Clear Username-LDAP User Mapping" : "Nullstill tilknytning av brukernavn til LDAP-bruker",
-    "Clear Groupname-LDAP Group Mapping" : "Nullstill tilknytning av gruppenavn til LDAP-gruppe",
-    "Anonymous bind is not allowed. Please provide a User DN and Password." : "Anonym binding er ikke tillatt. Oppgi en bruker-DN og passord.",
-    "{nthServer}. Server" : "{nthServer}. server"
+    "Clear Groupname-LDAP Group Mapping" : "Nullstill tilknytning av gruppenavn til LDAP-gruppe"
 },
 "nplurals=2; plural=(n != 1);");

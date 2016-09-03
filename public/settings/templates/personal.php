@@ -121,11 +121,11 @@ if($_['passwordChangeSupported']) {
 	<div class="hidden icon-checkmark" id="password-changed"></div>
 	<div class="hidden" id="password-error"><?php p($l->t('Unable to change your password'));?></div>
 	<br>
-	<label for="pass1" class="onlyInIE8"><?php echo $l->t('Current password');?>: </label>
+	<label for="pass1" class="hidden-visually"><?php echo $l->t('Current password');?>: </label>
 	<input type="password" id="pass1" name="oldpassword"
 		placeholder="<?php echo $l->t('Current password');?>"
 		autocomplete="off" autocapitalize="off" autocorrect="off" />
-	<label for="pass2" class="onlyInIE8"><?php echo $l->t('New password');?>: </label>
+	<label for="pass2" class="hidden-visually"><?php echo $l->t('New password');?>: </label>
 	<input type="password" id="pass2" name="personal-password"
 		placeholder="<?php echo $l->t('New password');?>"
 		data-typetoggle="#personal-show"
@@ -167,18 +167,67 @@ if($_['passwordChangeSupported']) {
 	<?php endif; ?>
 </form>
 
+<div id="sessions" class="section">
+	<h2><?php p($l->t('Sessions'));?></h2>
+	<span class="hidden-when-empty"><?php p($l->t('These are the web, desktop and mobile clients currently logged in to your ownCloud.'));?></span>
+	<table>
+		<thead class="token-list-header">
+			<tr>
+				<th><?php p($l->t('Browser'));?></th>
+				<th><?php p($l->t('Most recent activity'));?></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody class="token-list icon-loading">
+		</tbody>
+	</table>
+</div>
+
+<div id="apppasswords" class="section">
+	<h2><?php p($l->t('App passwords'));?></h2>
+	<span class="hidden-when-empty"><?php p($l->t("You've linked these apps."));?></span>
+	<table>
+		<thead class="hidden-when-empty">
+			<tr>
+				<th><?php p($l->t('Name'));?></th>
+				<th><?php p($l->t('Most recent activity'));?></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody class="token-list icon-loading">
+		</tbody>
+	</table>
+	<p><?php p($l->t('An app password is a passcode that gives an app or device permissions to access your %s account.', [$theme->getName()]));?></p>
+	<div id="app-password-form">
+		<input id="app-password-name" type="text" placeholder="<?php p($l->t('App name')); ?>">
+		<button id="add-app-password" class="button"><?php p($l->t('Create new app password')); ?></button>
+	</div>
+	<div id="app-password-result" class="hidden">
+		<span><?php p($l->t('Use the credentials below to configure your app or device.')); ?></span>
+		<div class="app-password-row">
+			<span class="app-password-label"><?php p($l->t('Username')); ?></span>
+			<input id="new-app-login-name" type="text" readonly="readonly"/>
+		</div>
+		<div class="app-password-row">
+			<span class="app-password-label"><?php p($l->t('Password')); ?></span>
+			<input id="new-app-password" type="text" readonly="readonly"/>
+			<button id="app-password-hide" class="button"><?php p($l->t('Done')); ?></button>
+		</div>
+	</div>
+</div>
+
 <div id="clientsbox" class="section clientsbox">
 	<h2><?php p($l->t('Get the apps to sync your files'));?></h2>
-	<a href="<?php p($_['clients']['desktop']); ?>" target="_blank">
-		<img src="<?php print_unescaped(OCP\Util::imagePath('core', 'desktopapp.svg')); ?>"
+	<a href="<?php p($_['clients']['desktop']); ?>" rel="noreferrer" target="_blank">
+		<img src="<?php print_unescaped(image_path('core', 'desktopapp.svg')); ?>"
 			alt="<?php p($l->t('Desktop client'));?>" />
 	</a>
-	<a href="<?php p($_['clients']['android']); ?>" target="_blank">
-		<img src="<?php print_unescaped(OCP\Util::imagePath('core', 'googleplay.png')); ?>"
+	<a href="<?php p($_['clients']['android']); ?>" rel="noreferrer" target="_blank">
+		<img src="<?php print_unescaped(image_path('core', 'googleplay.png')); ?>"
 			alt="<?php p($l->t('Android app'));?>" />
 	</a>
-	<a href="<?php p($_['clients']['ios']); ?>" target="_blank">
-		<img src="<?php print_unescaped(OCP\Util::imagePath('core', 'appstore.svg')); ?>"
+	<a href="<?php p($_['clients']['ios']); ?>" rel="noreferrer" target="_blank">
+		<img src="<?php print_unescaped(image_path('core', 'appstore.svg')); ?>"
 			alt="<?php p($l->t('iOS app'));?>" />
 	</a>
 

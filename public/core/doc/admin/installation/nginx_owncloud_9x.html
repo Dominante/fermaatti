@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Nginx Configuration for the ownCloud 9.x Branches &mdash; ownCloud 9.0 Server Administration Manual 9.0 documentation</title>
+    <title>Nginx Configuration for the ownCloud 9.x Branches &mdash; ownCloud 9.1 Server Administration Manual 9.1 documentation</title>
     
     <link rel="stylesheet" href="../_static/" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '9.0',
+        VERSION:     '9.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="ownCloud 9.0 Server Administration Manual 9.0 documentation" href="../contents.html" />
+    <link rel="top" title="ownCloud 9.1 Server Administration Manual 9.1 documentation" href="../contents.html" />
     <link rel="up" title="Installation" href="index.html" />
     <link rel="next" title="ownCloud Server Configuration" href="../configuration_server/index.html" />
     <link rel="prev" title="Nginx Example Configurations" href="nginx_examples.html" />
@@ -66,9 +66,9 @@
 <li><a href="../contents.html">Table of Contents</a></li>
 									</ul>
                   <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 9.0 Server Administration Manual Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 9.0 Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 9.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 9.1 Server Administration Manual Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 9.1 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 9.1</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Installation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="system_requirements.html">System Requirements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="deployment_recommendations.html">ownCloud Deployment Recommendations</a></li>
@@ -137,8 +137,6 @@
 <p>The following configuration should be used when ownCloud is placed in the
 webroot of your Nginx installation. Be careful about line breaks if you copy
 the examples, as long lines may be broken for page formatting.</p>
-<p>Some environments might need a <code class="docutils literal"><span class="pre">cgi.fix_pathinfo</span></code> set to <code class="docutils literal"><span class="pre">1</span></code> in their
-<code class="docutils literal"><span class="pre">php.ini</span></code>.</p>
 <p>Thanks to <a class="reference external" href="https://github.com/josh4trunks">&#64;josh4trunks</a> for providing /
 creating these configuration examples.</p>
 <div class="section" id="owncloud-in-the-webroot-of-nginx">
@@ -165,10 +163,8 @@ server {
     ssl_certificate_key /etc/ssl/nginx/cloud.example.com.key;
 
     # Add headers to serve security related headers
-    # Before enabling Strict-Transport-Security headers please read into this
-    # topic first.
-    # add_header Strict-Transport-Security &quot;max-age=15768000;
-    # includeSubDomains; preload;&quot;;
+    # Before enabling Strict-Transport-Security headers please read into this topic first.
+    # add_header Strict-Transport-Security &quot;max-age=15768000; includeSubDomains; preload;&quot;;
     add_header X-Content-Type-Options nosniff;
     add_header X-Frame-Options &quot;SAMEORIGIN&quot;;
     add_header X-XSS-Protection &quot;1; mode=block&quot;;
@@ -188,13 +184,14 @@ server {
     # The following 2 rules are only needed for the user_webfinger app.
     # Uncomment it if you&#39;re planning to use this app.
     #rewrite ^/.well-known/host-meta /public.php?service=host-meta last;
-    #rewrite ^/.well-known/host-meta.json /public.php?service=host-meta-json
-    # last;
+    #rewrite ^/.well-known/host-meta.json /public.php?service=host-meta-json last;
 
-    location = /.well-known/carddav { return 301
-     $scheme://$host/remote.php/dav; }
-    location = /.well-known/caldav { return 301
-     $scheme://$host/remote.php/dav; }
+    location = /.well-known/carddav {
+        return 301 $scheme://$host/remote.php/dav;
+    }
+    location = /.well-known/caldav {
+        return 301 $scheme://$host/remote.php/dav;
+    }
 
     location /.well-known/acme-challenge { }
 
@@ -207,7 +204,7 @@ server {
 
     # Uncomment if your server is build with the ngx_pagespeed module
     # This module is currently not supported.
-    #pagespeed off;
+    # pagespeed off;
 
     error_page 403 /core/templates/403.php;
     error_page 404 /core/templates/404.php;
@@ -217,22 +214,19 @@ server {
     }
 
     location ~ ^/(?:build|tests|config|lib|3rdparty|templates|data)/ {
-        deny all;
+        return 404;
     }
     location ~ ^/(?:\.|autotest|occ|issue|indie|db_|console) {
-        deny all;
+        return 404;
     }
 
-    location ~
-    ^/(?:index|remote|public|cron|core/ajax/update|status|ocs/v[12]|updater
-    /.+|ocs-provider/.+|core/templates/40[34])\.php(?:$|/) {
+    location ~ ^/(?:index|remote|public|cron|core/ajax/update|status|ocs/v[12]|updater/.+|ocs-provider/.+|core/templates/40[34])\.php(?:$|/) {
+        fastcgi_split_path_info ^(.+\.php)(/.*)$;
         include fastcgi_params;
-        fastcgi_split_path_info ^(.+\.php)(/.+)$;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         fastcgi_param PATH_INFO $fastcgi_path_info;
         fastcgi_param HTTPS on;
-        #Avoid sending the security headers twice
-        fastcgi_param modHeadersAvailable true;
+        fastcgi_param modHeadersAvailable true; #Avoid sending the security headers twice
         fastcgi_param front_controller_active true;
         fastcgi_pass php-handler;
         fastcgi_intercept_errors on;
@@ -249,12 +243,9 @@ server {
     location ~* \.(?:css|js)$ {
         try_files $uri /index.php$uri$is_args$args;
         add_header Cache-Control &quot;public, max-age=7200&quot;;
-        # Add headers to serve security related headers (It is intended to
-        # have those duplicated to the ones above)
-        # Before enabling Strict-Transport-Security headers please read into
-        # this topic first.
-        # add_header Strict-Transport-Security &quot;max-age=15768000;
-        #  includeSubDomains; preload;&quot;;
+        # Add headers to serve security related headers (It is intended to have those duplicated to the ones above)
+        # Before enabling Strict-Transport-Security headers please read into this topic first.
+        # add_header Strict-Transport-Security &quot;max-age=15768000; includeSubDomains; preload;&quot;;
         add_header X-Content-Type-Options nosniff;
         add_header X-Frame-Options &quot;SAMEORIGIN&quot;;
         add_header X-XSS-Protection &quot;1; mode=block&quot;;
@@ -298,10 +289,8 @@ server {
     ssl_certificate_key /etc/ssl/nginx/cloud.example.com.key;
 
     # Add headers to serve security related headers
-    # Before enabling Strict-Transport-Security headers please read into this
-    # topic first.
-    #add_header Strict-Transport-Security &quot;max-age=15768000;
-    # includeSubDomains; preload;&quot;;
+    # Before enabling Strict-Transport-Security headers please read into this topic first.
+    # add_header Strict-Transport-Security &quot;max-age=15768000; includeSubDomains; preload;&quot;;
     add_header X-Content-Type-Options nosniff;
     add_header X-Frame-Options &quot;SAMEORIGIN&quot;;
     add_header X-XSS-Protection &quot;1; mode=block&quot;;
@@ -320,15 +309,15 @@ server {
 
     # The following 2 rules are only needed for the user_webfinger app.
     # Uncomment it if you&#39;re planning to use this app.
-    # rewrite ^/.well-known/host-meta /owncloud/public.php?service=host-meta
-    # last;
-    #rewrite ^/.well-known/host-meta.json
-    # /owncloud/public.php?service=host-meta-json last;
+    # rewrite ^/.well-known/host-meta /owncloud/public.php?service=host-meta last;
+    # rewrite ^/.well-known/host-meta.json /owncloud/public.php?service=host-meta-json last;
 
-    location = /.well-known/carddav { return 301
-      $scheme://$host/owncloud/remote.php/dav; }
-    location = /.well-known/caldav { return 301
-      $scheme://$host/owncloud/remote.php/dav; }
+    location = /.well-known/carddav {
+        return 301 $scheme://$host/owncloud/remote.php/dav;
+    }
+    location = /.well-known/caldav {
+        return 301 $scheme://$host/owncloud/remote.php/dav;
+    }
 
     location /.well-known/acme-challenge { }
 
@@ -343,7 +332,7 @@ server {
 
         # Uncomment if your server is build with the ngx_pagespeed module
         # This module is currently not supported.
-        #pagespeed off;
+        # pagespeed off;
 
         error_page 403 /owncloud/core/templates/403.php;
         error_page 404 /owncloud/core/templates/404.php;
@@ -352,24 +341,20 @@ server {
             rewrite ^ /owncloud/index.php$uri;
         }
 
-        location ~
-        ^/owncloud/(?:build|tests|config|lib|3rdparty|templates|data)/ {
-            deny all;
+        location ~ ^/owncloud/(?:build|tests|config|lib|3rdparty|templates|data)/ {
+            return 404;
         }
         location ~ ^/owncloud/(?:\.|autotest|occ|issue|indie|db_|console) {
-            deny all;
+            return 404;
         }
 
-        location ~
-     ^/owncloud/(?:index|remote|public|cron|core/ajax/update|status|ocs/v[12]|
-     updater/.+|ocs-provider/.+|core/templates/40[34])\.php(?:$|/) {
+        location ~ ^/owncloud/(?:index|remote|public|cron|core/ajax/update|status|ocs/v[12]|updater/.+|ocs-provider/.+|core/templates/40[34])\.php(?:$|/) {
+            fastcgi_split_path_info ^(.+\.php)(/.*)$;
             include fastcgi_params;
-            fastcgi_split_path_info ^(.+\.php)(/.+)$;
             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
             fastcgi_param PATH_INFO $fastcgi_path_info;
             fastcgi_param HTTPS on;
-            #Avoid sending the security headers twice
-            fastcgi_param modHeadersAvailable true;
+            fastcgi_param modHeadersAvailable true; #Avoid sending the security headers twice
             fastcgi_param front_controller_active true;
             fastcgi_pass php-handler;
             fastcgi_intercept_errors on;
@@ -386,12 +371,9 @@ server {
         location ~* \.(?:css|js)$ {
             try_files $uri /owncloud/index.php$uri$is_args$args;
             add_header Cache-Control &quot;public, max-age=7200&quot;;
-            # Add headers to serve security related headers  (It is intended
-            # to have those duplicated to the ones above)
-            # Before enabling Strict-Transport-Security headers please read
-            # into this topic first.
-            # add_header Strict-Transport-Security &quot;max-age=15768000;
-            # includeSubDomains; preload;&quot;;
+            # Add headers to serve security related headers  (It is intended to have those duplicated to the ones above)
+            # Before enabling Strict-Transport-Security headers please read into this topic first.
+            # add_header Strict-Transport-Security &quot;max-age=15768000; includeSubDomains; preload;&quot;;
             add_header X-Content-Type-Options nosniff;
             add_header X-Frame-Options &quot;SAMEORIGIN&quot;;
             add_header X-XSS-Protection &quot;1; mode=block&quot;;

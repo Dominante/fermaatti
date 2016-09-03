@@ -2,6 +2,11 @@
  This file is licensed under the Affero General Public License version 3 or later.
  See the COPYING-README file. */
 
+/* SETTINGS */
+#files-setting-showhidden {
+	padding-bottom: 8px;
+}
+
 /* FILE MENU */
 .actions { padding:5px; height:32px; display: inline-block; float: left; }
 .actions input, .actions button, .actions .button { margin:0; float:left; }
@@ -822,4 +827,9 @@ html.ie8 #controls .button.new {
 
 .app-files .actions .button.new .icon {
 	margin-bottom: 2px;
+}
+
+.canDrop,
+#filestable tbody tr.canDrop {
+  background-color: rgba(255, 255, 140, 1);
 }

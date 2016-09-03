@@ -13,6 +13,7 @@ OC.L10N.register(
     " Could not set configuration %s" : "Impossible de spécifier la configuration %s",
     "Action does not exist" : "L'action n'existe pas",
     "The Base DN appears to be wrong" : "Le DN de base est erroné",
+    "Testing configuration…" : "Test de configuration",
     "Configuration incorrect" : "Configuration incorrecte",
     "Configuration incomplete" : "Configuration incomplète",
     "Configuration OK" : "Configuration OK",
@@ -95,7 +96,7 @@ OC.L10N.register(
     "Test Base DN" : "Tester le DN de base",
     "Avoids automatic LDAP requests. Better for bigger setups, but requires some LDAP knowledge." : "Évite les requêtes LDAP automatiques. Mieux pour les installations de grande ampleur, mais demande des connaissances en LDAP.",
     "Manually enter LDAP filters (recommended for large directories)" : "Saisir les filtres LDAP manuellement (recommandé pour les annuaires de grande ampleur)",
-    "Limit %s access to users meeting these criteria:" : "Limiter l'accès à %s aux utilisateurs respectant ces critères :",
+    "%s access is limited to users meeting these criteria:" : "L'accès à %s est limité aux utilisateurs validant ces critères :",
     "The most common object classes for users are organizationalPerson, person, user, and inetOrgPerson. If you are not sure which object class to select, please consult your directory admin." : "Les classes d'objets fréquentes pour les utilisateurs sont : organizationalPerson, person, user et inetOrgPerson. Si vous n'êtes pas sûr de la classe à utiliser, demandez à l'administrateur de l'annuaire.",
     "The filter specifies which LDAP users shall have access to the %s instance." : "Le filtre spécifie quels utilisateurs LDAP auront accès à l'instance %s.",
     "Verify settings and count users" : "Vérifier les paramètres et compter les utilisateurs",
@@ -157,8 +158,6 @@ OC.L10N.register(
     "Username-LDAP User Mapping" : "Association Nom d'utilisateur-Utilisateur LDAP",
     "Usernames are used to store and assign (meta) data. In order to precisely identify and recognize users, each LDAP user will have an internal username. This requires a mapping from username to LDAP user. The created username is mapped to the UUID of the LDAP user. Additionally the DN is cached as well to reduce LDAP interaction, but it is not used for identification. If the DN changes, the changes will be found. The internal username is used all over. Clearing the mappings will have leftovers everywhere. Clearing the mappings is not configuration sensitive, it affects all LDAP configurations! Never clear the mappings in a production environment, only in a testing or experimental stage." : "Les noms d'utilisateurs sont utilisés pour le stockage et l'assignation de (meta) données. Pour identifier et reconnaître précisément les utilisateurs, chaque utilisateur LDAP aura un nom interne spécifique. Cela requiert l'association d'un nom d'utilisateur ownCloud à un nom d'utilisateur LDAP. Le nom d'utilisateur créé est associé à l'attribut UUID de l'utilisateur LDAP. Par ailleurs, le DN est mémorisé en cache pour limiter les interactions LDAP mais il n'est pas utilisé pour l'identification. Si le DN est modifié, ces modifications seront retrouvées. Seul le nom interne à ownCloud est utilisé au sein du produit. Supprimer les associations créera des orphelins et l'action affectera toutes les configurations LDAP. NE JAMAIS SUPPRIMER LES ASSOCIATIONS EN ENVIRONNEMENT DE PRODUCTION, mais uniquement sur des environnements de tests et d'expérimentations.",
     "Clear Username-LDAP User Mapping" : "Supprimer l'association utilisateur interne-utilisateur LDAP",
-    "Clear Groupname-LDAP Group Mapping" : "Supprimer l'association nom de groupe-groupe LDAP",
-    "Anonymous bind is not allowed. Please provide a User DN and Password." : "Le lien anonyme n'est pas autorisé. Merci de fournir le DN d'un utilisateur et un mot de passe.",
-    "{nthServer}. Server" : "{nthServer}. Serveur"
+    "Clear Groupname-LDAP Group Mapping" : "Supprimer l'association nom de groupe-groupe LDAP"
 },
 "nplurals=2; plural=(n > 1);");

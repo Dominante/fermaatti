@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Installing and Managing Apps &mdash; ownCloud 9.0 Server Administration Manual 9.0 documentation</title>
+    <title>Installing and Managing Apps &mdash; ownCloud 9.1 Server Administration Manual 9.1 documentation</title>
     
     <link rel="stylesheet" href="../_static/" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '9.0',
+        VERSION:     '9.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="ownCloud 9.0 Server Administration Manual 9.0 documentation" href="../contents.html" />
+    <link rel="top" title="ownCloud 9.1 Server Administration Manual 9.1 documentation" href="../contents.html" />
     <link rel="up" title="Installation" href="index.html" />
     <link rel="next" title="Supported Apps in ownCloud" href="apps_supported.html" />
     <link rel="prev" title="Changing the web route" href="changing_the_web_route.html" />
@@ -66,9 +66,9 @@
 <li><a href="../contents.html">Table of Contents</a></li>
 									</ul>
                   <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 9.0 Server Administration Manual Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 9.0 Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 9.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 9.1 Server Administration Manual Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 9.1 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 9.1</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Installation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="system_requirements.html">System Requirements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="deployment_recommendations.html">ownCloud Deployment Recommendations</a></li>
@@ -146,8 +146,7 @@ applications.</p>
 </div>
 <div class="section" id="viewing-enabled-apps">
 <h2>Viewing Enabled Apps<a class="headerlink" href="#viewing-enabled-apps" title="Permalink to this headline">¶</a></h2>
-<p>During the ownCloud installation, some apps are enabled by default. To see
-which
+<p>During the ownCloud installation, some apps are enabled by default. To see which
 apps are enabled go to your Apps page.</p>
 <div class="figure">
 <img alt="Apps page for enabling and disabling apps." src="../_images/oc_admin_app_page.png" />
@@ -174,10 +173,8 @@ page by default.</p>
 <p>Click the gear icon on the lower left to browse experimental apps in the <a class="reference external" href="https://apps.owncloud.com/">ownCloud Apps
 Store</a>. Install experimental apps at your own risk.</p>
 <p>Sometimes the installation of a third-party app fails silently, possibly because
-<code class="docutils literal"><span class="pre">'appcodechecker'</span> <span class="pre">=&gt;</span> <span class="pre">true,</span></code> is enabled in <code class="docutils literal"><span class="pre">config.php</span></code>. When
-<code class="docutils literal"><span class="pre">appcodechecker</span></code> is
-enabled it checks if third-party apps are using the private API, rather than the
-public
+<code class="docutils literal"><span class="pre">'appcodechecker'</span> <span class="pre">=&gt;</span> <span class="pre">true,</span></code> is enabled in <code class="docutils literal"><span class="pre">config.php</span></code>. When <code class="docutils literal"><span class="pre">appcodechecker</span></code> is
+enabled it checks if third-party apps are using the private API, rather than the public
 API. If they are then they will not be installed.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -190,8 +187,7 @@ refer to the <a class="reference external" href="https://doc.owncloud.org/server
 <p>Use the <strong>apps_paths</strong> array in <code class="docutils literal"><span class="pre">config.php</span></code> to set any custom apps directory
 locations. The key <strong>path</strong> defines the absolute file system path to the app
 folder. The key <strong>url</strong> defines the HTTP web path to that folder, starting at
-the ownCloud web root. The key <strong>writable</strong> indicates if a user can install
-apps
+the ownCloud web root. The key <strong>writable</strong> indicates if a user can install apps
 in that folder.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -218,8 +214,7 @@ which will be used to store all other apps.</p>
 </div>
 <div class="section" id="using-your-own-appstore">
 <h2>Using Your Own Appstore<a class="headerlink" href="#using-your-own-appstore" title="Permalink to this headline">¶</a></h2>
-<p>You can enable the installation of apps from your own apps store. This requires
-that you
+<p>You can enable the installation of apps from your own apps store. This requires that you
 can write to at least one of the configured apps directories.</p>
 <p>To enable installation from your own apps store:</p>
 <ol class="arabic">
@@ -227,8 +222,8 @@ can write to at least one of the configured apps directories.</p>
 <p>This parameter is used to enable your apps store in ownCloud.</p>
 </li>
 <li><p class="first">Set the <strong>appstoreurl</strong> to the URL of your ownCloud apps store.</p>
-<p>This parameter is used to set the http path to the ownCloud apps store. The
-appstore server must use <abbr title="Open Collaboration Services">OCS</abbr>.</p>
+<p>This parameter is used to set the http path to the ownCloud apps store. The appstore
+server must use <abbr title="Open Collaboration Services">OCS</abbr>.</p>
 </li>
 </ol>
 <div class="highlight-python"><div class="highlight"><pre>&lt;?php

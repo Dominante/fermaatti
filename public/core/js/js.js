@@ -255,7 +255,7 @@ var OC={
 	 *
 	 * Examples:
 	 * http://example.com => example.com
-	 * https://example.com => exmaple.com
+	 * https://example.com => example.com
 	 * http://example.com:8080 => example.com:8080
 	 *
 	 * @return {string} host
@@ -788,7 +788,6 @@ var OC={
 			$(document).trigger(new $.Event('ajaxError'), xhr);
 		};
 
-		// FIXME: also needs an IE8 way
 		if (xhr.addEventListener) {
 			xhr.addEventListener('load', loadCallback);
 			xhr.addEventListener('error', errorCallback);
@@ -1338,9 +1337,6 @@ if(typeof localStorage !=='undefined' && localStorage !== null){
 			var item = localStorage.getItem(OC.localStorage.namespace+name);
 			if(item === null) {
 				return null;
-			} else if (typeof JSON === 'undefined') {
-				//fallback to jquery for IE6/7/8
-				return $.parseJSON(item);
 			} else {
 				return JSON.parse(item);
 			}
@@ -1440,11 +1436,15 @@ function initCore() {
 	 */
 	moment.locale(OC.getLocale());
 
-	if ($.browser.msie || !!navigator.userAgent.match(/Trident\/7\./)) {
-		// for IE10+ that don't have conditional comments
-		// and IE11 doesn't identify as MSIE any more...
+	var userAgent = window.navigator.userAgent;
+	var msie = userAgent.indexOf('MSIE ');
+	var trident = userAgent.indexOf('Trident/');
+	var edge = userAgent.indexOf('Edge/');
+
+	if (msie > 0 || trident > 0) {
+		// (IE 10 or older) || IE 11
 		$('html').addClass('ie');
-	} else if (!!navigator.userAgent.match(/Edge\/12/)) {
+	} else if (edge > 0) {
 		// for edge
 		$('html').addClass('edge');
 	}
@@ -1499,9 +1499,15 @@ function initCore() {
 			interval = maxInterval;
 		}
 		var url = OC.generateUrl('/heartbeat');
-		setInterval(function(){
-			$.post(url);
-		}, interval * 1000);
+		var heartBeatTimeout = null;
+		var heartBeat = function() {
+			clearTimeout(heartBeatTimeout);
+			heartBeatTimeout = setInterval(function() {
+				$.post(url);
+			}, interval * 1000);
+		};
+		$(document).ajaxComplete(heartBeat);
+		heartBeat();
 	}
 
 	// session heartbeat (defaults to enabled)
@@ -1511,7 +1517,7 @@ function initCore() {
 		initSessionHeartBeat();
 	}
 
-	if(!OC.Util.hasSVGSupport()){ //replace all svg images with png images for browser that dont support svg
+	if(!OC.Util.hasSVGSupport()){ //replace all svg images with png images for browser that don't support svg
 		OC.Util.replaceSVG();
 	}else{
 		SVGSupport.checkMimeType();
@@ -1554,11 +1560,30 @@ function initCore() {
 			}
 			if(!event.ctrlKey) {
 				$app.addClass('app-loading');
+			} else {
+				// Close navigation when opening app in
+				// a new tab
+				OC.hideMenus();
 			}
 		});
 	}
 
+	function setupUserMenu() {
+		var $menu = $('#header #settings');
+
+		$menu.delegate('a', 'click', function(event) {
+			var $page = $(event.target);
+			if (!$page.is('a')) {
+				$page = $page.closest('a');
+			}
+			$page.find('img').remove();
+			$page.find('div').remove(); // prevent odd double-clicks
+			$page.prepend($('<div/>').addClass('icon-loading-small-dark'));
+		});
+	}
+
 	setupMainMenu();
+	setupUserMenu();
 
 	// move triangle of apps dropdown to align with app name triangle
 	// 2 is the additional offset between the triangles
@@ -1831,30 +1856,10 @@ OC.Util = {
 	 * This scales the image to the element's actual size, the URL is
 	 * taken from the "background-image" CSS attribute.
 	 *
+	 * @deprecated IE8 isn't supported since 9.0
 	 * @param {Object} $el image element
 	 */
-	scaleFixForIE8: function($el) {
-		if (!this.isIE8()) {
-			return;
-		}
-		var self = this;
-		$($el).each(function() {
-			var url = $(this).css('background-image');
-			var r = url.match(/url\(['"]?([^'")]*)['"]?\)/);
-			if (!r) {
-				return;
-			}
-			url = r[1];
-			url = self.replaceSVGIcon(url);
-			// TODO: escape
-			url = url.replace(/'/g, '%27');
-			$(this).css({
-				'filter': 'progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\'' + url + '\', sizingMethod=\'scale\')',
-				'background-image': ''
-			});
-		});
-		return $el;
-	},
+	scaleFixForIE8: function($el) {},
 
 	/**
 	 * Returns whether this is IE
@@ -1868,10 +1873,11 @@ OC.Util = {
 	/**
 	 * Returns whether this is IE8
 	 *
-	 * @return {bool} true if this is IE8, false otherwise
+	 * @deprecated IE8 isn't supported since 9.0
+	 * @return {bool} false (IE8 isn't supported anymore)
 	 */
 	isIE8: function() {
-		return $('html').hasClass('ie8');
+		return false;
 	},
 
 	/**
@@ -2024,8 +2030,9 @@ OC.Util.History = {
 	 *
 	 * @param params to append to the URL, can be either a string
 	 * or a map
+	 * @param {boolean} [replace=false] whether to replace instead of pushing
 	 */
-	pushState: function(params) {
+	_pushState: function(params, replace) {
 		var strParams;
 		if (typeof(params) === 'string') {
 			strParams = params;
@@ -2035,7 +2042,11 @@ OC.Util.History = {
 		}
 		if (window.history.pushState) {
 			var url = location.pathname + '?' + strParams;
-			window.history.pushState(params, '', url);
+			if (replace) {
+				window.history.replaceState(params, '', url);
+			} else {
+				window.history.pushState(params, '', url);
+			}
 		}
 		// use URL hash for IE8
 		else {
@@ -2044,6 +2055,32 @@ OC.Util.History = {
 			// to the event queue
 			this._cancelPop = true;
 		}
+	},
+
+	/**
+	 * Push the current URL parameters to the history stack
+	 * and change the visible URL.
+	 * Note: this includes a workaround for IE8/IE9 that uses
+	 * the hash part instead of the search part.
+	 *
+	 * @param params to append to the URL, can be either a string
+	 * or a map
+	 */
+	pushState: function(params) {
+		return this._pushState(params, false);
+	},
+
+	/**
+	 * Push the current URL parameters to the history stack
+	 * and change the visible URL.
+	 * Note: this includes a workaround for IE8/IE9 that uses
+	 * the hash part instead of the search part.
+	 *
+	 * @param params to append to the URL, can be either a string
+	 * or a map
+	 */
+	replaceState: function(params) {
+		return this._pushState(params, true);
 	},
 
 	/**
@@ -2103,7 +2140,12 @@ OC.Util.History = {
 		if (!this._handlers.length) {
 			return;
 		}
-		params = (e && e.state) || this.parseUrlQuery() || {};
+		params = (e && e.state);
+		if (_.isString(params)) {
+			params = OC.parseQueryString(params);
+		} else if (!params) {
+			params = this.parseUrlQuery() || {};
+		}
 		for (var i = 0; i < this._handlers.length; i++) {
 			this._handlers[i](params);
 		}

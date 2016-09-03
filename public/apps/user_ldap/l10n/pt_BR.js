@@ -13,6 +13,7 @@ OC.L10N.register(
     " Could not set configuration %s" : "Não foi possível definir a configuração %s",
     "Action does not exist" : "A ação não existe",
     "The Base DN appears to be wrong" : "O DN de base parece estar errado",
+    "Testing configuration…" : "Testando configuração...",
     "Configuration incorrect" : "Configuração incorreta",
     "Configuration incomplete" : "Configuração incompleta",
     "Configuration OK" : "Configuração OK",
@@ -95,7 +96,7 @@ OC.L10N.register(
     "Test Base DN" : "Teste Base DN",
     "Avoids automatic LDAP requests. Better for bigger setups, but requires some LDAP knowledge." : "Evita pedidos LDAP automáticos. Melhor para configurações maiores, mas requer algum conhecimento LDAP.",
     "Manually enter LDAP filters (recommended for large directories)" : "Inserir manualmente filtros LDAP (recomendado para grandes diretórios)",
-    "Limit %s access to users meeting these criteria:" : "Limitar o acesso %s para usuários que satisfazem esses critérios:",
+    "%s access is limited to users meeting these criteria:" : "%s o acesso está limitado aos usuários que atentam a esse critério:",
     "The most common object classes for users are organizationalPerson, person, user, and inetOrgPerson. If you are not sure which object class to select, please consult your directory admin." : "As classes de objetos mais comuns para os usuários são organizationalPerson, pessoa, usuário e inetOrgPerson. Se você não tem certeza de qual classe de objeto selecionar, por favor, consulte o seu administrador do diretório.",
     "The filter specifies which LDAP users shall have access to the %s instance." : "O filtro especifica quais usuários LDAP devem ter acesso à instância do %s.",
     "Verify settings and count users" : "Verificar configurações e contas de usuários",
@@ -157,8 +158,6 @@ OC.L10N.register(
     "Username-LDAP User Mapping" : "Usuário-LDAP Mapeamento de Usuário",
     "Usernames are used to store and assign (meta) data. In order to precisely identify and recognize users, each LDAP user will have an internal username. This requires a mapping from username to LDAP user. The created username is mapped to the UUID of the LDAP user. Additionally the DN is cached as well to reduce LDAP interaction, but it is not used for identification. If the DN changes, the changes will be found. The internal username is used all over. Clearing the mappings will have leftovers everywhere. Clearing the mappings is not configuration sensitive, it affects all LDAP configurations! Never clear the mappings in a production environment, only in a testing or experimental stage." : "Nomes de usuários são usados para armazenar e atribuir dados (meta). A fim de identificar e reconhecer precisamente usuários, cada usuário LDAP terá um nome de usuário interno. Isso requer um mapeamento de nome de usuário para usuário LDAP. O nome de usuário criado é mapeado para o UUID do usuário LDAP. Além disso, o DN é armazenado em cache, assim como para reduzir a interação LDAP, mas não é usado para identificação. Se o DN muda, as mudanças serão encontrados. O nome de usuário interno é usado por toda parte. Limpando os mapeamentos terá sobras em todos os lugares. Limpando os mapeamentos não é a configuração sensível, que afeta todas as configurações LDAP! Nunca limpar os mapeamentos em um ambiente de produção, somente em um teste ou estágio experimental.",
     "Clear Username-LDAP User Mapping" : "Limpar Mapeamento de Usuário Nome de Usuário-LDAP",
-    "Clear Groupname-LDAP Group Mapping" : "Limpar NomedoGrupo-LDAP Mapeamento do Grupo",
-    "Anonymous bind is not allowed. Please provide a User DN and Password." : "Vínculo anônimo não é permitido. Por favor, forneça um DN do usuário e senha.",
-    "{nthServer}. Server" : "Servidor {nthServer}."
+    "Clear Groupname-LDAP Group Mapping" : "Limpar NomedoGrupo-LDAP Mapeamento do Grupo"
 },
 "nplurals=2; plural=(n > 1);");

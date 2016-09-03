@@ -15,12 +15,25 @@
 	<licence>AGPL</licence>
 	<author>Frank Karlitschek, Joas Schilling</author>
 	<shipped>true</shipped>
-	<version>2.2.1</version>
+	<version>2.3.2</version>
 	<default_enable/>
 	<types>
 		<filesystem/>
 	</types>
+
+	<documentation>
+		<admin>https://doc.owncloud.org/server/9.1/admin_manual/configuration_server/activity_configuration.html</admin>
+    	</documentation>
+	<website>https://github.com/owncloud/activity/</website>
+    	<bugs>https://github.com/owncloud/activity/issues</bugs>
+    	<repository type="git">https://github.com/owncloud/activity.git</repository>
+
 	<dependencies>
-		<owncloud min-version="9.0" max-version="9.0" />
+		<owncloud min-version="9.1" max-version="9.1" />
 	</dependencies>
+
+	<background-jobs>
+		<job>OCA\Activity\BackgroundJob\EmailNotification</job>
+		<job>OCA\Activity\BackgroundJob\ExpireActivities</job>
+	</background-jobs>
 </info>

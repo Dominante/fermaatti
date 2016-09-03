@@ -94,9 +94,8 @@ Redirect all unencrypted traffic to HTTPS
 
 To redirect all HTTP traffic to HTTPS administrators are encouraged to issue a 
 permanent redirect using the 301 status code. When using Apache this can be 
-achieved by a setting such as the following in the Apache VirtualHosts config:
-
-::
+achieved by a setting such as the following in the Apache VirtualHosts 
+configuration::
 
   <VirtualHost *:80>
      ServerName cloud.owncloud.com
@@ -120,7 +119,7 @@ VirtualHost file::
  <VirtualHost *:443>
    ServerName cloud.owncloud.com
      <IfModule mod_headers.c>
-       Header always set Strict-Transport-Security "max-age=15768000; includeSubDomains; preload"
+       Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains; preload"
      </IfModule>
   </VirtualHost>
   

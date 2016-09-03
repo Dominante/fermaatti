@@ -11,6 +11,7 @@
     " Could not set configuration %s" : "Die Konfiguration %s konnte nicht gesetzt werden",
     "Action does not exist" : "Aktion existiert nicht",
     "The Base DN appears to be wrong" : "Die Base-DN scheint falsch zu sein",
+    "Testing configuration…" : "Teste Konfiguration…",
     "Configuration incorrect" : "Konfiguration nicht korrekt",
     "Configuration incomplete" : "Konfiguration nicht vollständig",
     "Configuration OK" : "Konfiguration OK",
@@ -93,7 +94,7 @@
     "Test Base DN" : "Base DN testen",
     "Avoids automatic LDAP requests. Better for bigger setups, but requires some LDAP knowledge." : "Verhindert automatische LDAP-Anfragen. Besser geeignet für größere Installationen, benötigt aber erweiterte LDAP-Kenntnisse.",
     "Manually enter LDAP filters (recommended for large directories)" : "LDAP-Filter manuell eingeben (empfohlen für große Verzeichnisse)",
-    "Limit %s access to users meeting these criteria:" : "Den %s-Zugriff auf Benutzer, die den folgenden Kriterien entsprechen, beschränken:",
+    "%s access is limited to users meeting these criteria:" : "%s-Zugriff ist auf Benutzer, die den folgenden Kriterien entsprechen, beschränkt:",
     "The most common object classes for users are organizationalPerson, person, user, and inetOrgPerson. If you are not sure which object class to select, please consult your directory admin." : "Die häufigsten Objektklassen für Benutzer sind organizationalPerson, person, user und inetOrgPerson. Wenn Sie nicht sicher, welche Objektklasse Sie wählen sollen, fragen Sie bitte Ihren Verzeichnis-Admin.",
     "The filter specifies which LDAP users shall have access to the %s instance." : "Der Filter gibt an, welche LDAP-Benutzer Zugriff auf die %s-Instanz haben sollen.",
     "Verify settings and count users" : "Einstellungen überprüfen und Benutzer zählen",
@@ -132,7 +133,7 @@
     "One Group Base DN per line" : "Ein Gruppen Basis-DN pro Zeile",
     "Group Search Attributes" : "Gruppensucheigenschaften",
     "Group-Member association" : "Assoziation zwischen Gruppe und Benutzer",
-    "Dynamic Group Member URL" : "Dynamische Gruppen Mitglied URL",
+    "Dynamic Group Member URL" : "Dynamische Gruppenmitglied URL",
     "The LDAP attribute that on group objects contains an LDAP search URL that determines what objects belong to the group. (An empty setting disables dynamic group membership functionality.)" : "Ein LDAP-Attribut von Gruppenobjekten, das eine LDAP Such-URL enthält die festlegt welche Objekte zu der Gruppe gehören. (Ein leeres Feld deaktiviert die Funktion \"Dynamisch Gruppenzugehörigkeit\".)",
     "Nested Groups" : "Eingebundene Gruppen",
     "When switched on, groups that contain groups are supported. (Only works if the group member attribute contains DNs.)" : "Wenn aktiviert, werden Gruppen, die Gruppen enthalten, unterstützt. (Funktioniert nur, wenn das Merkmal des Gruppenmitgliedes den Domain-Namen enthält.)",
@@ -155,8 +156,6 @@
     "Username-LDAP User Mapping" : "LDAP-Benutzernamenzuordnung",
     "Usernames are used to store and assign (meta) data. In order to precisely identify and recognize users, each LDAP user will have an internal username. This requires a mapping from username to LDAP user. The created username is mapped to the UUID of the LDAP user. Additionally the DN is cached as well to reduce LDAP interaction, but it is not used for identification. If the DN changes, the changes will be found. The internal username is used all over. Clearing the mappings will have leftovers everywhere. Clearing the mappings is not configuration sensitive, it affects all LDAP configurations! Never clear the mappings in a production environment, only in a testing or experimental stage." : "Die Benutzernamen werden genutzt, um (Meta)Daten zuzuordnen und zu speichern. Um Benutzer eindeutig und präzise zu identifizieren, hat jeder LDAP-Benutzer einen internen Benutzernamen. Dies erfordert eine Zuordnung (mappen) von Benutzernamen zum LDAP-Benutzer. Der erstellte Benutzername wird der UUID des LDAP-Benutzernamens zugeordnet. Zusätzlich wird der DN zwischengespeichert, um die Interaktion mit dem LDAP zu minimieren, was aber nicht der Identifikation dient. Ändert sich der DN, werden die Änderungen durch gefunden. Der interne Benutzername, wird in überall verwendet. Werden die Zuordnungen gelöscht, bleiben überall Reste zurück. Die Löschung der Zuordnungen kann nicht in der Konfiguration vorgenommen werden, beeinflusst aber die LDAP-Konfiguration! Löschen Sie niemals die Zuordnungen in einer produktiven Umgebung. Lösche die Zuordnungen nur in einer Test- oder Experimentierumgebung.",
     "Clear Username-LDAP User Mapping" : "LDAP-Benutzernamenzuordnung löschen",
-    "Clear Groupname-LDAP Group Mapping" : "LDAP-Gruppennamenzuordnung löschen",
-    "Anonymous bind is not allowed. Please provide a User DN and Password." : "Anonymes binden ist nicht erlaubt. Bitte eine Nutzer-DN und ein Passwort angeben.",
-    "{nthServer}. Server" : "{nthServer}. - Server"
+    "Clear Groupname-LDAP Group Mapping" : "LDAP-Gruppennamenzuordnung löschen"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

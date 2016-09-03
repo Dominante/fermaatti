@@ -1,7 +1,8 @@
 <?php
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Christoph Wurst <christoph@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Tobias Kaminsky <tobias@kaminsky.me>
  * @author Tom Needham <tom@owncloud.com>
@@ -47,6 +48,16 @@ $application->registerRoutes(
 				'url' => '/api/v1/tags/{tagName}/files',
 				'verb' => 'GET',
 				'requirements' => array('tagName' => '.+'),
+			),
+			array(
+				'name' => 'API#updateFileSorting',
+				'url' => '/api/v1/sorting',
+				'verb' => 'POST'
+			),
+			array(
+				'name' => 'API#showHiddenFiles',
+				'url' => '/api/v1/showhidden',
+				'verb' => 'POST'
 			),
 			[
 				'name' => 'view#index',

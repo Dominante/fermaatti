@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Configuring S3 and OpenStack Swift Objects as Primary Storage &mdash; ownCloud 9.0 Server Administration Manual 9.0 documentation</title>
+    <title>Configuring S3 and OpenStack Swift Objects as Primary Storage &mdash; ownCloud 9.1 Server Administration Manual 9.1 documentation</title>
     
     <link rel="stylesheet" href="../_static/" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '9.0',
+        VERSION:     '9.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="ownCloud 9.0 Server Administration Manual 9.0 documentation" href="../contents.html" />
+    <link rel="top" title="ownCloud 9.1 Server Administration Manual 9.1 documentation" href="../contents.html" />
     <link rel="up" title="External Storage (Enterprise only)" href="index.html" />
     <link rel="next" title="Jive Integration" href="jive_configuration.html" />
     <link rel="prev" title="Installing and Configuring the Windows Network Drive App" href="windows-network-drive_configuration.html" />
@@ -66,9 +66,9 @@
 <li><a href="../contents.html">Table of Contents</a></li>
 									</ul>
                   <ul>
-<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 9.0 Server Administration Manual Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 9.0 Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 9.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 9.1 Server Administration Manual Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 9.1 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 9.1</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configuration_server/index.html">ownCloud Server Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configuration_user/index.html">User Management</a></li>
@@ -125,16 +125,14 @@
 						
   <div class="section" id="configuring-s3-and-openstack-swift-objects-as-primary-storage">
 <h1>Configuring S3 and OpenStack Swift Objects as Primary Storage<a class="headerlink" href="#configuring-s3-and-openstack-swift-objects-as-primary-storage" title="Permalink to this headline">¶</a></h1>
-<p>In ownCloud Enterprise Subscription, you can configure S3 objects as primary
-storage. This replaces the default ownCloud <code class="docutils literal"><span class="pre">owncloud/data</span></code> directory. You
-may
+<p>In ownCloud Enterprise edition, you can configure S3 objects as primary
+storage. This replaces the default ownCloud <code class="docutils literal"><span class="pre">owncloud/data</span></code> directory. You may
 still need to keep the <code class="docutils literal"><span class="pre">owncloud/data</span></code> directory for these reasons:</p>
 <ul class="simple">
 <li>The ownCloud log file is saved in the data directory</li>
 <li>Legacy apps may not support using anything but the <code class="docutils literal"><span class="pre">owncloud/data</span></code> directory</li>
 </ul>
-<p>You can move your logfile by changing its location in <code class="docutils literal"><span class="pre">config.php</span></code>. You may
-still need
+<p>You can move your logfile by changing its location in <code class="docutils literal"><span class="pre">config.php</span></code>. You may still need
 <code class="docutils literal"><span class="pre">owncloud/data</span></code> for backwards compatibility with some apps.</p>
 <div class="section" id="implications">
 <h2>Implications<a class="headerlink" href="#implications" title="Permalink to this headline">¶</a></h2>
@@ -191,8 +189,7 @@ into the virtual filesystem. The class to be used is <code class="docutils liter
 </div>
 <div class="section" id="ceph-s3">
 <h3>Ceph S3<a class="headerlink" href="#ceph-s3" title="Permalink to this headline">¶</a></h3>
-<p>The S3 backend can also be used to mount the bucket of a ceph object store via
-the s3 API
+<p>The S3 backend can also be used to mount the bucket of a ceph object store via the s3 API
 into the virtual filesystem. The class to be used is <code class="docutils literal"><span class="pre">OCA\ObjectStore\S3</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre>&#39;objectstore&#39; =&gt; [
     &#39;class&#39; =&gt; &#39;OCA\ObjectStore\S3&#39;,
@@ -225,8 +222,7 @@ into the virtual filesystem. The class to be used is <code class="docutils liter
 <div class="section" id="openstack-swift">
 <h3>OpenStack Swift<a class="headerlink" href="#openstack-swift" title="Permalink to this headline">¶</a></h3>
 <p>The Swift backend mounts a container on an OpenStack Object Storage server
-into the virtual filesystem. The class to be used is
-<code class="docutils literal"><span class="pre">\\OC\\Files\\ObjectStore\\Swift</span></code>:</p>
+into the virtual filesystem. The class to be used is <code class="docutils literal"><span class="pre">\\OC\\Files\\ObjectStore\\Swift</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre>&#39;objectstore&#39; =&gt; [
     &#39;class&#39; =&gt; &#39;OC\\Files\\ObjectStore\\Swift&#39;,
     &#39;arguments&#39; =&gt; [

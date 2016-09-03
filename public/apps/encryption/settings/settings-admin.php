@@ -1,8 +1,8 @@
 <?php
 /**
- * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Björn Schießle <bjoern@schiessle.org>
  * @author Clark Tomlinson <fallen013@gmail.com>
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -49,5 +49,6 @@ $encryptHomeStorage = $util->shouldEncryptHomeStorage();
 $tmpl->assign('recoveryEnabled', $recoveryAdminEnabled);
 $tmpl->assign('initStatus', $session->getStatus());
 $tmpl->assign('encryptHomeStorage', $encryptHomeStorage);
+$tmpl->assign('masterKeyEnabled', $util->isMasterKeyEnabled());
 
 return $tmpl->fetchPage();

@@ -24,6 +24,7 @@ OC.L10N.register(
     "Could not detect Base DN, please enter it manually." : "Kunne ikke registrere Base DN - angiv den venligst manuelt.",
     "{nthServer}. Server" : "{nthServer}. server",
     "No object found in the given Base DN. Please revise." : "Intet objekt fundet i den givne Base DN. Gennemse venligst.",
+    "More than 1,000 directory entries available." : "Mere end 1.000 mappeposter",
     " entries available within the provided Base DN" : "poster tilgængelige inden for det angivne Base DN.",
     "An error occurred. Please check the Base DN, as well as connection settings and credentials." : "Der opstod en fejl. Tjek venligst Base DN, såvel som forbindelsesindstillingerne og brugeroplysningerne.",
     "Do you really want to delete the current Server Configuration?" : "Ønsker du virkelig at slette den nuværende Server Konfiguration?",
@@ -94,7 +95,6 @@ OC.L10N.register(
     "Test Base DN" : "Test Base DN",
     "Avoids automatic LDAP requests. Better for bigger setups, but requires some LDAP knowledge." : "Undgår automatiske LDAP-forespørgsler. Bedre på større opsætninger, men kræver en del LDAP-kendskab.",
     "Manually enter LDAP filters (recommended for large directories)" : "Angiv LDAP-filtre manuelt (anbefales til større kataloger)",
-    "Limit %s access to users meeting these criteria:" : "Begræns %s-adgangen til brugere som imødekommer disse kriterier:",
     "The most common object classes for users are organizationalPerson, person, user, and inetOrgPerson. If you are not sure which object class to select, please consult your directory admin." : "De fleste gængse objektklasser for brugere er organizationalPerson, person, user og inetOrgPerson. Hvis du ikker er sikker på hvilken objektklasse, der skal vælges, så tal med administratoren af dit katalog.",
     "The filter specifies which LDAP users shall have access to the %s instance." : "Filteret angiver hvilke LDAP-brugere, der skal have adgang til %s-instansen.",
     "Verify settings and count users" : "Kontrollér indstillinger og optalte brugere",
@@ -152,8 +152,6 @@ OC.L10N.register(
     "Username-LDAP User Mapping" : "Kortlægning mellem brugernavn og LDAP-bruger",
     "Usernames are used to store and assign (meta) data. In order to precisely identify and recognize users, each LDAP user will have an internal username. This requires a mapping from username to LDAP user. The created username is mapped to the UUID of the LDAP user. Additionally the DN is cached as well to reduce LDAP interaction, but it is not used for identification. If the DN changes, the changes will be found. The internal username is used all over. Clearing the mappings will have leftovers everywhere. Clearing the mappings is not configuration sensitive, it affects all LDAP configurations! Never clear the mappings in a production environment, only in a testing or experimental stage." : "Brugernavne bruges til at lagre og tildele (meta)data. For at kunne identificere og genkende brugere præcist, så vil hver LDAP-bruger have et internt brugernavn. Det oprettede brugernavn kortlægges til UUID'et for LDAP-brugeren. I tillæg mellemlagres DN'et for at mindske LDAP-interaktioner, men det benyttes ikke til identifikation. Hvis DN'et ændres, så vil ændringerne blive registreret. Det interne brugernavn anvendes overalt. Hvis kortlægningerne ryddes, så vil der være rester overalt. Rydning af kortlægningerne er ikke konfigurationssensitivt - det påvirker alle LDAP-konfigurationer! Ryd aldrig kortlægningerne i et produktionsmiljø, kun i et teststadie eller eksperimentelt stadie.",
     "Clear Username-LDAP User Mapping" : "Ryd kortlægning mellem brugernavn og LDAP-bruger",
-    "Clear Groupname-LDAP Group Mapping" : "Ryd kortlægning mellem gruppenavn og LDAP-gruppe",
-    "Anonymous bind is not allowed. Please provide a User DN and Password." : "Anonyme bindinger tillades ikke. Angiv venligst et User DN og adgangskode.",
-    "{nthServer}. Server" : "{nthServer}. server"
+    "Clear Groupname-LDAP Group Mapping" : "Ryd kortlægning mellem gruppenavn og LDAP-gruppe"
 },
 "nplurals=2; plural=(n != 1);");
