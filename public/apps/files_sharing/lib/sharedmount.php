@@ -4,9 +4,9 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -25,6 +25,7 @@
 
 namespace OCA\Files_Sharing;
 
+use OC\Files\Filesystem;
 use OC\Files\Mount\MountPoint;
 use OC\Files\Mount\MoveableMount;
 use OC\Files\View;
@@ -39,11 +40,6 @@ class SharedMount extends MountPoint implements MoveableMount {
 	protected $storage = null;
 
 	/**
-	 * @var \OC\Files\Cache\ChangePropagator
-	 */
-	protected $ownerPropagator;
-
-	/**
 	 * @var \OC\Files\View
 	 */
 	private $recipientView;
@@ -53,12 +49,16 @@ class SharedMount extends MountPoint implements MoveableMount {
 	 */
 	private $user;
 
-	public function __construct($storage, $mountpoint, $arguments = null, $loader = null) {
-		// first update the mount point before creating the parent
-		$this->ownerPropagator = $arguments['propagator'];
+	/**
+	 * @param string $storage
+	 * @param SharedMount[] $mountpoints
+	 * @param array|null $arguments
+	 * @param \OCP\Files\Storage\IStorageFactory $loader
+	 */
+	public function __construct($storage, array $mountpoints, $arguments = null, $loader = null) {
 		$this->user = $arguments['user'];
 		$this->recipientView = new View('/' . $this->user . '/files');
-		$newMountPoint = $this->verifyMountPoint($arguments['share']);
+		$newMountPoint = $this->verifyMountPoint($arguments['share'], $mountpoints);
 		$absMountPoint = '/' . $this->user . '/files' . $newMountPoint;
 		$arguments['ownerView'] = new View('/' . $arguments['share']['uid_owner'] . '/files');
 		parent::__construct($storage, $absMountPoint, $arguments, $loader);
@@ -66,20 +66,24 @@ class SharedMount extends MountPoint implements MoveableMount {
 
 	/**
 	 * check if the parent folder exists otherwise move the mount point up
+	 *
+	 * @param array $share
+	 * @param SharedMount[] $mountpoints
+	 * @return string
 	 */
-	private function verifyMountPoint(&$share) {
+	private function verifyMountPoint(&$share, array $mountpoints) {
 
 		$mountPoint = basename($share['file_target']);
 		$parent = dirname($share['file_target']);
 
 		if (!$this->recipientView->is_dir($parent)) {
-			$parent = Helper::getShareFolder();
+			$parent = Helper::getShareFolder($this->recipientView);
 		}
 
-		$newMountPoint = \OCA\Files_Sharing\Helper::generateUniqueTarget(
+		$newMountPoint = $this->generateUniqueTarget(
 			\OC\Files\Filesystem::normalizePath($parent . '/' . $mountPoint),
-			[],
-			$this->recipientView
+			$this->recipientView,
+			$mountpoints
 		);
 
 		if ($newMountPoint !== $share['file_target']) {
@@ -89,6 +93,37 @@ class SharedMount extends MountPoint implements MoveableMount {
 		}
 
 		return $newMountPoint;
+	}
+
+	/**
+	 * @param string $path
+	 * @param View $view
+	 * @param SharedMount[] $mountpoints
+	 * @return mixed
+	 */
+	private function generateUniqueTarget($path, $view, array $mountpoints) {
+		$pathinfo = pathinfo($path);
+		$ext = (isset($pathinfo['extension'])) ? '.'.$pathinfo['extension'] : '';
+		$name = $pathinfo['filename'];
+		$dir = $pathinfo['dirname'];
+
+		// Helper function to find existing mount points
+		$mountpointExists = function($path) use ($mountpoints) {
+			foreach ($mountpoints as $mountpoint) {
+				if ($mountpoint->getShare()['file_target'] === $path) {
+					return true;
+				}
+			}
+			return false;
+		};
+
+		$i = 2;
+		while ($view->file_exists($path) || $mountpointExists($path)) {
+			$path = Filesystem::normalizePath($dir . '/' . $name . ' ('.$i.')' . $ext);
+			$i++;
+		}
+
+		return $path;
 	}
 
 	/**
@@ -128,6 +163,7 @@ class SharedMount extends MountPoint implements MoveableMount {
 	 *
 	 * @param string $path the absolute path
 	 * @return string e.g. turns '/admin/files/test.txt' into '/test.txt'
+	 * @throws \OCA\Files_Sharing\Exceptions\BrokenPath
 	 */
 	protected function stripUserFilesPath($path) {
 		$trimmed = ltrim($path, '/');
@@ -190,7 +226,7 @@ class SharedMount extends MountPoint implements MoveableMount {
 	 */
 	public function removeMount() {
 		$mountManager = \OC\Files\Filesystem::getMountManager();
-		/** @var \OC\Files\Storage\Shared */
+		/** @var $storage \OC\Files\Storage\Shared */
 		$storage = $this->getStorage();
 		$result = $storage->unshareStorage();
 		$mountManager->removeMount($this->mountPoint);
@@ -198,14 +234,12 @@ class SharedMount extends MountPoint implements MoveableMount {
 		return $result;
 	}
 
-	public function getShare() {
-		return $this->getStorage()->getShare();
-	}
-
 	/**
-	 * @return \OC\Files\Cache\ChangePropagator
+	 * @return array
 	 */
-	public function getOwnerPropagator() {
-		return $this->ownerPropagator;
+	public function getShare() {
+		/** @var $storage \OC\Files\Storage\Shared */
+		$storage = $this->getStorage();
+		return $storage->getShare();
 	}
 }

@@ -9,7 +9,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -50,4 +50,13 @@ if(isset($_GET['downloadStartSecret'])
 	setcookie('ocDownloadStarted', $_GET['downloadStartSecret'], time() + 20, '/');
 }
 
-OC_Files::get($dir, $files_list, $_SERVER['REQUEST_METHOD'] == 'HEAD');
+$server_params = array( 'head' => \OC::$server->getRequest()->getMethod() == 'HEAD' );
+
+/**
+ * Http range requests support
+ */
+if (isset($_SERVER['HTTP_RANGE'])) {
+	$server_params['range'] = \OC::$server->getRequest()->getHeader('Range');
+}
+
+OC_Files::get($dir, $files_list, $server_params);

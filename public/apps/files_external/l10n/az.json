@@ -14,13 +14,14 @@
     "All users. Type to select user or group." : "Sistem istifadəçiləri. Daxil edin ki, istifadəçi və ya qrupu seçəsiniz.",
     "(group)" : "(qrup)",
     "Saved" : "Saxlanıldı",
+    "Username" : "İstifadəçi adı",
+    "Password" : "Şifrə",
+    "Save" : "Saxla",
     "None" : "Heç bir",
     "App key" : "Proqram açarı",
     "App secret" : "Proqram sirri",
     "Client ID" : "Müştəri İD-s",
     "Client secret" : "Müxtəri sirri",
-    "Username" : "İstifadəçi adı",
-    "Password" : "Şifrə",
     "Public key" : "İctimai açar",
     "Amazon S3" : "Amazon S3",
     "Bucket" : "Vedrə",
@@ -55,10 +56,11 @@
     "Folder name" : "Qovluq adı",
     "Configuration" : "Konfiqurasiya",
     "Available for" : "Üçün mövcuddur",
+    "Add storage" : "Deponu əlavə et",
     "Advanced settings" : "İrəliləmiş quraşdırmalar",
     "Delete" : "Sil",
-    "Add storage" : "Deponu əlavə et",
-    "Enable User External Storage" : "İstifadəçi kənar deponu aktivləşdir",
-    "Allow users to mount the following external storage" : "Göstərilən kənar deponun bərkidilməsi üçün istifadəçilərə izin ver"
+    "Allow users to mount the following external storage" : "Göstərilən kənar deponun bərkidilməsi üçün istifadəçilərə izin ver",
+    "<b>Note:</b> The FTP support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>Qeyd:</b> PHP-də FTP dəstəyi aktiv deyil və ya yüklənməyib. %s -in birləşdirilməsi mümkün deyil. Xahiş edilir onun yüklənilməsi barəsində inzibatşınıza məlumat verəsiniz.",
+    "SMB / CIFS using OC login" : "OC login istifadə edir SMB / CIFS"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

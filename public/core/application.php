@@ -3,11 +3,11 @@
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -28,10 +28,11 @@ namespace OC\Core;
 
 use OC\AppFramework\Utility\SimpleContainer;
 use OC\AppFramework\Utility\TimeFactory;
+use OC\Core\Controller\OccController;
 use \OCP\AppFramework\App;
-use OC\Core\LostPassword\Controller\LostController;
-use OC\Core\User\UserController;
-use OC\Core\Avatar\AvatarController;
+use OC\Core\Controller\LostController;
+use OC\Core\Controller\UserController;
+use OC\Core\Controller\AvatarController;
 use \OCP\Util;
 
 /**
@@ -87,6 +88,18 @@ class Application extends App {
 				$c->query('UserSession'),
 				$c->query('UserFolder'),
 				$c->query('Logger')
+			);
+		});
+		$container->registerService('OccController', function(SimpleContainer $c) {
+			return new OccController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('Config'),
+				new \OC\Console\Application(
+					$c->query('Config'),
+					$c->query('ServerContainer')->getEventDispatcher(),
+					$c->query('Request')
+				)
 			);
 		});
 

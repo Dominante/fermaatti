@@ -1,16 +1,17 @@
 <?php
 /**
  * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Jesús Macias <jmacias@solidgear.es>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Philipp Kapfer <philipp.kapfer@gmx.at>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -29,6 +30,7 @@
 
 namespace OC\Files\Storage;
 
+use Icewind\SMB\Exception\ConnectException;
 use Icewind\SMB\Exception\Exception;
 use Icewind\SMB\Exception\ForbiddenException;
 use Icewind\SMB\Exception\NotFoundException;
@@ -38,6 +40,7 @@ use Icewind\Streams\CallbackWrapper;
 use Icewind\Streams\IteratorDirectory;
 use OC\Cache\CappedMemoryCache;
 use OC\Files\Filesystem;
+use OCP\Files\StorageNotAvailableException;
 
 class SMB extends Common {
 	/**
@@ -103,26 +106,36 @@ class SMB extends Common {
 	/**
 	 * @param string $path
 	 * @return \Icewind\SMB\IFileInfo
+	 * @throws StorageNotAvailableException
 	 */
 	protected function getFileInfo($path) {
-		$path = $this->buildPath($path);
-		if (!isset($this->statCache[$path])) {
-			$this->statCache[$path] = $this->share->stat($path);
+		try {
+			$path = $this->buildPath($path);
+			if (!isset($this->statCache[$path])) {
+				$this->statCache[$path] = $this->share->stat($path);
+			}
+			return $this->statCache[$path];
+		} catch (ConnectException $e) {
+			throw new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);
 		}
-		return $this->statCache[$path];
 	}
 
 	/**
 	 * @param string $path
 	 * @return \Icewind\SMB\IFileInfo[]
+	 * @throws StorageNotAvailableException
 	 */
 	protected function getFolderContents($path) {
-		$path = $this->buildPath($path);
-		$files = $this->share->dir($path);
-		foreach ($files as $file) {
-			$this->statCache[$path . '/' . $file->getName()] = $file;
+		try {
+			$path = $this->buildPath($path);
+			$files = $this->share->dir($path);
+			foreach ($files as $file) {
+				$this->statCache[$path . '/' . $file->getName()] = $file;
+			}
+			return $files;
+		} catch (ConnectException $e) {
+			throw new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);
 		}
-		return $files;
 	}
 
 	/**
@@ -162,6 +175,8 @@ class SMB extends Common {
 			return false;
 		} catch (ForbiddenException $e) {
 			return false;
+		} catch (ConnectException $e) {
+			throw new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);
 		}
 	}
 
@@ -200,7 +215,10 @@ class SMB extends Common {
 					return $this->share->read($fullPath);
 				case 'w':
 				case 'wb':
-					return $this->share->write($fullPath);
+					$source = $this->share->write($fullPath);
+					return CallBackWrapper::wrap($source, null, null, function () use ($fullPath) {
+						unset($this->statCache[$fullPath]);
+					});
 				case 'a':
 				case 'ab':
 				case 'r+':
@@ -230,7 +248,8 @@ class SMB extends Common {
 					}
 					$source = fopen($tmpFile, $mode);
 					$share = $this->share;
-					return CallBackWrapper::wrap($source, null, null, function () use ($tmpFile, $fullPath, $share) {
+					return CallbackWrapper::wrap($source, null, null, function () use ($tmpFile, $fullPath, $share) {
+						unset($this->statCache[$fullPath]);
 						$share->put($tmpFile, $fullPath);
 						unlink($tmpFile);
 					});
@@ -240,6 +259,8 @@ class SMB extends Common {
 			return false;
 		} catch (ForbiddenException $e) {
 			return false;
+		} catch (ConnectException $e) {
+			throw new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);
 		}
 	}
 
@@ -260,16 +281,22 @@ class SMB extends Common {
 			return false;
 		} catch (ForbiddenException $e) {
 			return false;
+		} catch (ConnectException $e) {
+			throw new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);
 		}
 	}
 
 	public function touch($path, $time = null) {
-		if (!$this->file_exists($path)) {
-			$fh = $this->share->write($this->buildPath($path));
-			fclose($fh);
-			return true;
+		try {
+			if (!$this->file_exists($path)) {
+				$fh = $this->share->write($this->buildPath($path));
+				fclose($fh);
+				return true;
+			}
+			return false;
+		} catch (ConnectException $e) {
+			throw new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);
 		}
-		return false;
 	}
 
 	public function opendir($path) {
@@ -302,6 +329,8 @@ class SMB extends Common {
 		try {
 			$this->share->mkdir($path);
 			return true;
+		} catch (ConnectException $e) {
+			throw new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);
 		} catch (Exception $e) {
 			return false;
 		}
@@ -311,6 +340,30 @@ class SMB extends Common {
 		try {
 			$this->getFileInfo($path);
 			return true;
+		} catch (NotFoundException $e) {
+			return false;
+		} catch (ForbiddenException $e) {
+			return false;
+		} catch (ConnectException $e) {
+			throw new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);
+		}
+	}
+
+	public function isReadable($path) {
+		try {
+			$info = $this->getFileInfo($path);
+			return !$info->isHidden();
+		} catch (NotFoundException $e) {
+			return false;
+		} catch (ForbiddenException $e) {
+			return false;
+		}
+	}
+
+	public function isUpdatable($path) {
+		try {
+			$info = $this->getFileInfo($path);
+			return !$info->isHidden() && !$info->isReadOnly();
 		} catch (NotFoundException $e) {
 			return false;
 		} catch (ForbiddenException $e) {
@@ -326,5 +379,18 @@ class SMB extends Common {
 			(bool)\OC_Helper::findBinaryPath('smbclient')
 			|| Server::NativeAvailable()
 		) ? true : ['smbclient'];
+	}
+
+	/**
+	 * Test a storage for availability
+	 *
+	 * @return bool
+	 */
+	public function test() {
+		try {
+			return parent::test();
+		} catch (Exception $e) {
+			return false;
+		}
 	}
 }

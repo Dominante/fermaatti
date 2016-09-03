@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Config.php Parameters &mdash; ownCloud 8.2 Server Administration Manual 8.2 documentation</title>
+    <title>Config.php Parameters &mdash; ownCloud 9.0 Server Administration Manual 9.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '8.2',
+        VERSION:     '9.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="ownCloud 8.2 Server Administration Manual 8.2 documentation" href="../contents.html" />
+    <link rel="top" title="ownCloud 9.0 Server Administration Manual 9.0 documentation" href="../contents.html" />
     <link rel="up" title="ownCloud Server Configuration" href="index.html" />
     <link rel="next" title="Email Configuration" href="email_configuration.html" />
     <link rel="prev" title="Defining Background Jobs" href="background_jobs_configuration.html" />
@@ -66,9 +66,9 @@
 <li><a href="../contents.html">Table of Contents</a></li>
 									</ul>
                   <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 8.2 Server Administration Manual Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 8.2 Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 8.2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 9.0 Server Administration Manual Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 9.0 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 9.0</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">ownCloud Server Configuration</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="security_setup_warnings.html">Warnings on Admin Page</a></li>
@@ -91,11 +91,13 @@
 <li class="toctree-l3"><a class="reference internal" href="#apps">Apps</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#previews">Previews</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ldap">LDAP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#comments">Comments</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#maintenance">Maintenance</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ssl">SSL</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#memory-caching-backend-configuration">Memory caching backend configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#using-object-store-with-owncloud">Using Object Store with ownCloud</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#all-other-config-options">All other config options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sharing">Sharing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#all-other-configuration-options">All other configuration options</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#app-config-options">App config options</a></li>
 </ul>
 </li>
@@ -127,8 +129,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_server_branding/index.html">Enterprise Server Branding (Enterprise only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_external_storage/index.html">External Storage (Enterprise only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_user_management/index.html">User Management (Enterprise only)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../enterprise_files_drop/index.html">Enabling Anonymous Uploads with Files Drop (Enterprise Only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_file_management/index.html">Enterprise File Management (Enterprise Only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_logging/index.html">Enterprise Logging Apps (Enterprise only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_firewall/index.html">Enterprise Firewall (Enterprise only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_troubleshooting.html">Enterprise Troubleshooting</a></li>
 </ul>
 
@@ -500,6 +503,27 @@ addresses starting with <code class="docutils literal"><span class="pre">10.0.0.
 are generated within ownCloud using any kind of command line tools (cron or
 occ). The value should contain the full base URL:
 <code class="docutils literal"><span class="pre">https://www.example.com/owncloud</span></code></p>
+<div class="highlight-python"><div class="highlight"><pre>&#39;htaccess.RewriteBase&#39; =&gt; &#39;/&#39;,
+</pre></div>
+</div>
+<p>To have clean URLs without <cite>/index.php</cite> this parameter needs to be configured.</p>
+<p>This parameter will be written as &#8220;RewriteBase&#8221; on update and installation of
+ownCloud to your <cite>.htaccess</cite> file. While this value is often simply the URL
+path of the ownCloud installation it cannot be set automatically properly in
+every scenario and needs thus some manual configuration.</p>
+<p>In a standard Apache setup this usually equals the folder that ownCloud is
+accessible at. So if ownCloud is accessible via &#8220;<a class="reference external" href="https://mycloud.org/owncloud">https://mycloud.org/owncloud</a>&#8221;
+the correct value would most likely be &#8220;/owncloud&#8221;. If ownCloud is running
+under &#8220;<a class="reference external" href="https://mycloud.org/">https://mycloud.org/</a>&#8221; then it would be &#8220;/&#8221;.</p>
+<p>Note that above rule is not valid in every case, there are some rare setup
+cases where this may not apply. However, to avoid any update problems this
+configuration value is explicitly opt-in.</p>
+<p>After setting this value run <cite>occ maintenance:update:htaccess</cite> and when following
+conditions are met ownCloud uses URLs without index.php in it:</p>
+<ul class="simple">
+<li><cite>mod_rewrite</cite> is installed</li>
+<li><cite>mod_env</cite> is installed</li>
+</ul>
 <div class="highlight-python"><div class="highlight"><pre>&#39;proxy&#39; =&gt; &#39;&#39;,
 </pre></div>
 </div>
@@ -553,7 +577,7 @@ automatically, delete other files anytime if space needed</p>
 </li>
 <li><dl class="first docutils">
 <dt><code class="docutils literal"><span class="pre">D1,</span> <span class="pre">D2</span></code></dt>
-<dd><p class="first last">keep files and folders the in trash bin for at least D1 days and
+<dd><p class="first last">keep files and folders in the trash bin for at least D1 days and
 delete when exceeds D2 days</p>
 </dd>
 </dl>
@@ -649,6 +673,12 @@ available.</p>
 </div>
 <p>Allows ownCloud to verify a working WebDAV connection. This is done by
 attempting to make a WebDAV request from PHP.</p>
+<div class="highlight-python"><div class="highlight"><pre>&#39;check_for_working_wellknown_setup&#39; =&gt; true,
+</pre></div>
+</div>
+<p>Allows ownCloud to verify a working .well-known URL redirects. This is done
+by attempting to make a request from JS to
+<a class="reference external" href="https://your-domain.com/.well-known/caldav/">https://your-domain.com/.well-known/caldav/</a></p>
 <div class="highlight-python"><div class="highlight"><pre>&#39;check_for_working_htaccess&#39; =&gt; true,
 </pre></div>
 </div>
@@ -656,15 +686,15 @@ attempting to make a WebDAV request from PHP.</p>
 to <code class="docutils literal"><span class="pre">true</span></code>. This verifies that the <code class="docutils literal"><span class="pre">.htaccess</span></code> file is writable and works.</p>
 <p>If it is not, then any options controlled by <code class="docutils literal"><span class="pre">.htaccess</span></code>, such as large
 file uploads, will not work. It also runs checks on the <code class="docutils literal"><span class="pre">data/</span></code> directory,
-which verifies that it can&#8217;t be accessed directly through the web server.</p>
+which verifies that it can&#8217;t be accessed directly through the Web server.</p>
 <div class="highlight-python"><div class="highlight"><pre>&#39;config_is_read_only&#39; =&gt; false,
 </pre></div>
 </div>
-<p>In certain environments it is desired to have a read-only config file.</p>
+<p>In certain environments it is desired to have a read-only configuration file.</p>
 <p>When this switch is set to <code class="docutils literal"><span class="pre">true</span></code> ownCloud will not verify whether the
 configuration is writable. However, it will not be possible to configure
-all options via the web-interface. Furthermore, when updating ownCloud
-it is required to make the config file writable again for the update
+all options via the Web interface. Furthermore, when updating ownCloud
+it is required to make the configuration file writable again for the update
 process.</p>
 </div>
 <div class="section" id="logging">
@@ -823,9 +853,9 @@ loss or security breaches.</p>
 <p>Use the <code class="docutils literal"><span class="pre">apps_paths</span></code> parameter to set the location of the Apps directory,
 which should be scanned for available apps, and where user-specific apps
 should be installed from the Apps store. The <code class="docutils literal"><span class="pre">path</span></code> defines the absolute
-file system path to the app folder. The key <code class="docutils literal"><span class="pre">url</span></code> defines the HTTP web path
-to that folder, starting from the ownCloud web root. The key <code class="docutils literal"><span class="pre">writable</span></code>
-indicates if a web server can write files to that folder.</p>
+file system path to the app folder. The key <code class="docutils literal"><span class="pre">url</span></code> defines the HTTP Web path
+to that folder, starting from the ownCloud webroot. The key <code class="docutils literal"><span class="pre">writable</span></code>
+indicates if a Web server can write files to that folder.</p>
 <div class="highlight-python"><div class="highlight"><pre>&#39;appcodechecker&#39; =&gt; true,
 </pre></div>
 </div>
@@ -959,6 +989,22 @@ existence and marks them as ready to be cleaned up. The number is always
 minutes. Setting it to 0 disables the feature.</p>
 <p>See command line (occ) methods <a class="reference external" href="ldap:show-remnants">ldap:show-remnants</a> and user:delete</p>
 </div>
+<div class="section" id="comments">
+<h2>Comments<a class="headerlink" href="#comments" title="Permalink to this headline">¶</a></h2>
+<p>Global settings for the Comments infrastructure</p>
+<div class="highlight-python"><div class="highlight"><pre>&#39;comments.managerFactory&#39; =&gt; &#39;\OC\Comments\ManagerFactory&#39;,
+</pre></div>
+</div>
+<p>Replaces the default Comments Manager Factory. This can be utilized if an
+own or 3rdParty CommentsManager should be used that – for instance – uses the
+filesystem instead of the database to keep the comments.</p>
+<div class="highlight-python"><div class="highlight"><pre>&#39;systemtags.managerFactory&#39; =&gt; &#39;\OC\SystemTag\ManagerFactory&#39;,
+</pre></div>
+</div>
+<p>Replaces the default System Tags Manager Factory. This can be utilized if an
+own or 3rdParty SystemTagsManager should be used that – for instance – uses the
+filesystem instead of the database to keep the comments.</p>
+</div>
 <div class="section" id="maintenance">
 <h2>Maintenance<a class="headerlink" href="#maintenance" title="Permalink to this headline">¶</a></h2>
 <p>These options are for halting user activity when you are performing server
@@ -985,6 +1031,10 @@ who are not in the <code class="docutils literal"><span class="pre">admin</span>
 </pre></div>
 </div>
 <p>Extra SSL options to be used for configuration.</p>
+<div class="highlight-python"><div class="highlight"><pre>&#39;enable_certificate_management&#39; =&gt; false,
+</pre></div>
+</div>
+<p>Allow the configuration of system wide trusted certificates</p>
 </div>
 <div class="section" id="memory-caching-backend-configuration">
 <h2>Memory caching backend configuration<a class="headerlink" href="#memory-caching-backend-configuration" title="Permalink to this headline">¶</a></h2>
@@ -1092,8 +1142,18 @@ filesystem and encryption will cause severe overhead because key files need
 to be fetched in addition to any requested file.</p>
 <p>One way to test is applying for a trystack account at <a class="reference external" href="http://trystack.org/">http://trystack.org/</a></p>
 </div>
-<div class="section" id="all-other-config-options">
-<h2>All other config options<a class="headerlink" href="#all-other-config-options" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="sharing">
+<h2>Sharing<a class="headerlink" href="#sharing" title="Permalink to this headline">¶</a></h2>
+<p>Global settings for Sharing</p>
+<div class="highlight-python"><div class="highlight"><pre>&#39;sharing.managerFactory&#39; =&gt; &#39;\OC\Share20\ProviderFactory&#39;,
+</pre></div>
+</div>
+<p>Replaces the default Share Provider Factory. This can be utilized if
+own or 3rdParty Share Providers be used that – for instance – uses the
+filesystem instead of the database to keep the share information.</p>
+</div>
+<div class="section" id="all-other-configuration-options">
+<h2>All other configuration options<a class="headerlink" href="#all-other-configuration-options" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre>&#39;dbdriveroptions&#39; =&gt; array(
         PDO::MYSQL_ATTR_SSL_CA =&gt; &#39;/file/path/to/ca_cert.pem&#39;,
 ),
@@ -1104,8 +1164,8 @@ encryption in MySQL.</p>
 <div class="highlight-python"><div class="highlight"><pre>&#39;sqlite.journal_mode&#39; =&gt; &#39;DELETE&#39;,
 </pre></div>
 </div>
-<p>sqlite3 journal mode can be specified using this config parameter - can be
-&#8216;WAL&#8217; or &#8216;DELETE&#8217; see for more details <a class="reference external" href="https://www.sqlite.org/wal.html">https://www.sqlite.org/wal.html</a></p>
+<p>sqlite3 journal mode can be specified using this configuration parameter -
+can be &#8216;WAL&#8217; or &#8216;DELETE&#8217; see for more details <a class="reference external" href="https://www.sqlite.org/wal.html">https://www.sqlite.org/wal.html</a></p>
 <div class="highlight-python"><div class="highlight"><pre>&#39;supportedDatabases&#39; =&gt; array(
         &#39;sqlite&#39;,
         &#39;mysql&#39;,
@@ -1132,7 +1192,7 @@ encryption in MySQL.</p>
 the system temporary directory is on a limited space ramdisk or is otherwise
 restricted, or if external storages which do not support streaming are in
 use.</p>
-<p>The web server user must have write access to this directory.</p>
+<p>The Web server user must have write access to this directory.</p>
 <div class="highlight-python"><div class="highlight"><pre>&#39;hashingCost&#39; =&gt; 10,
 </pre></div>
 </div>
@@ -1184,8 +1244,6 @@ increase when it&#8217;s certain that no changes are made directly to the
 filesystem</p>
 <p>1 -&gt; Check each file or folder at most once per request, recommended for
 general use if outside changes might happen.</p>
-<p>2 -&gt; Check every time the filesystem is used, causes a performance hit when
-using external storages, not recommended for regular use.</p>
 <div class="highlight-python"><div class="highlight"><pre>&#39;part_file_in_storage&#39; =&gt; true,
 </pre></div>
 </div>
@@ -1196,7 +1254,7 @@ external storage setups that have limited rename capabilities.</p>
 <div class="highlight-python"><div class="highlight"><pre>&#39;asset-pipeline.enabled&#39; =&gt; false,
 </pre></div>
 </div>
-<p>All css and js files will be served by the web server statically in one js
+<p>All css and js files will be served by the Web server statically in one js
 file and one css file if this is set to <code class="docutils literal"><span class="pre">true</span></code>. This improves performance.</p>
 <div class="highlight-python"><div class="highlight"><pre>&#39;assetdirectory&#39; =&gt; &#39;/var/www/owncloud&#39;,
 </pre></div>
@@ -1206,7 +1264,7 @@ pipelining is enabled; this defaults to the ownCloud directory. The assets
 will be stored in a subdirectory of this directory named &#8216;assets&#8217;. The
 server <em>must</em> be configured to serve that directory as $WEBROOT/assets.</p>
 <p>You will only likely need to change this if the main ownCloud directory
-is not writeable by the web server in your configuration.</p>
+is not writeable by the Web server in your configuration.</p>
 <div class="highlight-python"><div class="highlight"><pre>&#39;mount_file&#39; =&gt; &#39;/var/www/owncloud/data/mount.json&#39;,
 </pre></div>
 </div>

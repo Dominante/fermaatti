@@ -8,7 +8,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -35,9 +35,9 @@ try {
 		exit;
 	}
 
-	OC::checkMaintenanceMode();
-	OC::checkSingleUserMode(true);
 	$request = \OC::$server->getRequest();
+	OC::checkMaintenanceMode($request);
+	OC::checkSingleUserMode(true);
 	$pathInfo = $request->getPathInfo();
 
 	if (!$pathInfo && $request->getParam('service', '') === '') {

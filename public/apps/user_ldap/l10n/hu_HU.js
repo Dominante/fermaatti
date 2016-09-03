@@ -64,7 +64,7 @@ OC.L10N.register(
     "Turn off SSL certificate validation." : "Ne ellenőrizzük az SSL-tanúsítvány érvényességét",
     "Not recommended, use it for testing only! If connection only works with this option, import the LDAP server's SSL certificate in your %s server." : "Használata nem javasolt (kivéve tesztelési céllal). Ha a kapcsolat csak ezzel a beállítással működik, akkor importálja az LDAP-kiszolgáló SSL tanúsítványát a(z) %s kiszolgálóra!",
     "Cache Time-To-Live" : "A gyorsítótár tárolási időtartama",
-    "in seconds. A change empties the cache." : "másodpercben. A változtatás törli a cache tartalmát.",
+    "in seconds. A change empties the cache." : "másodpercen belül. A változtatás törli a gyorsítótár tartalmát.",
     "Directory Settings" : "Címtár beállítások",
     "User Display Name Field" : "A felhasználónév mezője",
     "The LDAP attribute to use to generate the user's display name." : "Ebből az LDAP attribútumból képződik a felhasználó megjelenítendő neve.",
@@ -99,7 +99,7 @@ OC.L10N.register(
     "Username-LDAP User Mapping" : "Felhasználó - LDAP felhasználó hozzárendelés",
     "Clear Username-LDAP User Mapping" : "A felhasználó - LDAP felhasználó hozzárendelés törlése",
     "Clear Groupname-LDAP Group Mapping" : "A csoport - LDAP csoport hozzárendelés törlése",
-    "Backup (Replica) Host" : "Másodkiszolgáló (replika)",
-    "Backup (Replica) Port" : "A másodkiszolgáló (replika) portszáma"
+    "The DN of the client user with which the bind shall be done, e.g. uid=agent,dc=example,dc=com. For anonymous access, leave DN and Password empty." : "Annak a felhasználónak a DN-je, akinek a nevében bejelentkezve kapcsolódunk a kiszolgálóhoz, pl. uid=agent,dc=example,dc=com. Bejelentkezés nélküli eléréshez ne töltse ki a DN és Jelszó mezőket!",
+    "{nthServer}. Server" : "{nthServer}. Kiszolgáló"
 },
 "nplurals=2; plural=(n != 1);");

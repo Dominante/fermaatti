@@ -12,7 +12,7 @@ script('core', [
 <form method="post" name="login">
 	<fieldset>
 	<?php if (!empty($_['redirect_url'])) {
-		print_unescaped('<input type="hidden" name="redirect_url" value="' . OC_Util::sanitizeHTML($_['redirect_url']) . '">');
+		print_unescaped('<input type="hidden" name="redirect_url" value="' . \OCP\Util::sanitizeHTML($_['redirect_url']) . '">');
 	} ?>
 		<?php if (isset($_['apacheauthfailed']) && ($_['apacheauthfailed'])): ?>
 			<div class="warning">
@@ -67,8 +67,12 @@ script('core', [
 		<?php } ?>
 		<?php if ($_['rememberLoginAllowed'] === true) : ?>
 		<div class="remember-login-container">
+			<?php if ($_['rememberLoginState'] === 0) { ?>
 			<input type="checkbox" name="remember_login" value="1" id="remember_login" class="checkbox checkbox--white">
-			<label for="remember_login"><?php p($l->t('remember')); ?></label>
+			<?php } else { ?>
+			<input type="checkbox" name="remember_login" value="1" id="remember_login" class="checkbox checkbox--white" checked="checked">
+			<?php } ?>
+			<label for="remember_login"><?php p($l->t('Stay logged in')); ?></label>
 		</div>
 		<?php endif; ?>
 		<input type="hidden" name="timezone-offset" id="timezone-offset"/>

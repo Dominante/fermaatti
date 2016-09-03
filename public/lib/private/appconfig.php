@@ -7,10 +7,9 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
- * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -29,7 +28,6 @@
 
 namespace OC;
 
-use Doctrine\DBAL\Connection;
 use OCP\IAppConfig;
 use OCP\IDBConnection;
 
@@ -252,14 +250,13 @@ class AppConfig implements IAppConfig {
 		if ($key === false) {
 			return $this->getAppValues($app);
 		} else {
-			$configs = [];
-			foreach ($this->getApps() as $appId) {
-				if ($this->hasKey($appId, $key)) {
-					$configs[$appId] = $this->getValue($appId, $key);
-				}
-			}
+			$appIds = $this->getApps();
+			$values = array_map(function($appId) use ($key) {
+				return isset($this->cache[$appId][$key]) ? $this->cache[$appId][$key] : null;
+			}, $appIds);
+			$result = array_combine($appIds, $values);
 
-			return $configs;
+			return array_filter($result);
 		}
 	}
 
@@ -274,23 +271,6 @@ class AppConfig implements IAppConfig {
 		$sql = $this->conn->getQueryBuilder();
 		$sql->select('*')
 			->from('appconfig');
-		// Note: due to performance issues when there are a lot of shares,
-		// we are not loading the propagation timestamps by default anymore.
-		// The code relying on those values has been adjusted to grab the values
-		// manually. In 9.0 the propagation was changed to not be stored in this
-		// table anymore.
-		$sql->where($sql->expr()->orX(
-				$sql->expr()->neq('appid', $sql->createParameter('appid')),
-				$sql->expr()->in('configkey', $sql->createParameter('legit_configs'))
-			))
-			->setParameter('appid', 'files_sharing', \PDO::PARAM_STR)
-			->setParameter('legit_configs', [
-				'enabled',
-				'installed_version',
-				'types',
-				'incoming_server2server_share_enabled',
-				'outgoing_server2server_share_enabled',
-			], Connection::PARAM_STR_ARRAY);
 		$result = $sql->execute();
 
 		while ($row = $result->fetch()) {

@@ -5,9 +5,9 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -202,16 +202,6 @@ class LDAP implements ILDAPWrapper {
 
 	/**
 	 * @param LDAP $link
-	 * @param LDAP $result
-	 * @param string $sortFilter
-	 * @return mixed
-	 */
-	public function sort($link, $result, $sortFilter) {
-		return $this->invokeLDAPMethod('sort', $link, $result, $sortFilter);
-	}
-
-	/**
-	 * @param LDAP $link
 	 * @return mixed|true
 	 */
 	public function startTls($link) {
@@ -283,10 +273,7 @@ class LDAP implements ILDAPWrapper {
 			$errorCode = ldap_errno($this->curArgs[0]);
 			$errorMsg  = ldap_error($this->curArgs[0]);
 			if($errorCode !== 0) {
-				if($this->curFunc === 'ldap_sort' && $errorCode === -4) {
-					//You can safely ignore that decoding error.
-					//… says https://bugs.php.net/bug.php?id=18023
-				} else if($this->curFunc === 'ldap_get_entries'
+				if($this->curFunc === 'ldap_get_entries'
 						  && $errorCode === -4) {
 				} else if ($errorCode === 32) {
 					//for now

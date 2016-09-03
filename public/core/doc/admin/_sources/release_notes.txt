@@ -2,10 +2,50 @@
 ownCloud |version| Release Notes
 ================================
 
-Changes in 8.2
+
+Changes in 9.0
 --------------
 
-Home folder rule is enforced in the user_ldap application in new ownCloud installations; see :doc:`configuration_user/user_auth_ldap`. This affects ownCloud 8.0.10, 8.1.5 and 8.2.0 and up.
+9.0 requires .ico files for favicons. This will change in 9.1, which will 
+use .svg files. See `Changing favicon 
+<https://doc.owncloud.org/server/9.0/developer_manual/core/theming.html#changing
+-favicon>`_ in the Developer Manual.
+
+Home folder rule is enforced in the user_ldap application in new ownCloud installations; see
+:doc:`configuration_user/user_auth_ldap`. This affects ownCloud 8.0.10, 8.1.5 and 8.2.0 and up.
+
+The Calendar and Contacts apps have been rewritten and the CalDAV and CardDAV backends of these
+apps were merged into ownCloud core. During the upgrade existing Calendars and Addressbooks
+are automatically migrated. As a fallback for failed upgrades or an option to test a migration
+``dav:migrate-calendars`` and/or ``dav:migrate-addressbooks`` scripts are available via the
+``occ`` command. See :doc:`configuration_server/occ_command`.
+
+Updates on systems with large datasets will take longer, due to the addition of checksums to the
+oC database. See `<https://github.com/owncloud/core/issues/22747>`_.
+
+Linux packages are available from our `official download repository <https://download.owncloud.org/download/repositories/stable/owncloud/>`_ .
+New in 9.0: split packages. ``owncloud`` installs ownCloud plus dependencies, including Apache
+and PHP. ``owncloud-files`` installs only ownCloud. This is useful for custom LAMP stacks, and
+allows you to install your own LAMP apps and versions without packaging conflicts with ownCloud.
+See :doc:`installation/linux_installation`.
+
+New option for the ownCloud admin to enable or disable sharing on individual external mountpoints
+(see :ref:`external_storage_mount_options_label`). Sharing on such mountpoints is disabled by default.
+
+Enterprise 9.0
+--------------
+
+``owncloud-enterprise`` packages are no longer available for CentOS6, RHEL6, 
+Debian7, or any version of Fedora. A new package, 
+``owncloud-enterprise-files``, is available for all supported platforms. This 
+new package comes without dependencies, and is installable on a larger number of 
+platforms. System administrators on these older distros must install their own 
+LAMP stacks and databases. On newer supported distros, install 
+``owncloud-enterprise`` as usual. See 
+:doc:`enterprise_installation/linux_installation`.
+
+Changes in 8.2
+--------------
 
 New location for Linux package repositories; ownCloud admins must manually 
 change to the new repos. See :doc:`maintenance/upgrade`
@@ -38,15 +78,12 @@ value; if there is not one then use empty quotes, ``""``. (See
 Users of the Linux Package need to update their repository setup as described
 in this `blogpost <https://owncloud.org/blog/upgrading-to-owncloud-server-8-2/>`_.
 
-The log format for failed logins to the ``owncloud.log`` has a slight syntax change.
-If a tool relies on logging failed logins please revise its rule. For ``fail2ban``
-you will find an updated rule at the `forums <https://forum.owncloud.org/viewtopic.
-php?f=8&t=28678>`_.
-
 Changes in 8.1
 --------------
 
-Use APCu only if available in version 4.0.6 and higher. If you install an older version, you will see a ``APCu below version 4.0.6 is installed, for stability and performance reasons we recommend to update to a newer APCu version`` warning on your ownCloud admin page.
+Use APCu only if available in version 4.0.6 and higher. If you install an older version,
+you will see a ``APCu below version 4.0.6 is installed, for stability and performance
+reasons we recommend to update to a newer APCu version`` warning on your ownCloud admin page.
 
 SMB external storage now based on ``php5-libsmbclient``, which must be downloaded 
 from the ownCloud software repositories (`installation instructions 
@@ -91,7 +128,7 @@ anymore for most requests.
   
 When you upgrade from ownCloud 8.0, with encryption enabled, to 8.1, you must 
 enable the new encryption backend and migrate your encryption keys. See 
-:doc:`configuration_files/encryption_configuration`
+:ref:`upgrading_encryption_label`.
 
 Encryption can no longer be disabled in ownCloud 8.1. It is planned to re-add
 this feature to the command line client for a future release.
@@ -148,7 +185,9 @@ There is no preview icon displayed for text files when the file contains fewer t
 Remote Federated Cloud Share Cannot be Reshared With Local Users
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When you mount a Federated Cloud share from a remote ownCloud server, you cannot re-share it with your local ownCloud users. (See :doc:`configuration_files/federated_cloud_sharing_configuration` to learn more about federated cloud sharing)
+When you mount a Federated Cloud share from a remote ownCloud server, you cannot re-share it with
+your local ownCloud users. (See :doc:`configuration_files/federated_cloud_sharing_configuration`
+to learn more about federated cloud sharing)
 
 Manually Migrate Encryption Keys after Upgrade
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

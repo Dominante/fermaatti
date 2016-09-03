@@ -4,13 +4,16 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Michael U <mdusher@users.noreply.github.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author RealRancor <Fisch.666@gmx.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Chan <plus.vincchan@gmail.com>
  * @author Volkan Gezer <volkangezer@gmail.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -30,6 +33,7 @@
 namespace OC\User;
 
 use OC\Hooks\PublicEmitter;
+use OCP\IUserBackend;
 use OCP\IUserManager;
 use OCP\IConfig;
 
@@ -43,12 +47,13 @@ use OCP\IConfig;
  * - postDelete(\OC\User\User $user)
  * - preCreateUser(string $uid, string $password)
  * - postCreateUser(\OC\User\User $user, string $password)
+ * - change(\OC\User\User $user)
  *
  * @package OC\User
  */
 class Manager extends PublicEmitter implements IUserManager {
 	/**
-	 * @var \OCP\UserInterface [] $backends
+	 * @var \OCP\UserInterface[] $backends
 	 */
 	private $backends = array();
 
@@ -142,14 +147,19 @@ class Manager extends PublicEmitter implements IUserManager {
 	 *
 	 * @param string $uid
 	 * @param \OCP\UserInterface $backend
+	 * @param bool $cacheUser If false the newly created user object will not be cached
 	 * @return \OC\User\User
 	 */
-	protected function getUserObject($uid, $backend) {
+	protected function getUserObject($uid, $backend, $cacheUser = true) {
 		if (isset($this->cachedUsers[$uid])) {
 			return $this->cachedUsers[$uid];
 		}
-		$this->cachedUsers[$uid] = new User($uid, $backend, $this, $this->config);
-		return $this->cachedUsers[$uid];
+
+		$user = new User($uid, $backend, $this, $this->config);
+		if ($cacheUser) {
+			$this->cachedUsers[$uid] = $user;
+		}
+		return $user;
 	}
 
 	/**
@@ -166,24 +176,24 @@ class Manager extends PublicEmitter implements IUserManager {
 	/**
 	 * Check if the password is valid for the user
 	 *
-	 * @param string $loginname
+	 * @param string $loginName
 	 * @param string $password
 	 * @return mixed the User object on success, false otherwise
 	 */
-	public function checkPassword($loginname, $password) {
-		$loginname = str_replace("\0", '', $loginname);
+	public function checkPassword($loginName, $password) {
+		$loginName = str_replace("\0", '', $loginName);
 		$password = str_replace("\0", '', $password);
 		
 		foreach ($this->backends as $backend) {
 			if ($backend->implementsActions(\OC_User_Backend::CHECK_PASSWORD)) {
-				$uid = $backend->checkPassword($loginname, $password);
+				$uid = $backend->checkPassword($loginName, $password);
 				if ($uid !== false) {
 					return $this->getUserObject($uid, $backend);
 				}
 			}
 		}
 
-		\OC::$server->getLogger()->warning('Login failed: \''. $loginname .'\' (Remote IP: \''. \OC::$server->getRequest()->getRemoteAddress(). '\')', ['app' => 'core']);
+		\OC::$server->getLogger()->warning('Login failed: \''. $loginName .'\' (Remote IP: \''. \OC::$server->getRequest()->getRemoteAddress(). '\')', ['app' => 'core']);
 		return false;
 	}
 
@@ -254,14 +264,18 @@ class Manager extends PublicEmitter implements IUserManager {
 	public function createUser($uid, $password) {
 		$l = \OC::$server->getL10N('lib');
 		// Check the name for bad characters
-		// Allowed are: "a-z", "A-Z", "0-9" and "_.@-"
-		if (preg_match('/[^a-zA-Z0-9 _\.@\-]/', $uid)) {
+		// Allowed are: "a-z", "A-Z", "0-9" and "_.@-'"
+		if (preg_match('/[^a-zA-Z0-9 _\.@\-\']/', $uid)) {
 			throw new \Exception($l->t('Only the following characters are allowed in a username:'
-				. ' "a-z", "A-Z", "0-9", and "_.@-"'));
+				. ' "a-z", "A-Z", "0-9", and "_.@-\'"'));
 		}
 		// No empty username
 		if (trim($uid) == '') {
 			throw new \Exception($l->t('A valid username must be provided'));
+		}
+		// No whitespace at the beginning or at the end
+		if (strlen(trim($uid, "\t\n\r\0\x0B\xe2\x80\x8b")) !== strlen(trim($uid))) {
+			throw new \Exception($l->t('Username contains whitespace at the beginning or at the end'));
 		}
 		// No empty password
 		if (trim($password) == '') {
@@ -294,21 +308,50 @@ class Manager extends PublicEmitter implements IUserManager {
 		$userCountStatistics = array();
 		foreach ($this->backends as $backend) {
 			if ($backend->implementsActions(\OC_User_Backend::COUNT_USERS)) {
-				$backendusers = $backend->countUsers();
-				if($backendusers !== false) {
-					if($backend instanceof \OCP\IUserBackend) {
+				$backendUsers = $backend->countUsers();
+				if($backendUsers !== false) {
+					if($backend instanceof IUserBackend) {
 						$name = $backend->getBackendName();
 					} else {
 						$name = get_class($backend);
 					}
 					if(isset($userCountStatistics[$name])) {
-						$userCountStatistics[$name] += $backendusers;
+						$userCountStatistics[$name] += $backendUsers;
 					} else {
-						$userCountStatistics[$name] = $backendusers;
+						$userCountStatistics[$name] = $backendUsers;
 					}
 				}
 			}
 		}
 		return $userCountStatistics;
+	}
+
+	/**
+	 * The callback is executed for each user on each backend.
+	 * If the callback returns false no further users will be retrieved.
+	 *
+	 * @param \Closure $callback
+	 * @param string $search
+	 * @since 9.0.0
+	 */
+	public function callForAllUsers(\Closure $callback, $search = '') {
+		foreach($this->getBackends() as $backend) {
+			$limit = 500;
+			$offset = 0;
+			do {
+				$users = $backend->getUsers($search, $limit, $offset);
+				foreach ($users as $uid) {
+					if (!$backend->userExists($uid)) {
+						continue;
+					}
+					$user = $this->getUserObject($uid, $backend, false);
+					$return = $callback($user);
+					if ($return === false) {
+						break;
+					}
+				}
+				$offset += $limit;
+			} while (count($users) >= $limit);
+		}
 	}
 }

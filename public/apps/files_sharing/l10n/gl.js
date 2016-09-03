@@ -38,8 +38,8 @@ OC.L10N.register(
     "Public shared file %1$s was downloaded" : "Foi descargado o ficheiro público %1$s",
     "You shared %1$s with %2$s" : "Compartiu %1$s con %2$s",
     "You shared %1$s with group %2$s" : "Compartiu %1$s co grupo %2$s",
-    "%2$s shared %1$s with you" : "%2$s compartiu %1$s con vostede",
     "You shared %1$s via link" : "Vostede compartiu %1$s mediante ligazón",
+    "%2$s shared %1$s with you" : "%2$s compartiu %1$s con vostede",
     "Shares" : "Comparticións",
     "Accept" : "Aceptar",
     "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Comparte comigo a través do meu ID da nube federada do #ownCloud , vexa %s",
@@ -68,6 +68,8 @@ OC.L10N.register(
     "Your Federated Cloud ID:" : "ID da súa nube federada:",
     "Share it:" : "Compártao:",
     "Share with me via ownCloud" : "Comparte comigo a través do ownCloud",
-    "HTML Code:" : "Código HTML:"
+    "HTML Code:" : "Código HTML:",
+    "Public shared file %1$s was downloaded" : "Foi descargado o ficheiro público %1$s",
+    "Public shared folder %1$s was downloaded" : "Foi descargado o cartafol público %1$s"
 },
 "nplurals=2; plural=(n != 1);");

@@ -8,10 +8,21 @@
 
 namespace OCA\Files_Antivirus\Cron;
 
+use OC\BackgroundJob\TimedJob;
 use OCA\Files_Antivirus\AppInfo\Application;
 
-class Task {
-	public static function run() {
+
+class Task extends TimedJob {
+
+	/**
+	 * sets the correct interval for this timed job
+	 */
+	public function __construct() {
+		// Run once per 15 minutes
+		$this->setInterval(60 * 15);
+	}
+
+	protected function run($argument) {
 		if (!\OCP\App::isEnabled('files_antivirus')){
 			return;
 		}

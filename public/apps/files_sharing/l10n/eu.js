@@ -31,8 +31,8 @@ OC.L10N.register(
     "Public shared file %1$s was downloaded" : "Publikoki partekatutako %1$s fitxategia deskargatu da",
     "You shared %1$s with %2$s" : "Zuk %1$s elkarbanatu duzu %2$srekin",
     "You shared %1$s with group %2$s" : "Zuk %1$s elkarbanatu duzu %2$s taldearekin",
-    "%2$s shared %1$s with you" : "%2$sk zurekin %1$s elkarbanatu du",
     "You shared %1$s via link" : "Konpartitu duzu %1$s esteka baten bidez",
+    "%2$s shared %1$s with you" : "%2$sk zurekin %1$s elkarbanatu du",
     "Shares" : "Partekatuak",
     "This share is password-protected" : "Elkarbanatutako hau pasahitzarekin babestuta dago",
     "The password is wrong. Try again." : "Pasahitza ez da egokia. Saiatu berriro.",
@@ -52,6 +52,8 @@ OC.L10N.register(
     "Direct link" : "Lotura zuzena",
     "Federated Cloud Sharing" : "Federatutako Hodei Partekatzea",
     "Allow users on this server to send shares to other servers" : "Baimendu zerbitzari honetako erabiltzaileak beste zerbitzariekin partekatzera",
-    "Allow users on this server to receive shares from other servers" : "Baimendu zerbitzari honetako erabiltzaileak beste zerbitzarietatik partekatutakoak jasotzen"
+    "Allow users on this server to receive shares from other servers" : "Baimendu zerbitzari honetako erabiltzaileak beste zerbitzarietatik partekatutakoak jasotzen",
+    "Public shared file %1$s was downloaded" : "Publikoki partekatutako %1$s fitxategia deskargatu da",
+    "Public shared folder %1$s was downloaded" : "Publikoki partekatutako %1$s karpeta deskargatu da"
 },
 "nplurals=2; plural=(n != 1);");

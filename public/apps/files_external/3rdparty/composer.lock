@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "44a8cfa909a9a5273db4fea4a2d9bd69",
-    "content-hash": "9bd1a06cb9a4ee6cc48af41325383693",
+    "hash": "1671a5ec7bef407432d42775f898dc34",
+    "content-hash": "9d995f0d55bee8a3b344a3c685e7b4a4",
     "packages": [
         {
             "name": "icewind/smb",
@@ -51,23 +51,24 @@
         },
         {
             "name": "icewind/streams",
-            "version": "0.2",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/icewind1991/Streams.git",
-                "reference": "5aae45f2ddd3d1a6e2a496dd5d1e7857bfeb605a"
+                "reference": "9ca40274645a967ecc3408b0ca2e6255ead1d1d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/icewind1991/Streams/zipball/5aae45f2ddd3d1a6e2a496dd5d1e7857bfeb605a",
-                "reference": "5aae45f2ddd3d1a6e2a496dd5d1e7857bfeb605a",
+                "url": "https://api.github.com/repos/icewind1991/Streams/zipball/9ca40274645a967ecc3408b0ca2e6255ead1d1d3",
+                "reference": "9ca40274645a967ecc3408b0ca2e6255ead1d1d3",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3"
             },
             "require-dev": {
-                "satooshi/php-coveralls": "dev-master"
+                "phpunit/phpunit": "^4.8",
+                "satooshi/php-coveralls": "v1.0.0"
             },
             "type": "library",
             "autoload": {
@@ -87,7 +88,7 @@
                 }
             ],
             "description": "A set of generic stream wrappers",
-            "time": "2014-07-30 23:46:15"
+            "time": "2016-03-17 12:32:25"
         }
     ],
     "packages-dev": [],

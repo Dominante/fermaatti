@@ -6,12 +6,12 @@
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author scambra <sergio@entrecables.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -31,9 +31,11 @@
 namespace OC\Files\Storage;
 
 use OC\Files\Filesystem;
+use OC\Files\Cache\FailedCache;
 use OCA\Files_Sharing\ISharedStorage;
-use OCA\Files_Sharing\Propagator;
-use OCA\Files_Sharing\SharedMount;
+use OCP\Constants;
+use OCP\Files\Cache\ICacheEntry;
+use OCP\Files\Storage\IStorage;
 use OCP\Lock\ILockingProvider;
 
 /**
@@ -43,18 +45,11 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 
 	private $share;   // the shared resource
 	private $files = array();
-	private static $isInitialized = array();
-	private $local = null;
 
 	/**
 	 * @var \OC\Files\View
 	 */
 	private $ownerView;
-
-	/**
-	 * @var \OCA\Files_Sharing\Propagation\PropagationManager
-	 */
-	private $propagationManager;
 
 	/**
 	 * @var string
@@ -63,11 +58,26 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 
 	private $initialized = false;
 
+	/**
+	 * @var ICacheEntry
+	 */
+	private $sourceRootInfo;
+
+	/**
+	 * @var IStorage
+	 */
+	private $sourceStorage;
+
+	/**
+	 * @var \OCP\ILogger
+	 */
+	private $logger;
+
 	public function __construct($arguments) {
 		$this->share = $arguments['share'];
 		$this->ownerView = $arguments['ownerView'];
-		$this->propagationManager = $arguments['propagationManager'];
 		$this->user = $arguments['user'];
+		$this->logger = \OC::$server->getLogger();
 	}
 
 	private function init() {
@@ -75,10 +85,19 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 			return;
 		}
 		$this->initialized = true;
-		Filesystem::initMountPoints($this->share['uid_owner']);
+		try {
+			Filesystem::initMountPoints($this->share['uid_owner']);
+			$sourcePath = $this->ownerView->getPath($this->share['file_source']);
+			list($this->sourceStorage, $sourceInternalPath) = $this->ownerView->resolvePath($sourcePath);
+			$this->sourceRootInfo = $this->sourceStorage->getCache()->get($sourceInternalPath);
+		} catch (\Exception $e) {
+			$this->logger->logException($e);
+		}
+	}
 
-		// for updating our etags when changes are made to the share from the owners side (probably indirectly by us trough another share)
-		$this->propagationManager->listenToOwnerChanges($this->share['uid_owner'], $this->user);
+	private function isValid() {
+		$this->init();
+		return $this->sourceRootInfo && ($this->sourceRootInfo->getPermissions() & Constants::PERMISSION_SHARE) === Constants::PERMISSION_SHARE;
 	}
 
 	/**
@@ -131,6 +150,9 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 	 * @return string|false source file path or false if not found
 	 */
 	public function getSourcePath($target) {
+		if (!$this->isValid()){
+			return false;
+		}
 		$source = $this->getFile($target);
 		if ($source) {
 			if (!isset($source['fullPath'])) {
@@ -155,6 +177,9 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 	 * @return int CRUDS permissions granted
 	 */
 	public function getPermissions($target = '') {
+		if (!$this->isValid()) {
+			return 0;
+		}
 		$permissions = $this->share['permissions'];
 		// part files and the mount point always have delete permissions
 		if ($target === '' || pathinfo($target, PATHINFO_EXTENSION) === 'part') {
@@ -251,13 +276,14 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 	}
 
 	public function isReadable($path) {
-		$isReadable = false;
-		if ($source = $this->getSourcePath($path)) {
-			list($storage, $internalPath) = \OC\Files\Filesystem::resolvePath($source);
-			$isReadable = $storage->isReadable($internalPath);
+		if (!$this->isValid()) {
+			return false;
 		}
-
-		return $isReadable && $this->file_exists($path);
+		if (!$this->file_exists($path)) {
+			return false;
+		}
+		list($storage, $internalPath) = $this->resolvePath($path);
+		return $storage->isReadable($internalPath);
 	}
 
 	public function isUpdatable($path) {
@@ -552,10 +578,14 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 	}
 
 	public function getCache($path = '', $storage = null) {
+		$this->init();
+		if (is_null($this->sourceStorage)) {
+			return new FailedCache(false);
+		}
 		if (!$storage) {
 			$storage = $this;
 		}
-		return new \OC\Files\Cache\Shared_Cache($storage);
+		return new \OC\Files\Cache\Shared_Cache($storage, $this->sourceStorage, $this->sourceRootInfo);
 	}
 
 	public function getScanner($path = '', $storage = null) {
@@ -565,11 +595,11 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 		return new \OC\Files\Cache\SharedScanner($storage);
 	}
 
-	public function getWatcher($path = '', $storage = null) {
+	public function getPropagator($storage = null) {
 		if (!$storage) {
 			$storage = $this;
 		}
-		return new \OC\Files\Cache\Shared_Watcher($storage);
+		return new \OCA\Files_Sharing\SharedPropagator($storage);
 	}
 
 	public function getOwner($path) {
@@ -614,7 +644,7 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 	 * @param string $path
 	 * @return array
 	 */
-	private function resolvePath($path) {
+	public function resolvePath($path) {
 		$source = $this->getSourcePath($path);
 		return \OC\Files\Filesystem::resolvePath($source);
 	}
@@ -706,12 +736,11 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 	}
 
 	public function isLocal() {
-		if (!is_null($this->local)) {
-			$this->init();
-			$ownerPath = $this->ownerView->getPath($this->share['item_source']);
-			list($targetStorage) = $this->ownerView->resolvePath($ownerPath);
-			$this->local = $targetStorage->isLocal();
-		}
-		return $this->local;
+		$this->init();
+		return $this->sourceStorage->isLocal();
+	}
+
+	public function getSourceStorage() {
+		return $this->sourceStorage;
 	}
 }

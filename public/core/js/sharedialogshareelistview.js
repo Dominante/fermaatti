@@ -16,16 +16,12 @@
 	var TEMPLATE =
 			'<ul id="shareWithList" class="shareWithList">' +
 			'{{#each sharees}}' +
-				'{{#if isCollection}}' +
-				'<li data-collection="{{collectionID}}">{{text}}</li>' +
-				'{{/if}}' +
-				'{{#unless isCollection}}' +
-				'<li data-share-type="{{shareType}}" data-share-with="{{shareWith}}" title="{{shareWith}}">' +
-					'<a href="#" class="unshare"><span class="icon-loading-small hidden"></span><img class="svg" alt="{{unshareLabel}}" title="{{unshareLabel}}" src="{{unshareImage}}" /></a>' +
+				'<li data-share-id="{{shareId}}" data-share-type="{{shareType}}" data-share-with="{{shareWith}}">' +
+					'<a href="#" class="unshare"><span class="icon-loading-small hidden"></span><span class="icon icon-delete"></span><span class="hidden-visually">{{unshareLabel}}</span></a>' +
 					'{{#if avatarEnabled}}' +
 					'<div class="avatar {{#if modSeed}}imageplaceholderseed{{/if}}" data-username="{{shareWith}}" {{#if modSeed}}data-seed="{{shareWith}} {{shareType}}"{{/if}}></div>' +
 					'{{/if}}' +
-					'<span class="username">{{shareWithDisplayName}}</span>' +
+					'<span class="has-tooltip username" title="{{shareWith}}">{{shareWithDisplayName}}</span>' +
 					'{{#if mailNotificationEnabled}} {{#unless isRemoteShare}}' +
 					'<span class="shareOption">' +
 						'<input id="mail-{{cid}}-{{shareWith}}" type="checkbox" name="mailNotification" class="mailNotification checkbox" {{#if wasMailSent}}checked="checked"{{/if}} />' +
@@ -70,9 +66,8 @@
 					'</div>' +
 					'{{/unless}}' +
 				'</li>' +
-			 	'{{/unless}}' +
 			'{{/each}}' +
-		'</ul>'
+			'</ul>'
 		;
 
 	/**
@@ -95,12 +90,6 @@
 		/** @type {Function} **/
 		_template: undefined,
 
-		/** @type {boolean} **/
-		showLink: true,
-
-		/** @type {object} **/
-		_collections: {},
-
 		events: {
 			'click .unshare': 'onUnshare',
 			'click .permissions': 'onPermissionChange',
@@ -119,36 +108,6 @@
 			this.model.on('change:shares', function() {
 				view.render();
 			});
-		},
-
-		processCollectionShare: function(shareIndex) {
-			var type = this.model.getCollectionType(shareIndex);
-			var id = this.model.getCollectionPath(shareIndex);
-			if(type !== 'file' && type !== 'folder') {
-				id = this.model.getCollectionSource(shareIndex);
-			}
-			var displayName = this.model.getShareWithDisplayName(shareIndex);
-			if(!_.isUndefined(this._collections[id])) {
-				if (this.model.getShareType(shareIndex) === OC.Share.SHARE_TYPE_LINK) {
-					this._collections[id].text = this._collections[id].text + ", " + t('core', 'by link');
-				} else {
-					this._collections[id].text = this._collections[id].text + ", " + displayName;
-				}
-			} else {
-				this._collections[id] = {};
-				if (this.model.getShareType(shareIndex) === OC.Share.SHARE_TYPE_LINK) {
-					this._collections[id].text = t('core', 'Shared in {item} by link', {
-						'item': id
-					});
-				} else {
-					this._collections[id].text = t('core', 'Shared in {item} with {user}', {
-						'item': id,
-						user: displayName
-					});
-				}
-				this._collections[id].id = id;
-				this._collections[id].isCollection = true;
-			}
 		},
 
 		/**
@@ -183,6 +142,7 @@
 				shareWith: shareWith,
 				shareWithDisplayName: shareWithDisplayName,
 				shareType: shareType,
+				shareId: this.model.get('shares')[shareIndex].id,
 				modSeed: shareType !== OC.Share.SHARE_TYPE_USER,
 				isRemoteShare: shareType === OC.Share.SHARE_TYPE_REMOTE
 			});
@@ -194,7 +154,6 @@
 				mailNotificationEnabled: this.configModel.isMailNotificationEnabled(),
 				notifyByMailLabel: t('core', 'notify by email'),
 				unshareLabel: t('core', 'Unshare'),
-				unshareImage: OC.imagePath('core', 'actions/delete'),
 				canShareLabel: t('core', 'can share'),
 				canEditLabel: t('core', 'can edit'),
 				createPermissionLabel: t('core', 'create'),
@@ -214,8 +173,6 @@
 				deletePermission: OC.PERMISSION_DELETE
 			};
 
-			this._collections = {};
-
 			if(!this.model.hasUserShares()) {
 				return [];
 			}
@@ -223,15 +180,10 @@
 			var shares = this.model.get('shares');
 			var list = [];
 			for(var index = 0; index < shares.length; index++) {
-				if(this.model.isCollection(index)) {
-					this.processCollectionShare(index);
-				} else {
-					// first empty {} is necessary, otherwise we get in trouble
-					// with references
-					list.push(_.extend({}, universal, this.getShareeObject(index)));
-				}
+				// first empty {} is necessary, otherwise we get in trouble
+				// with references
+				list.push(_.extend({}, universal, this.getShareeObject(index)));
 			}
-			list = _.union(_.values(this._collections), list);
 
 			return list;
 		},
@@ -254,6 +206,10 @@
 				});
 			}
 
+			this.$el.find('.has-tooltip').tooltip({
+				placement: 'bottom'
+			});
+
 			this.delegateEvents();
 
 			return this;
@@ -271,6 +227,7 @@
 		},
 
 		onUnshare: function(event) {
+			var self = this;
 			var $element = $(event.target);
 			if (!$element.is('a')) {
 				$element = $element.closest('a');
@@ -284,17 +241,24 @@
 			$loading.removeClass('hidden');
 
 			var $li = $element.closest('li');
-			var shareType = $li.data('share-type');
-			var shareWith = $li.attr('data-share-with');
 
-			this.model.removeShare(shareType, shareWith);
+			var shareId = $li.data('share-id');
 
+			self.model.removeShare(shareId)
+				.done(function() {
+					$li.remove();
+				})
+				.fail(function() {
+					$loading.addClass('hidden');
+					OC.Notification.showTemporary(t('core', 'Could not unshare'));
+				});
 			return false;
 		},
 
 		onPermissionChange: function(event) {
 			var $element = $(event.target);
 			var $li = $element.closest('li');
+			var shareId = $li.data('share-id');
 			var shareType = $li.data('share-type');
 			var shareWith = $li.attr('data-share-with');
 
@@ -327,7 +291,7 @@
 				}
 			}
 
-			this.model.setPermissions(shareType, shareWith, permissions);
+			this.model.updateShare(shareId, {permissions: permissions});
 		},
 
 		onCrudsToggle: function(event) {

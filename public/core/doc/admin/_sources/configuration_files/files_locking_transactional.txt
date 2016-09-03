@@ -16,20 +16,20 @@ file corruption during normal operation. It performs these functions:
 * Manages locks correctly on external storage mounts
 * Manages encrypted files correctly
 
-.. note:: Transactional file locking is in core, and replaces the old File 
-   Locking app. The File Locking app has been removed from ownCloud in version 
-   8.2.1. If your ownCloud server still has the File Locking app, you must 
-   visit your Apps page to verify that it is disabled; the File Locking app and 
-   Transactional File Locking cannot both operate at the same time.
-   
 What Transactional File locking is not for: it is not for preventing collisions 
 in collaborative document editing (see 
 :doc:`collaborative_documents_configuration` to learn about collaboration with 
 the Documents app), nor will it prevent multiple users from editing the same 
 document, or give notice that other users are working on the same document. 
 Multiple users can open and edit a file at the same time and Transactional File 
-locking does not prevent this. Rather, it prevents simultaneous file saving.   
-   
+locking does not prevent this. Rather, it prevents simultaneous file saving.
+
+.. note:: Transactional file locking is in ownCloud core, and replaces the old 
+   File Locking app. The File Locking app has been removed from ownCloud in 
+   version 8.2.1. If your ownCloud server still has the File Locking app, you 
+   must visit your Apps page to verify that it is disabled; the File Locking 
+   app and Transactional File Locking cannot both operate at the same time.
+  
 File locking is enabled by default, using the database locking backend. This 
 places a significant load on your database. Using ``memcache.locking`` relieves 
 the database load and improves performance. Admins of ownCloud servers with 
@@ -67,7 +67,7 @@ recommended if Redis is running on the same system as ownCloud) use this example
 See ``config.sample.php`` to see configuration examples for Redis, and for all 
 supported memcaches.
 
-If you are on Ubuntu you can follow `this guide 
+If you are on Ubuntu you can follow `this guide  
 <https://www.techandme.se/how-to-configure-redis-cache-in-ubuntu-14-04-with-owncloud/>`_ for a complete installation from scratch. 
 
 Learn more about Reds at `Redis <http://redis.io/>`_. Memcached, the popular 

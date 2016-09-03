@@ -20,8 +20,8 @@ By default, ownCloud can generate previews for the following filetypes:
           of other file types such as PDF, SVG or various office documents.
           Due to security concerns those providers have been disabled by
           default and are considered unsupported.
-          While those providers are still available, we discourage enabling them, 
-          and they are not documented.
+          While those providers are still available, we discourage enabling 
+          them, and they are not documented.
 
 Parameters
 ----------
@@ -88,7 +88,8 @@ If you want to disable scaling at all, you can set the config value to '1':
   <?php
     'preview_max_scale_factor' => 1,
 
-If you want to disable the maximum scaling factor, you can set the config value to 'null':
+If you want to disable the maximum scaling factor, you can set the config value 
+to 'null':
 
 ::
 

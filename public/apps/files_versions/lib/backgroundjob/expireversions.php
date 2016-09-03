@@ -2,7 +2,7 @@
 /**
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -65,7 +65,7 @@ class ExpireVersions extends \OC\BackgroundJob\TimedJob {
 			return;
 		}
 
-		$this->callForAllUsers(function(IUser $user) {
+		$this->userManager->callForAllUsers(function(IUser $user) {
 			$uid = $user->getUID();
 			if (!$this->setupFS($uid)) {
 				return;
@@ -90,33 +90,5 @@ class ExpireVersions extends \OC\BackgroundJob\TimedJob {
 		}
 
 		return true;
-	}
-
-	/**
-	 * The callback is executed for each user on each backend.
-	 * If the callback returns false no further users will be retrieved.
-	 *
-	 * @param \Closure $callback
-	 * @param string $search
-	 */
-	protected function callForAllUsers(\Closure $callback, $search = '') {
-		foreach ($this->userManager->getBackends() as $backend) {
-			$limit = 500;
-			$offset = 0;
-			do {
-				$users = $backend->getUsers($search, $limit, $offset);
-				foreach ($users as $user) {
-					$user = $this->userManager->get($user);
-					if (is_null($user)) {
-						continue;
-					}
-					$return = $callback($user);
-					if ($return === false) {
-						break;
-					}
-				}
-				$offset += $limit;
-			} while (count($users) >= $limit);
-		}
 	}
 }

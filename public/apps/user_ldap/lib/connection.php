@@ -7,10 +7,9 @@
  * @author Lyonel Vincent <lyonel@ezix.org>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
- * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -556,6 +555,7 @@ class Connection extends LDAPUtility {
 	 * @param string $host
 	 * @param string $port
 	 * @return false|void
+	 * @throws \OC\ServerNotAvailableException
 	 */
 	private function doConnect($host, $port) {
 		if(empty($host)) {
@@ -568,6 +568,8 @@ class Connection extends LDAPUtility {
 					$this->ldap->startTls($this->ldapConnectionRes);
 				}
 			}
+		} else {
+			throw new \OC\ServerNotAvailableException('Could not set required LDAP Protocol version.');
 		}
 	}
 

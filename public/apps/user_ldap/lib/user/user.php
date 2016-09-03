@@ -1,9 +1,11 @@
 <?php
 /**
  * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -26,6 +28,9 @@ use OCA\user_ldap\lib\user\IUserTools;
 use OCA\user_ldap\lib\Connection;
 use OCA\user_ldap\lib\FilesystemHelper;
 use OCA\user_ldap\lib\LogWrapper;
+use OCP\IAvatarManager;
+use OCP\IConfig;
+use OCP\IUserManager;
 
 /**
  * User
@@ -42,7 +47,7 @@ class User {
 	 */
 	protected $connection;
 	/**
-	 * @var \OCP\IConfig
+	 * @var IConfig
 	 */
 	protected $config;
 	/**
@@ -58,10 +63,13 @@ class User {
 	 */
 	protected $log;
 	/**
-	 * @var \OCP\IAvatarManager
+	 * @var IAvatarManager
 	 */
 	protected $avatarManager;
-
+	/**
+	 * @var IUserManager
+	 */
+	protected $userManager;
 	/**
 	 * @var string
 	 */
@@ -87,19 +95,20 @@ class User {
 
 	/**
 	 * @brief constructor, make sure the subclasses call this one!
-	 * @param string the internal username
-	 * @param string the LDAP DN
+	 * @param string $username the internal username
+	 * @param string $dn the LDAP DN
 	 * @param IUserTools $access an instance that implements IUserTools for
 	 * LDAP interaction
-	 * @param \OCP\IConfig
-	 * @param FilesystemHelper
-	 * @param \OCP\Image any empty instance
-	 * @param LogWrapper
-	 * @param \OCP\IAvatarManager
+	 * @param IConfig $config
+	 * @param FilesystemHelper $fs
+	 * @param \OCP\Image $image any empty instance
+	 * @param LogWrapper $log
+	 * @param IAvatarManager $avatarManager
+	 * @param IUserManager $userManager
 	 */
 	public function __construct($username, $dn, IUserTools $access,
-		\OCP\IConfig $config, FilesystemHelper $fs, \OCP\Image $image,
-		LogWrapper $log, \OCP\IAvatarManager $avatarManager) {
+		IConfig $config, FilesystemHelper $fs, \OCP\Image $image,
+		LogWrapper $log, IAvatarManager $avatarManager, IUserManager $userManager) {
 
 		$this->access        = $access;
 		$this->connection    = $access->getConnection();
@@ -110,6 +119,7 @@ class User {
 		$this->image         = $image;
 		$this->log           = $log;
 		$this->avatarManager = $avatarManager;
+		$this->userManager   = $userManager;
 	}
 
 	/**
@@ -391,7 +401,7 @@ class User {
 	 * @brief checks whether an update method specified by feature was run
 	 * already. If not, it will marked like this, because it is expected that
 	 * the method will be run, when false is returned.
-	 * @param string email | quota | avatar (can be extended)
+	 * @param string $feature email | quota | avatar (can be extended)
 	 * @return bool
 	 */
 	private function wasRefreshed($feature) {
@@ -422,8 +432,8 @@ class User {
 			}
 		}
 		if(!is_null($email)) {
-			$this->config->setUserValue(
-				$this->uid, 'settings', 'email', $email);
+			$user = $this->userManager->get($this->uid);
+			$user->setEMailAddress($email);
 		}
 	}
 
@@ -452,7 +462,7 @@ class User {
 			}
 		}
 		if(!is_null($quota)) {
-			$this->config->setUserValue($this->uid, 'files', 'quota', $quota);
+			$user = $this->userManager->get($this->uid)->setQuota($quota);
 		}
 	}
 

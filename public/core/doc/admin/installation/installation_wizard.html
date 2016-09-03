@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Installation Wizard &mdash; ownCloud 8.2 Server Administration Manual 8.2 documentation</title>
+    <title>Installation Wizard &mdash; ownCloud 9.0 Server Administration Manual 9.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '8.2',
+        VERSION:     '9.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="ownCloud 8.2 Server Administration Manual 8.2 documentation" href="../contents.html" />
+    <link rel="top" title="ownCloud 9.0 Server Administration Manual 9.0 documentation" href="../contents.html" />
     <link rel="up" title="Installation" href="index.html" />
     <link rel="next" title="Installing ownCloud From the Command Line" href="command_line_installation.html" />
     <link rel="prev" title="Preferred Linux Installation Method" href="linux_installation.html" />
@@ -66,9 +66,9 @@
 <li><a href="../contents.html">Table of Contents</a></li>
 									</ul>
                   <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 8.2 Server Administration Manual Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 8.2 Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 8.2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 9.0 Server Administration Manual Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 9.0 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 9.0</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Installation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="system_requirements.html">System Requirements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="deployment_recommendations.html">ownCloud Deployment Recommendations</a></li>
@@ -82,14 +82,16 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="command_line_installation.html">Installing ownCloud From the Command Line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changing_the_web_route.html">Changing the web route</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apps_management_installation.html">Installing and Managing Apps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apps_supported.html">Supported Apps in ownCloud</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source_installation.html">Manual Installation on Linux</a></li>
 <li class="toctree-l2"><a class="reference internal" href="appliance_installation.html">ownCloud Community Appliance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="php_54_installation.html">Installing PHP 5.4 on RHEL 6 and CentOS 6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="php_55_installation.html">Installing PHP 5.5 on RHEL 7 and CentOS 7</a></li>
 <li class="toctree-l2"><a class="reference internal" href="selinux_configuration.html">SELinux Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nginx_examples.html">Nginx Example Configurations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nginx_owncloud_8x.html">Nginx configuration for the ownCloud 8.x branches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nginx_owncloud_9x.html">Nginx Configuration for the ownCloud 9.x Branches</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../configuration_server/index.html">ownCloud Server Configuration</a></li>
@@ -107,8 +109,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_server_branding/index.html">Enterprise Server Branding (Enterprise only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_external_storage/index.html">External Storage (Enterprise only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_user_management/index.html">User Management (Enterprise only)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../enterprise_files_drop/index.html">Enabling Anonymous Uploads with Files Drop (Enterprise Only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_file_management/index.html">Enterprise File Management (Enterprise Only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_logging/index.html">Enterprise Logging Apps (Enterprise only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_firewall/index.html">Enterprise Firewall (Enterprise only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_troubleshooting.html">Enterprise Troubleshooting</a></li>
 </ul>
 
@@ -182,7 +185,7 @@ and must be owned by your HTTP user (see
 <p>SQLite is the default database for ownCloud Server (it is not available and not supported
 in the ownCloud Enterprise edition), and it is good only for testing and lightweight single-user
 setups without client synchronization. Supported databases are MySQL, MariaDB,
-Oracle 11g  (ownCloud Enterprise edition only), and PostgreSQL, and we recommend
+Oracle 11g (ownCloud Enterprise edition only), and PostgreSQL, and we recommend
 <a class="reference internal" href="system_requirements.html"><em>MySQL/MariaDB</em></a>. Your database and PHP connectors
 must be installed before you run the Installation Wizard. When you install
 ownCloud from packages all the necessary dependencies will be satisfied (see
@@ -202,7 +205,7 @@ database user and password are written into <code class="docutils literal"><span
 </div>
 <p>Click Finish Setup, and start using your new ownCloud server.</p>
 <div class="figure">
-<a class="reference internal image-reference" href="../_images/install-wizard-a2.png"><img alt="ownCloud welcome screen after a successful installation" src="../_images/install-wizard-a2.png" style="width: 433.5px; height: 356.25px;" /></a>
+<a class="reference internal image-reference" href="../_images/install-wizard-a2.png"><img alt="ownCloud welcome screen after a successful installation" src="../_images/install-wizard-a2.png" style="width: 481.5px; height: 356.25px;" /></a>
 </div>
 <p>Now we will look at some important post-installation steps.</p>
 </div>
@@ -239,7 +242,7 @@ setup. Your HTTP user must own the <code class="docutils literal"><span class="p
 so that you can configure ownCloud, create, modify and delete your data files,
 and install apps via the ownCloud Web interface.</p>
 <p>You can find your HTTP user in your HTTP server configuration files. Or you can
-use <a class="reference internal" href="../issues/index.html#label-phpinfo"><span>PHP Version and Information</span></a> (Look for the <strong>User/Group</strong> line).</p>
+use <a class="reference internal" href="../issues/general_troubleshooting.html#label-phpinfo"><span>PHP Version and Information</span></a> (Look for the <strong>User/Group</strong> line).</p>
 <ul class="simple">
 <li>The HTTP user and group in Debian/Ubuntu is <code class="docutils literal"><span class="pre">www-data</span></code>.</li>
 <li>The HTTP user and group in Fedora/CentOS is <code class="docutils literal"><span class="pre">apache</span></code>.</li>
@@ -266,6 +269,7 @@ rootuser=&#39;root&#39;
 printf &quot;Creating possible missing Directories\n&quot;
 mkdir -p $ocpath/data
 mkdir -p $ocpath/assets
+mkdir -p $ocpath/updater
 
 printf &quot;chmod Files and Directories\n&quot;
 find ${ocpath}/ -type f -print0 | xargs -0 chmod 0640
@@ -274,10 +278,11 @@ find ${ocpath}/ -type d -print0 | xargs -0 chmod 0750
 printf &quot;chown Directories\n&quot;
 chown -R ${rootuser}:${htgroup} ${ocpath}/
 chown -R ${htuser}:${htgroup} ${ocpath}/apps/
+chown -R ${htuser}:${htgroup} ${ocpath}/assets/
 chown -R ${htuser}:${htgroup} ${ocpath}/config/
 chown -R ${htuser}:${htgroup} ${ocpath}/data/
 chown -R ${htuser}:${htgroup} ${ocpath}/themes/
-chown -R ${htuser}:${htgroup} ${ocpath}/assets/
+chown -R ${htuser}:${htgroup} ${ocpath}/updater/
 
 chmod +x ${ocpath}/occ
 

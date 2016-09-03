@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>File Sharing &mdash; ownCloud 8.2 Server Administration Manual 8.2 documentation</title>
+    <title>File Sharing &mdash; ownCloud 9.0 Server Administration Manual 9.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '8.2',
+        VERSION:     '9.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,9 +28,9 @@
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="ownCloud 8.2 Server Administration Manual 8.2 documentation" href="../contents.html" />
+    <link rel="top" title="ownCloud 9.0 Server Administration Manual 9.0 documentation" href="../contents.html" />
     <link rel="up" title="File Sharing and Management" href="index.html" />
-    <link rel="next" title="Configuring Federated Cloud Sharing" href="federated_cloud_sharing_configuration.html" />
+    <link rel="next" title="Configuring Federation Sharing" href="federated_cloud_sharing_configuration.html" />
     <link rel="prev" title="File Sharing and Management" href="index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -66,19 +66,20 @@
 <li><a href="../contents.html">Table of Contents</a></li>
 									</ul>
                   <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 8.2 Server Administration Manual Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 8.2 Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 8.2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 9.0 Server Administration Manual Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 9.0 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 9.0</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configuration_server/index.html">ownCloud Server Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configuration_user/index.html">User Management</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">File Sharing and Management</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="">File Sharing</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#share-link-password-policy">Share Link Password Policy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#transferring-files-to-another-user">Transferring Files to Another User</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#creating-persistent-file-shares">Creating Persistent File Shares</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#share-link-password-policy">Share Link Password Policy</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="federated_cloud_sharing_configuration.html">Configuring Federated Cloud Sharing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="federated_cloud_sharing_configuration.html">Configuring Federation Sharing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="big_file_upload_configuration.html">Uploading big files &gt; 512MB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="collaborative_documents_configuration.html">Configuring the Collaborative Documents App</a></li>
 <li class="toctree-l2"><a class="reference internal" href="default_files_configuration.html">Providing Default Files</a></li>
@@ -103,8 +104,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_server_branding/index.html">Enterprise Server Branding (Enterprise only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_external_storage/index.html">External Storage (Enterprise only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_user_management/index.html">User Management (Enterprise only)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../enterprise_files_drop/index.html">Enabling Anonymous Uploads with Files Drop (Enterprise Only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_file_management/index.html">Enterprise File Management (Enterprise Only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_logging/index.html">Enterprise Logging Apps (Enterprise only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_firewall/index.html">Enterprise Firewall (Enterprise only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_troubleshooting.html">Enterprise Troubleshooting</a></li>
 </ul>
 
@@ -123,7 +125,7 @@
     </a>
   </li>
   <li class="next">
-    <a href="federated_cloud_sharing_configuration.html" title="Next Chapter: Configuring Federated Cloud Sharing"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm">Configuring F... &raquo;</span>
+    <a href="federated_cloud_sharing_configuration.html" title="Next Chapter: Configuring Federation Sharing"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm">Configuring F... &raquo;</span>
     </a>
   </li>
 </ul>
@@ -206,14 +208,18 @@ auto-completion of ownCloud usernames.</p>
 directories, though it does update the mtimes on files. See
 <a class="reference external" href="https://github.com/owncloud/core/issues/7009">Wrong folder date when syncing</a> for discussion of this.</p>
 </div>
-<div class="section" id="share-link-password-policy">
-<span id="password-policy-label"></span><h2>Share Link Password Policy<a class="headerlink" href="#share-link-password-policy" title="Permalink to this headline">¶</a></h2>
-<p>ownCloud Enterprise users have the option of enabling the Share Link Password
-Policy app. This allows you to enforce password length, required characters,
-define special characters, and expiration dates on share links.</p>
-<div class="figure">
-<img alt="../_images/sharing-files-2.png" src="../_images/sharing-files-2.png" />
+<div class="section" id="transferring-files-to-another-user">
+<span id="transfer-userfiles-label"></span><h2>Transferring Files to Another User<a class="headerlink" href="#transferring-files-to-another-user" title="Permalink to this headline">¶</a></h2>
+<p>You may transfer files from one user to another with <code class="docutils literal"><span class="pre">occ</span></code>. This is useful
+when you have to remove a user. Be sure to transfer the files before you delete
+the user!  This transfers all files from user1 to user2, and the shares and
+metadata info associated with those files (shares, tags, comments, etc).
+Trashbin contents are not transferred:</p>
+<div class="highlight-python"><div class="highlight"><pre>occ files:transfer-ownership user1 user2
+</pre></div>
 </div>
+<p>(See <a class="reference internal" href="../configuration_server/occ_command.html"><em>Using the occ Command</em></a> for a complete <code class="docutils literal"><span class="pre">occ</span></code>
+reference.)</p>
 </div>
 <div class="section" id="creating-persistent-file-shares">
 <h2>Creating Persistent File Shares<a class="headerlink" href="#creating-persistent-file-shares" title="Permalink to this headline">¶</a></h2>
@@ -230,6 +236,17 @@ file shares will remain. Because all files added to the share, or edited in it,
 automatically become owned by the owner of the share regardless of who adds or
 edits them.</p>
 </div>
+<div class="section" id="share-link-password-policy">
+<span id="password-policy-label"></span><h2>Share Link Password Policy<a class="headerlink" href="#share-link-password-policy" title="Permalink to this headline">¶</a></h2>
+<p>ownCloud Enterprise users have the option of enabling the Share Link Password
+Policy app. This allows you to enforce password length, required characters,
+define special characters, and expiration dates on share links.</p>
+<div class="figure">
+<img alt="../_images/sharing-files-2.png" src="../_images/sharing-files-2.png" />
+</div>
+<p>Note that you cannot use Emojis as special characters with MySQL, as it
+supports UTF8 characters only of 1-3 bytes, and emojis require 4 bytes.</p>
+</div>
 </div>
 
 
@@ -240,7 +257,7 @@ edits them.</p>
     </a>
   </li>
   <li class="next">
-    <a href="federated_cloud_sharing_configuration.html" title="Next Chapter: Configuring Federated Cloud Sharing"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm">Configuring F... &raquo;</span>
+    <a href="federated_cloud_sharing_configuration.html" title="Next Chapter: Configuring Federation Sharing"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm">Configuring F... &raquo;</span>
     </a>
   </li>
 </ul>

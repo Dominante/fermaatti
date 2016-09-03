@@ -6,9 +6,10 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -40,9 +41,6 @@ $l = \OC::$server->getL10N('files_sharing');
 \OC::$CLASSPATH['OCA\Files\Share\Maintainer'] = 'files_sharing/lib/maintainer.php';
 \OC::$CLASSPATH['OCA\Files\Share\Proxy'] = 'files_sharing/lib/proxy.php';
 
-$application = new Application();
-$application->registerMountProviders();
-$application->setupPropagation();
 
 \OCP\App::registerAdmin('files_sharing', 'settings-admin');
 \OCP\App::registerPersonal('files_sharing', 'settings-personal');
@@ -51,6 +49,9 @@ $application->setupPropagation();
 
 \OCP\Share::registerBackend('file', 'OC_Share_Backend_File');
 \OCP\Share::registerBackend('folder', 'OC_Share_Backend_Folder', 'file');
+
+$application = new Application();
+$application->registerMountProviders();
 
 $eventDispatcher = \OC::$server->getEventDispatcher();
 $eventDispatcher->addListener(
@@ -114,12 +115,14 @@ if ($config->getAppValue('core', 'shareapi_enabled', 'yes') === 'yes') {
 	}
 }
 
-/**
- * FIXME
 $manager = \OC::$server->getNotificationManager();
 $manager->registerNotifier(function() {
 	return new \OCA\Files_Sharing\Notifier(
 		\OC::$server->getL10NFactory()
 	);
+}, function() use ($l) {
+	return [
+		'id' => 'files_sharing',
+		'name' => $l->t('Federated sharing'),
+	];
 });
- */

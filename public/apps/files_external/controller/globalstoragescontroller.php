@@ -1,9 +1,10 @@
 <?php
 /**
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -24,6 +25,7 @@ namespace OCA\Files_External\Controller;
 
 
 use \OCP\IConfig;
+use OCP\ILogger;
 use \OCP\IUserSession;
 use \OCP\IRequest;
 use \OCP\IL10N;
@@ -46,18 +48,21 @@ class GlobalStoragesController extends StoragesController {
 	 * @param IRequest $request request object
 	 * @param IL10N $l10n l10n service
 	 * @param GlobalStoragesService $globalStoragesService storage service
+	 * @param ILogger $logger
 	 */
 	public function __construct(
 		$AppName,
 		IRequest $request,
 		IL10N $l10n,
-		GlobalStoragesService $globalStoragesService
+		GlobalStoragesService $globalStoragesService,
+		ILogger $logger
 	) {
 		parent::__construct(
 			$AppName,
 			$request,
 			$l10n,
-			$globalStoragesService
+			$globalStoragesService,
+			$logger
 		);
 	}
 
@@ -126,6 +131,7 @@ class GlobalStoragesController extends StoragesController {
 	 * @param array $applicableUsers users for which to mount the storage
 	 * @param array $applicableGroups groups for which to mount the storage
 	 * @param int $priority priority
+	 * @param bool $testOnly whether to storage should only test the connection or do more things
 	 *
 	 * @return DataResponse
 	 */
@@ -138,7 +144,8 @@ class GlobalStoragesController extends StoragesController {
 		$mountOptions,
 		$applicableUsers,
 		$applicableGroups,
-		$priority
+		$priority,
+		$testOnly = true
 	) {
 		$storage = $this->createStorage(
 			$mountPoint,
@@ -171,7 +178,7 @@ class GlobalStoragesController extends StoragesController {
 			);
 		}
 
-		$this->updateStorageStatus($storage);
+		$this->updateStorageStatus($storage, $testOnly);
 
 		return new DataResponse(
 			$storage,

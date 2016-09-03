@@ -37,8 +37,8 @@ OC.L10N.register(
     "Public shared file %1$s was downloaded" : "Јавно дељени фајл %1$s је преузет",
     "You shared %1$s with %2$s" : "Поделили сте %1$s са %2$s",
     "You shared %1$s with group %2$s" : "Поделили сте %1$s са групом %2$s",
-    "%2$s shared %1$s with you" : "%2$s подели %1$s са вама",
     "You shared %1$s via link" : "Поделили сте %1$s путем везе",
+    "%2$s shared %1$s with you" : "%2$s подели %1$s са вама",
     "Shares" : "Дељења",
     "Accept" : "Прихвати",
     "This share is password-protected" : "Дељење је заштићено лозинком",
@@ -61,6 +61,10 @@ OC.L10N.register(
     "Open documentation" : "Отвори документацију",
     "Allow users on this server to send shares to other servers" : "Дозвољава корисницима овог сервера да шаљу дељења на друге сервере",
     "Allow users on this server to receive shares from other servers" : "Дозвољава корисницима овог сервера да примају дељења са других сервера",
-    "Federated Cloud" : "Здружени облак"
+    "Federated Cloud" : "Здружени облак",
+    "Decline" : "Одбиј",
+    "Federated sharing" : "Здружено дељење",
+    "Public shared file %1$s was downloaded" : "Јавно дељени фајл %1$s је преузет",
+    "Public shared folder %1$s was downloaded" : "Јавно дељена фасцикла %1$s је преузета"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

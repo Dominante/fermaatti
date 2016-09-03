@@ -4,7 +4,7 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -48,6 +48,9 @@ class ActivityManager implements IManager {
 
 	/** @var int */
 	protected $formattingObjectId;
+
+	/** @var string */
+	protected $currentUserId;
 
 	/**
 	 * constructor of the controller
@@ -310,20 +313,20 @@ class ActivityManager implements IManager {
 
 	/**
 	 * @param string $type
-	 * @param int $id
+	 * @param string $id
 	 */
 	public function setFormattingObject($type, $id) {
 		$this->formattingObjectType = $type;
-		$this->formattingObjectId = $id;
+		$this->formattingObjectId = (string) $id;
 	}
 
 	/**
 	 * @return bool
 	 */
 	public function isFormattingFilteredObject() {
-		return 'filter' === $this->request->getParam('filter')
-			&& $this->formattingObjectType === $this->request->getParam('objecttype')
-			&& $this->formattingObjectId === $this->request->getParam('objectid');
+		return $this->formattingObjectType !== null && $this->formattingObjectId !== null
+			&& $this->formattingObjectType === $this->request->getParam('object_type')
+			&& $this->formattingObjectId === $this->request->getParam('object_id');
 	}
 
 	/**
@@ -476,6 +479,19 @@ class ActivityManager implements IManager {
 	}
 
 	/**
+	 * Set the user we need to use
+	 *
+	 * @param string|null $currentUserId
+	 * @throws \UnexpectedValueException If the user is invalid
+	 */
+	public function setCurrentUserId($currentUserId) {
+		if (!is_string($currentUserId) && $currentUserId !== null) {
+			throw new \UnexpectedValueException('The given current user is invalid');
+		}
+		$this->currentUserId = $currentUserId;
+	}
+
+	/**
 	 * Get the user we need to use
 	 *
 	 * Either the user is logged in, or we try to get it from the token
@@ -484,7 +500,9 @@ class ActivityManager implements IManager {
 	 * @throws \UnexpectedValueException If the token is invalid, does not exist or is not unique
 	 */
 	public function getCurrentUserId() {
-		if (!$this->session->isLoggedIn()) {
+		if ($this->currentUserId !== null) {
+			return $this->currentUserId;
+		} else if (!$this->session->isLoggedIn()) {
 			return $this->getUserFromToken();
 		} else {
 			return $this->session->getUser()->getUID();
