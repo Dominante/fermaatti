@@ -61,7 +61,7 @@ if ($_['entered']): ?>
 						}
 					echo '</optgroup> <optgroup label="Seniorit">';
 					foreach($_['members'] as $member) {
-						if ($member['lopettanut'] !== '0000-00-00') {
+						if ($member['lopettanut'] !== '0000-00-00' && isset($member['personId']) && $member['personId'] !== "") {
 							echo '<option value="'.$member['personId'].'">'. $member["etunimi"]." ".$member["sukunimi"].'</option>';
 						}
 					}
