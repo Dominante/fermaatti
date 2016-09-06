@@ -37,7 +37,9 @@ running the Apache 2.4 Web server. These configurations are highly operating sys
 specific and require a high degree of customization.
 
 The ownCloud instance itself is installed in ``/var/www/owncloud/``.  The
-following aliases are defined in an Apache virtual host directive::
+following aliases are defined in an Apache virtual host directive:
+
+::
 
 	# non-Shibboleth access
 	Alias /owncloud /var/www/owncloud/
@@ -287,7 +289,9 @@ Status codes:
 * 100 - successful
 * 998 - user unknown
 
-Example::
+Example:
+
+::
 
 	$ curl -X DELETE "https://cloud.example.com/ocs/v1.php/cloud/users/myself@testshib.org/non_shib_password" -u admin:admin
 	<?xml version="1.0"?>

@@ -37,8 +37,8 @@ OC.L10N.register(
     "Public shared file %1$s was downloaded" : "Опублікований файл %1$s був завантажений",
     "You shared %1$s with %2$s" : "Ви поділилися %1$s з %2$s",
     "You shared %1$s with group %2$s" : "Ви поділилися %1$s з групою %2$s",
-    "%2$s shared %1$s with you" : "%2$s поділився %1$s з вами",
     "You shared %1$s via link" : "Ви поділилися %1$s використовуючи лінк",
+    "%2$s shared %1$s with you" : "%2$s поділився %1$s з вами",
     "Shares" : "Розподільні",
     "This share is password-protected" : "Цей ресурс обміну захищений паролем",
     "The password is wrong. Try again." : "Невірний пароль. Спробуйте ще раз.",
@@ -61,6 +61,8 @@ OC.L10N.register(
     "Allow users on this server to send shares to other servers" : "Дозволити користувачам цього сервера публікувати на інших серверах",
     "Allow users on this server to receive shares from other servers" : "Дозволити користувачам на цьому сервері отримувати публікації з інших серверів",
     "Share it:" : "Поділитися цим:",
-    "HTML Code:" : "HTML код:"
+    "HTML Code:" : "HTML код:",
+    "Public shared file %1$s was downloaded" : "Опублікований файл %1$s був завантажений",
+    "Public shared folder %1$s was downloaded" : "Опублікований каталог %1$s був завантажений"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

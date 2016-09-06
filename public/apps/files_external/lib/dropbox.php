@@ -5,12 +5,12 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Philipp Kapfer <philipp.kapfer@gmx.at>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Sascha Schmidt <realriot@realriot.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -29,7 +29,10 @@
 
 namespace OC\Files\Storage;
 
+use GuzzleHttp\Exception\RequestException;
 use Icewind\Streams\IteratorDirectory;
+use Icewind\Streams\RetryWrapper;
+use OCP\Files\StorageNotAvailableException;
 
 require_once __DIR__ . '/../3rdparty/Dropbox/autoload.php';
 
@@ -39,6 +42,7 @@ class Dropbox extends \OC\Files\Storage\Common {
 	private $root;
 	private $id;
 	private $metaData = array();
+	private $oauth;
 
 	private static $tempFiles = array();
 
@@ -51,10 +55,10 @@ class Dropbox extends \OC\Files\Storage\Common {
 		) {
 			$this->root = isset($params['root']) ? $params['root'] : '';
 			$this->id = 'dropbox::'.$params['app_key'] . $params['token']. '/' . $this->root;
-			$oauth = new \Dropbox_OAuth_Curl($params['app_key'], $params['app_secret']);
-			$oauth->setToken($params['token'], $params['token_secret']);
+			$this->oauth = new \Dropbox_OAuth_Curl($params['app_key'], $params['app_secret']);
+			$this->oauth->setToken($params['token'], $params['token_secret']);
 			// note: Dropbox_API connection is lazy
-			$this->dropbox = new \Dropbox_API($oauth, 'auto');
+			$this->dropbox = new \Dropbox_API($this->oauth, 'auto');
 		} else {
 			throw new \Exception('Creating \OC\Files\Storage\Dropbox storage failed');
 		}
@@ -64,12 +68,16 @@ class Dropbox extends \OC\Files\Storage\Common {
 	 * @param string $path
 	 */
 	private function deleteMetaData($path) {
-		$path = $this->root.$path;
+		$path = ltrim($this->root.$path, '/');
 		if (isset($this->metaData[$path])) {
 			unset($this->metaData[$path]);
 			return true;
 		}
 		return false;
+	}
+
+	private function setMetaData($path, $metaData) {
+		$this->metaData[ltrim($path, '/')] = $metaData;
 	}
 
 	/**
@@ -80,13 +88,15 @@ class Dropbox extends \OC\Files\Storage\Common {
 	 * false, null if the file doesn't exist or "false" if the operation failed
 	 */
 	private function getDropBoxMetaData($path, $list = false) {
-		$path = $this->root.$path;
+		$path = ltrim($this->root.$path, '/');
 		if ( ! $list && isset($this->metaData[$path])) {
 			return $this->metaData[$path];
 		} else {
 			if ($list) {
 				try {
 					$response = $this->dropbox->getMetaData($path);
+				} catch (\Dropbox_Exception_Forbidden $e) {
+					throw new StorageNotAvailableException('Dropbox API rate limit exceeded', StorageNotAvailableException::STATUS_ERROR, $e);
 				} catch (\Exception $exception) {
 					\OCP\Util::writeLog('files_external', $exception->getMessage(), \OCP\Util::ERROR);
 					return false;
@@ -96,14 +106,14 @@ class Dropbox extends \OC\Files\Storage\Common {
 					// Cache folder's contents
 					foreach ($response['contents'] as $file) {
 						if (!isset($file['is_deleted']) || !$file['is_deleted']) {
-							$this->metaData[$path.'/'.basename($file['path'])] = $file;
+							$this->setMetaData($path.'/'.basename($file['path']), $file);
 							$contents[] = $file;
 						}
 					}
 					unset($response['contents']);
 				}
 				if (!isset($response['is_deleted']) || !$response['is_deleted']) {
-					$this->metaData[$path] = $response;
+					$this->setMetaData($path, $response);
 				}
 				// Return contents of folder only
 				return $contents;
@@ -116,10 +126,12 @@ class Dropbox extends \OC\Files\Storage\Common {
 
 					$response = $this->dropbox->getMetaData($requestPath, 'false');
 					if (!isset($response['is_deleted']) || !$response['is_deleted']) {
-						$this->metaData[$path] = $response;
+						$this->setMetaData($path, $response);
 						return $response;
 					}
 					return null;
+				} catch (\Dropbox_Exception_Forbidden $e) {
+					throw new StorageNotAvailableException('Dropbox API rate limit exceeded', StorageNotAvailableException::STATUS_ERROR, $e);
 				} catch (\Exception $exception) {
 					if ($exception instanceof \Dropbox_Exception_NotFound) {
 						// don't log, might be a file_exist check
@@ -244,11 +256,32 @@ class Dropbox extends \OC\Files\Storage\Common {
 		switch ($mode) {
 			case 'r':
 			case 'rb':
-				$tmpFile = \OCP\Files::tmpFile();
 				try {
-					$data = $this->dropbox->getFile($path);
-					file_put_contents($tmpFile, $data);
-					return fopen($tmpFile, 'r');
+					// slashes need to stay
+					$encodedPath = str_replace('%2F', '/', rawurlencode(trim($path, '/')));
+					$downloadUrl = 'https://api-content.dropbox.com/1/files/auto/' . $encodedPath;
+					$headers = $this->oauth->getOAuthHeader($downloadUrl, [], 'GET');
+
+					$client = \OC::$server->getHTTPClientService()->newClient();
+					try {
+						$response = $client->get($downloadUrl, [
+							'headers' => $headers,
+							'stream' => true,
+						]);
+					} catch (RequestException $e) {
+						if (!is_null($e->getResponse())) {
+							if ($e->getResponse()->getStatusCode() === 404) {
+								return false;
+							} else {
+								throw $e;
+							}
+						} else {
+							throw $e;
+						}
+					}
+
+					$handle = $response->getBody();
+					return RetryWrapper::wrap($handle);
 				} catch (\Exception $exception) {
 					\OCP\Util::writeLog('files_external', $exception->getMessage(), \OCP\Util::ERROR);
 					return false;
@@ -293,18 +326,6 @@ class Dropbox extends \OC\Files\Storage\Common {
 				\OCP\Util::writeLog('files_external', $exception->getMessage(), \OCP\Util::ERROR);
 			}
 		}
-	}
-
-	public function getMimeType($path) {
-		if ($this->filetype($path) == 'dir') {
-			return 'httpd/unix-directory';
-		} else {
-			$metaData = $this->getDropBoxMetaData($path);
-			if ($metaData) {
-				return $metaData['mime_type'];
-			}
-		}
-		return false;
 	}
 
 	public function free_space($path) {

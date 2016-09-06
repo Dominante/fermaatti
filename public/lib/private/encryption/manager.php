@@ -5,7 +5,7 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -117,6 +117,25 @@ class Manager implements IManager {
 	}
 
 	/**
+	 * @param string $user
+	 */
+	public function isReadyForUser($user) {
+		if (!$this->isReady()) {
+			return false;
+		}
+
+		foreach ($this->getEncryptionModules() as $module) {
+			/** @var IEncryptionModule $m */
+			$m = call_user_func($module['callback']);
+			if (!$m->isReadyForUser($user)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+		/**
 	 * Registers an callback function which must return an encryption module instance
 	 *
 	 * @param string $id

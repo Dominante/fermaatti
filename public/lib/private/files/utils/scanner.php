@@ -4,10 +4,9 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Olivier Paroz <github@oparoz.com>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -26,13 +25,12 @@
 
 namespace OC\Files\Utils;
 
-use OC\Files\View;
-use OC\Files\Cache\ChangePropagator;
 use OC\Files\Cache\Cache;
 use OC\Files\Filesystem;
 use OC\ForbiddenException;
 use OC\Hooks\PublicEmitter;
 use OC\Lock\DBLockingProvider;
+use OCP\Files\Storage\IStorage;
 use OCP\Files\StorageNotAvailableException;
 use OCP\ILogger;
 
@@ -52,11 +50,6 @@ class Scanner extends PublicEmitter {
 	private $user;
 
 	/**
-	 * @var \OC\Files\Cache\ChangePropagator
-	 */
-	protected $propagator;
-
-	/**
 	 * @var \OCP\IDBConnection
 	 */
 	protected $db;
@@ -74,7 +67,6 @@ class Scanner extends PublicEmitter {
 	public function __construct($user, $db, ILogger $logger) {
 		$this->logger = $logger;
 		$this->user = $user;
-		$this->propagator = new ChangePropagator(new View(''));
 		$this->db = $db;
 	}
 
@@ -117,14 +109,6 @@ class Scanner extends PublicEmitter {
 		$scanner->listen('\OC\Files\Cache\Scanner', 'postScanFolder', function ($path) use ($mount, $emitter) {
 			$emitter->emit('\OC\Files\Utils\Scanner', 'postScanFolder', array($mount->getMountPoint() . $path));
 		});
-		// propagate etag and mtimes when files are changed or removed
-		$propagator = $this->propagator;
-		$propagatorListener = function ($path) use ($mount, $propagator) {
-			$fullPath = Filesystem::normalizePath($mount->getMountPoint() . $path);
-			$propagator->addChange($fullPath);
-		};
-		$scanner->listen('\OC\Files\Cache\Scanner', 'addToCache', $propagatorListener);
-		$scanner->listen('\OC\Files\Cache\Scanner', 'removeFromCache', $propagatorListener);
 	}
 
 	/**
@@ -144,7 +128,6 @@ class Scanner extends PublicEmitter {
 			$this->attachListener($mount);
 			$scanner->backgroundScan();
 		}
-		$this->propagator->propagateChanges(time());
 	}
 
 	/**
@@ -165,13 +148,29 @@ class Scanner extends PublicEmitter {
 			if ($storage->instanceOfStorage('\OC\Files\Storage\Home') and
 				(!$storage->isCreatable('') or !$storage->isCreatable('files'))
 			) {
-				throw new ForbiddenException();
+				if ($storage->file_exists('') or $storage->getCache()->inCache('')) {
+					throw new ForbiddenException();
+				} else {// if the root exists in neither the cache nor the storage the user isn't setup yet
+					break;
+				}
+
 			}
 			$relativePath = $mount->getInternalPath($dir);
 			$scanner = $storage->getScanner();
 			$scanner->setUseTransactions(false);
 			$this->attachListener($mount);
 			$isDbLocking = \OC::$server->getLockingProvider() instanceof DBLockingProvider;
+
+			$scanner->listen('\OC\Files\Cache\Scanner', 'removeFromCache', function ($path) use ($storage) {
+				$this->triggerPropagator($storage, $path);
+			});
+			$scanner->listen('\OC\Files\Cache\Scanner', 'updateCache', function ($path) use ($storage) {
+				$this->triggerPropagator($storage, $path);
+			});
+			$scanner->listen('\OC\Files\Cache\Scanner', 'addToCache', function ($path) use ($storage) {
+				$this->triggerPropagator($storage, $path);
+			});
+
 			if (!$isDbLocking) {
 				$this->db->beginTransaction();
 			}
@@ -191,7 +190,10 @@ class Scanner extends PublicEmitter {
 				$this->db->commit();
 			}
 		}
-		$this->propagator->propagateChanges(time());
+	}
+
+	private function triggerPropagator(IStorage $storage, $internalPath) {
+		$storage->getPropagator()->propagateChange($internalPath, time());
 	}
 }
 

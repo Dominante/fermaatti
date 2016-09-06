@@ -1,13 +1,15 @@
 <?php
 /**
+ * @author Alex Weirig <alex.weirig@technolink.lu>
  * @author Alexander Bergolth <leo@strike.wu.ac.at>
  * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lennart Rosam <hello@takuto.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -83,6 +85,7 @@ class Configuration {
 		'lastJpegPhotoLookup' => null,
 		'ldapNestedGroups' => false,
 		'ldapPagingSize' => null,
+		'ldapDynamicGroupMemberURL' => null,
 	);
 
 	/**
@@ -282,7 +285,6 @@ class Configuration {
 	 * 
 	 * @param string $varName name of config-key
 	 * @param array|string $value to set
-	 * @param boolean $trim Trim value? (default: false)
 	 */
 	protected function setMultiLine($varName, $value) {
 		if(empty($value)) {
@@ -442,6 +444,7 @@ class Configuration {
 			'ldap_nested_groups'                => 0,
 			'ldap_paging_size'                  => 500,
 			'ldap_experienced_admin'            => 0,
+			'ldap_dynamic_group_member_url'     => '',
 		);
 	}
 
@@ -496,7 +499,8 @@ class Configuration {
 			'last_jpegPhoto_lookup'             => 'lastJpegPhotoLookup',
 			'ldap_nested_groups'                => 'ldapNestedGroups',
 			'ldap_paging_size'                  => 'ldapPagingSize',
-			'ldap_experienced_admin'            => 'ldapExperiencedAdmin'
+			'ldap_experienced_admin'            => 'ldapExperiencedAdmin',
+			'ldap_dynamic_group_member_url'     => 'ldapDynamicGroupMemberURL',
 		);
 		return $array;
 	}

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Manual Installation on Linux &mdash; ownCloud 8.2 Server Administration Manual 8.2 documentation</title>
+    <title>Manual Installation on Linux &mdash; ownCloud 9.0 Server Administration Manual 9.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '8.2',
+        VERSION:     '9.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,10 +28,10 @@
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="ownCloud 8.2 Server Administration Manual 8.2 documentation" href="../contents.html" />
+    <link rel="top" title="ownCloud 9.0 Server Administration Manual 9.0 documentation" href="../contents.html" />
     <link rel="up" title="Installation" href="index.html" />
     <link rel="next" title="ownCloud Community Appliance" href="appliance_installation.html" />
-    <link rel="prev" title="Installing and Managing Apps" href="apps_management_installation.html" />
+    <link rel="prev" title="Supported Apps in ownCloud" href="apps_supported.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -66,21 +66,24 @@
 <li><a href="../contents.html">Table of Contents</a></li>
 									</ul>
                   <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 8.2 Server Administration Manual Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 8.2 Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 8.2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 9.0 Server Administration Manual Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 9.0 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 9.0</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Installation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="system_requirements.html">System Requirements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="deployment_recommendations.html">ownCloud Deployment Recommendations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="linux_installation.html">Preferred Linux Installation Method</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation_wizard.html">Installation Wizard</a></li>
 <li class="toctree-l2"><a class="reference internal" href="command_line_installation.html">Installing ownCloud From the Command Line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changing_the_web_route.html">Changing the web route</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apps_management_installation.html">Installing and Managing Apps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apps_supported.html">Supported Apps in ownCloud</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">Manual Installation on Linux</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#example-installation-on-ubuntu-14-04-lts-server">Example Installation on Ubuntu 14.04 LTS Server</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#binlog-format-statement">BINLOG_FORMAT = STATEMENT</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#apache-web-server-configuration">Apache Web Server Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pretty-urls">Pretty URLs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#enabling-ssl">Enabling SSL</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#installation-wizard">Installation Wizard</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#setting-strong-directory-permissions">Setting Strong Directory Permissions</a></li>
@@ -95,7 +98,7 @@
 <li class="toctree-l2"><a class="reference internal" href="php_55_installation.html">Installing PHP 5.5 on RHEL 7 and CentOS 7</a></li>
 <li class="toctree-l2"><a class="reference internal" href="selinux_configuration.html">SELinux Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nginx_examples.html">Nginx Example Configurations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nginx_owncloud_8x.html">Nginx configuration for the ownCloud 8.x branches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nginx_owncloud_9x.html">Nginx Configuration for the ownCloud 9.x Branches</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../configuration_server/index.html">ownCloud Server Configuration</a></li>
@@ -113,8 +116,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_server_branding/index.html">Enterprise Server Branding (Enterprise only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_external_storage/index.html">External Storage (Enterprise only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_user_management/index.html">User Management (Enterprise only)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../enterprise_files_drop/index.html">Enabling Anonymous Uploads with Files Drop (Enterprise Only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_file_management/index.html">Enterprise File Management (Enterprise Only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_logging/index.html">Enterprise Logging Apps (Enterprise only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_firewall/index.html">Enterprise Firewall (Enterprise only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_troubleshooting.html">Enterprise Troubleshooting</a></li>
 </ul>
 
@@ -129,7 +133,7 @@
             
 <ul class="prevnext-title list-unstyled list-inline">
   <li class="prev">
-    <a href="apps_management_installation.html" title="Previous Chapter: Installing and Managing Apps"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm">&laquo; Installing an...</span>
+    <a href="apps_supported.html" title="Previous Chapter: Supported Apps in ownCloud"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm">&laquo; Supported App...</span>
     </a>
   </li>
   <li class="next">
@@ -159,6 +163,7 @@ Apache and MariaDB, using <a class="reference external" href="https://owncloud.o
 <li><a class="reference internal" href="#ubuntu-installation-label"><span>Example Installation on Ubuntu 14.04 LTS Server</span></a></li>
 <li><a class="reference internal" href="#binlog-format-label"><span>BINLOG_FORMAT = STATEMENT</span></a></li>
 <li><a class="reference internal" href="#apache-configuration-label"><span>Apache Web Server Configuration</span></a></li>
+<li><a class="reference internal" href="#pretty-urls-label"><span>Pretty URLs</span></a></li>
 <li><a class="reference internal" href="#enabling-ssl-label"><span>Enabling SSL</span></a></li>
 <li><a class="reference internal" href="#installation-wizard-label"><span>Installation Wizard</span></a></li>
 <li><a class="reference internal" href="installation_wizard.html#strong-perms-label"><span>Setting Strong Directory Permissions</span></a></li>
@@ -188,7 +193,7 @@ If you get a result, the module is present.</p>
 <li>PHP module GD</li>
 <li>PHP module iconv</li>
 <li>PHP module JSON</li>
-<li>PHP module libxml</li>
+<li>PHP module libxml (Linux package libxml2 must be &gt;=2.7.0)</li>
 <li>PHP module mb multibyte</li>
 <li>PHP module posix</li>
 <li>PHP module SimpleXML</li>
@@ -216,8 +221,8 @@ of non-ASCII characters)</li>
 <p>Required for specific apps:</p>
 <ul class="simple">
 <li>PHP module ldap (for LDAP integration)</li>
-<li><a class="reference external" href="https://download.owncloud.org/download/repositories/stable/owncloud/">php5-libsmbclient</a>
-(SMB/CIFS integration)</li>
+<li>PHP module smbclient  (SMB/CIFS integration, see
+<a class="reference internal" href="../configuration_files/external_storage/smb.html"><em>SMB/CIFS</em></a>)</li>
 <li>PHP module ftp (for FTP storage / external user authentication)</li>
 <li>PHP module imap (for external user authentication)</li>
 </ul>
@@ -407,10 +412,16 @@ set both of these to the domain you want to reach your ownCloud server.</p>
 </li>
 <li><p class="first">If you&#8217;re running ownCloud in a subdirectory and want to use CalDAV or
 CardDAV clients make sure you have configured the correct
-<a class="reference internal" href="../issues/index.html#service-discovery-label"><span>Service discovery</span></a> URLs.</p>
+<a class="reference internal" href="../issues/general_troubleshooting.html#service-discovery-label"><span>Service discovery</span></a> URLs.</p>
 </li>
 </ul>
 </div>
+</div>
+<div class="section" id="pretty-urls">
+<span id="pretty-urls-label"></span><h2>Pretty URLs<a class="headerlink" href="#pretty-urls" title="Permalink to this headline">¶</a></h2>
+<p>Pretty URLs are created automatically when <code class="docutils literal"><span class="pre">.htaccess</span></code> is writable by the
+HTTP user, <code class="docutils literal"><span class="pre">mod_env</span></code> and <code class="docutils literal"><span class="pre">mod_rewrite</span></code> are installed, and
+<code class="docutils literal"><span class="pre">'overwrite.cli.url'</span></code> in your <code class="docutils literal"><span class="pre">config.php</span></code> is set to any non-null value.</p>
 </div>
 <div class="section" id="enabling-ssl">
 <span id="enabling-ssl-label"></span><h2>Enabling SSL<a class="headerlink" href="#enabling-ssl" title="Permalink to this headline">¶</a></h2>
@@ -430,11 +441,8 @@ service apache2 reload
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Self-signed certificates have their drawbacks - especially when you
-plan to make your ownCloud server publicly accessible. You might want
-to consider getting a certificate signed by a commercial signing
-authority. Check with your domain name registrar or hosting service
-for good deals on commercial certificates.</p>
+<p class="last">See <a class="reference internal" href="../configuration_server/occ_command.html#security-commands-label"><span>Security (Import SSL Certificates)</span></a> for help on managing self-signed
+certificates.</p>
 </div>
 </div>
 <div class="section" id="installation-wizard">
@@ -470,7 +478,7 @@ SELinux-enabled distributions such as Fedora and CentOS.</p>
 </div>
 <div class="section" id="php-ini-configuration-notes">
 <span id="php-ini-tips-label"></span><h2>php.ini Configuration Notes<a class="headerlink" href="#php-ini-configuration-notes" title="Permalink to this headline">¶</a></h2>
-<p>Keep in mind that changes to <code class="docutils literal"><span class="pre">php.ini</span></code> may have to be done on more than one
+<p>Keep in mind that changes to <code class="docutils literal"><span class="pre">php.ini</span></code> may have to be configured on more than one
 ini file. This can be the case, for example, for the <code class="docutils literal"><span class="pre">date.timezone</span></code> setting.</p>
 <p><strong>php.ini - used by the Web server:</strong></p>
 <div class="highlight-python"><div class="highlight"><pre>  /etc/php5/apache2/php.ini
@@ -537,7 +545,7 @@ else, for security and flexibility reasons, so check your documentation for the
 correct locations.</p>
 <p>Please keep in mind that it is possible to create different settings for
 <code class="docutils literal"><span class="pre">php-cli</span></code> and <code class="docutils literal"><span class="pre">php-fpm</span></code>, and for different domains and Web sites.
-The best way to check your settings is with <a class="reference internal" href="../issues/index.html#label-phpinfo"><span>PHP Version and Information</span></a>.</p>
+The best way to check your settings is with <a class="reference internal" href="../issues/general_troubleshooting.html#label-phpinfo"><span>PHP Version and Information</span></a>.</p>
 <p><strong>Maximum upload size</strong></p>
 <p>If you want to increase the maximum upload size, you will also have to modify
 your <code class="docutils literal"><span class="pre">php-fpm</span></code> configuration and increase the <code class="docutils literal"><span class="pre">upload_max_filesize</span></code> and
@@ -560,7 +568,7 @@ in the <code class="docutils literal"><span class="pre">owncloud/.user.ini</span
             
 <ul class="prevnext-title list-unstyled list-inline">
   <li class="prev">
-    <a href="apps_management_installation.html" title="Previous Chapter: Installing and Managing Apps"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm">&laquo; Installing an...</span>
+    <a href="apps_supported.html" title="Previous Chapter: Supported Apps in ownCloud"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm">&laquo; Supported App...</span>
     </a>
   </li>
   <li class="next">

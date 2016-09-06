@@ -26,7 +26,7 @@ community-maintained. (Thank you, contributors!)
 Example Configuration
 ---------------------
 
-- :doc:`nginx_owncloud_8x`
+- :doc:`nginx_owncloud_9x`
 
 You can use ownCloud over plain http, but we strongly encourage you to use 
 SSL/TLS to encrypt all of your server traffic, and to protect user's logins and 

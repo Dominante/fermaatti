@@ -2,7 +2,7 @@
 Accessing your Files Using the ownCloud Web Interface
 =====================================================
 
-You can access your ownCloud files with the ownCloud web interface and create, 
+You can access your ownCloud files with the ownCloud Web interface and create, 
 preview, edit, delete, share, and re-share files. Your ownCloud administrator 
 has the option to disable these features, so if any of them are missing on your 
 system ask your server administrator.
@@ -10,6 +10,45 @@ system ask your server administrator.
 .. figure:: ../images/files_page.png
    :scale: 75%
    :alt: The Files view screen.
+   
+Tagging Files
+-------------
+
+New for 9.0: file tagging. You can assign tags to files. To create tags, open a 
+file to the Details view. Then type your tags. To enter more than one tag press 
+the return key after creating each tag. All tags are system tags, and are 
+shared by all users on your ownCloud server.
+
+.. figure:: ../images/files_page-7.png
+   :alt: Creating file tags.
+   
+Then use the Tags filter on the left sidebar to filter files by tags.
+
+.. figure:: ../images/files_page-8.png
+   :alt: Viewing file tags.
+ 
+Comments
+--------
+ 
+New for 9.0: Comments. Use the Details view to add and read comments on any 
+file or folder. Comments are visible to everyone who has access to the file.
+
+.. figure:: ../images/file_menu_comments_2.png
+   :alt: Creating and viewing comments.
+  
+Video Player
+------------
+
+You can play videos in ownCloud with the Video Player app by simply clicking on 
+the file. Video streaming by the native ownCloud video player depends on your Web browser 
+and the video format. If your ownCloud administrator has enabled video 
+streaming, and it doesn't work in your Web browser, it may be a browser issue. See https://developer.mozilla.org/en-US/docs/Web/HTML/Supported_media_formats#Browser_compatibility for supported multimedia formats in Web browsers. 
+
+.. figure:: ../images/video_player_2.png
+   :alt: Watching a movie.
+  
+File Controls
+-------------
    
 ownCloud can display thumbnail previews for image files, MP3 covers, 
 and text files, if this enabled by your server administrator. Hover your cursor 
@@ -26,7 +65,11 @@ Favorites
 Share
   Share the file or folder with a group or other users, and create public 
   shares with hyperlinks. You can also see who you have shared with already, 
-  and revoke shares by clicking the trash can icon. If username auto-completion 
+  and revoke shares by clicking the trash can icon. 
+  
+.. note:: New in 9.0, you can see all re-shares of your original file shares.
+
+  If username auto-completion 
   is enabled, when you start typing the user or group name ownCloud will 
   automatically complete it for you. If your administrator has enabled email 
   notifications, you can send an email notification of the new share from the 
@@ -63,10 +106,6 @@ files in the ownCloud embedded viewers by clicking on the file name. There may
 be other file types you can preview if your ownCloud administrator has enabled 
 them. If ownCloud cannot display a file, it starts a download process and 
 downloads the file to your computer. 
-
-Video streaming by the native ownCloud video player depends on your Web browser 
-and the video format. If your ownCloud administrator has enabled video 
-streaming, and it doesn't work in your Web browser, it may be a browser issue. See https://developer.mozilla.org/en-US/docs/Web/HTML/Supported_media_formats#Browser_compatibility for supported multimedia formats in Web browsers.  
 
 Navigating Inside Your ownCloud
 -------------------------------
@@ -168,8 +207,8 @@ and public shares. Now you can set an expiration date only on public shares,
 and local shares do not expire when public shares expire. The only way to 
 "expire" a local share is to click the trash can icon to un-share your files.
 
-Creating or Connecting to a Federated Cloud Sharing Link
---------------------------------------------------------
+Creating or Connecting to a Federation Share Link
+-------------------------------------------------
 
 Federated Cloud Sharing allows you to mount file shares from remote ownCloud 
 servers, and manage them just like a local share. In ownCloud 8 the process for 

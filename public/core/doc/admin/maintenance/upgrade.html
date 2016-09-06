@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>How to Upgrade Your ownCloud Server &mdash; ownCloud 8.2 Server Administration Manual 8.2 documentation</title>
+    <title>How to Upgrade Your ownCloud Server &mdash; ownCloud 9.0 Server Administration Manual 9.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '8.2',
+        VERSION:     '9.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="ownCloud 8.2 Server Administration Manual 8.2 documentation" href="../contents.html" />
+    <link rel="top" title="ownCloud 9.0 Server Administration Manual 9.0 documentation" href="../contents.html" />
     <link rel="up" title="Maintenance" href="index.html" />
     <link rel="next" title="Upgrade ownCloud From Packages" href="package_upgrade.html" />
     <link rel="prev" title="Backing up ownCloud" href="backup.html" />
@@ -66,9 +66,9 @@
 <li><a href="../contents.html">Table of Contents</a></li>
 									</ul>
                   <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 8.2 Server Administration Manual Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 8.2 Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 8.2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 9.0 Server Administration Manual Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 9.0 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 9.0</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configuration_server/index.html">ownCloud Server Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configuration_user/index.html">User Management</a></li>
@@ -79,15 +79,14 @@
 <li class="toctree-l2"><a class="reference internal" href="enable_maintenance.html">Maintenance Mode Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="backup.html">Backing up ownCloud</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">How to Upgrade Your ownCloud Server</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#update-notifier-and-updater-app-are-not-the-same">Update Notifier and Updater App Are Not the Same</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#encryption-migration-from-oc-7-0-to-8-0-and-8-0-to-8-1">Encryption migration from oC 7.0 to 8.0 and 8.0 to 8.1</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#debian-migration-to-official-owncloud-packages">Debian Migration to Official ownCloud Packages</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="package_upgrade.html">Upgrade ownCloud From Packages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="manual_upgrade.html">Manual ownCloud Upgrade</a></li>
 <li class="toctree-l2"><a class="reference internal" href="update.html">Upgrading ownCloud with the Updater App</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual_upgrade.html">Manual ownCloud Upgrade</a></li>
 <li class="toctree-l2"><a class="reference internal" href="restore.html">Restoring ownCloud</a></li>
 <li class="toctree-l2"><a class="reference internal" href="migrating.html">Migrating to a Different Server</a></li>
 </ul>
@@ -101,8 +100,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_server_branding/index.html">Enterprise Server Branding (Enterprise only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_external_storage/index.html">External Storage (Enterprise only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_user_management/index.html">User Management (Enterprise only)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../enterprise_files_drop/index.html">Enabling Anonymous Uploads with Files Drop (Enterprise Only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_file_management/index.html">Enterprise File Management (Enterprise Only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_logging/index.html">Enterprise Logging Apps (Enterprise only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_firewall/index.html">Enterprise Firewall (Enterprise only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_troubleshooting.html">Enterprise Troubleshooting</a></li>
 </ul>
 
@@ -162,28 +162,15 @@ mode, so your users will be locked out until the upgrade is completed. Large
 installations may take several hours to complete the upgrade.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last"><strong>Downgrading is not supported</strong> and risks corrupting your data!
-If you want to revert to an older ownCloud version, make a new, fresh
+<p class="last"><strong>Downgrading is not supported</strong> and risks corrupting your data!</p>
+</div>
+<dl class="docutils">
+<dt>If</dt>
+<dd>you want to revert to an older ownCloud version, make a new, fresh
 installation and then restore your data from backup. Before doing this,
 file a support ticket (if you have paid support) or ask for help in the
-ownCloud forums to see if your issue can be resolved without downgrading.</p>
-</div>
-<div class="section" id="update-notifier-and-updater-app-are-not-the-same">
-<h2>Update Notifier and Updater App Are Not the Same<a class="headerlink" href="#update-notifier-and-updater-app-are-not-the-same" title="Permalink to this headline">¶</a></h2>
-<p>ownCloud has two update tools: the ownCloud core update notifier, and the
-Updater app. Figure 1 shows what you see when the Updater app is enabled: both
-the core notifier and the Updater app control panel are visible on your admin
-page.</p>
-<div class="figure" id="id1">
-<img alt="Both update mechanisms displayed on Admin page." src="../_images/2-updates.png" />
-<p class="caption"><span class="caption-text"><em>Figure 1: The top yellow banner is the update notifier, and the Updates
-section is the Updater app.</em></span></p>
-</div>
-<p>The core update notifier has only one function, and that is to display a
-notification when a new ownCloud release is available. Then you decide which
-upgrade method to use. When you maintain your ownCloud server via your Linux
-package manager you should ensure that the Updater app is disabled.</p>
-</div>
+ownCloud forums to see if your issue can be resolved without downgrading.</dd>
+</dl>
 <div class="section" id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
 <p>You should always maintain <a class="reference internal" href="backup.html"><em>regular backups</em></a> and make a fresh

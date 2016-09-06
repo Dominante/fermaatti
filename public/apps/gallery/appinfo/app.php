@@ -34,7 +34,7 @@ $c->query('OCP\INavigationManager')
 
 			  // Sorting weight for the navigation. The higher the number, the higher
 			  // will it be listed in the navigation
-			  'order' => 3,
+			  'order' => 2,
 
 			  // The route that will be shown on startup when called from within ownCloud
 			  // Public links are using another route, see appinfo/routes.php
@@ -62,16 +62,17 @@ Util::addTranslations('gallery');
 $request = $c->query('Request');
 if (isset($request->server['REQUEST_URI'])) {
 	$url = $request->server['REQUEST_URI'];
-	if (preg_match('%index\.php/apps/files(/.*)?%', $url)
-		|| preg_match('%index\.php/s/\b(.*)\b(?<!/authenticate)$%', $url)
+	if (preg_match('/apps\/files(_sharing)?$/', $url)
+		|| preg_match('%apps/files(_sharing)?[/?]%', $url)
+		|| preg_match('%^((?!/apps/).)*/s/\b(.*)\b(?<!/authenticate)$%', $url)
 	) {
 		// @codeCoverageIgnoreStart
 		/**
 		 * Scripts for the Files app
 		 */
 		Util::addScript($appName, 'vendor/bigshot/bigshot-compressed');
-		Util::addScript($appName, 'vendor/image-scale/image-scale.min');
 		Util::addScript($appName, 'vendor/dompurify/src/purify');
+		Util::addScript($appName, 'galleryutility');
 		Util::addScript($appName, 'galleryfileaction');
 		Util::addScript($appName, 'slideshow');
 		Util::addScript($appName, 'slideshowcontrols');

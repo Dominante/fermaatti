@@ -1,9 +1,10 @@
 <?php
 /**
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -23,7 +24,10 @@
 namespace OCA\Files_External\Controller;
 
 
+use OCA\Files_External\Lib\Auth\AuthMechanism;
 use \OCP\IConfig;
+use OCP\ILogger;
+use OCP\IUser;
 use \OCP\IUserSession;
 use \OCP\IRequest;
 use \OCP\IL10N;
@@ -41,25 +45,56 @@ use \OCA\Files_External\Lib\Backend\Backend;
  */
 class UserStoragesController extends StoragesController {
 	/**
+	 * @var IUserSession
+	 */
+	private $userSession;
+
+	/**
 	 * Creates a new user storages controller.
 	 *
 	 * @param string $AppName application name
 	 * @param IRequest $request request object
 	 * @param IL10N $l10n l10n service
 	 * @param UserStoragesService $userStoragesService storage service
+	 * @param IUserSession $userSession
+	 * @param ILogger $logger
 	 */
 	public function __construct(
 		$AppName,
 		IRequest $request,
 		IL10N $l10n,
-		UserStoragesService $userStoragesService
+		UserStoragesService $userStoragesService,
+		IUserSession $userSession,
+		ILogger $logger
 	) {
 		parent::__construct(
 			$AppName,
 			$request,
 			$l10n,
-			$userStoragesService
+			$userStoragesService,
+			$logger
 		);
+		$this->userSession = $userSession;
+	}
+
+	protected function manipulateStorageConfig(StorageConfig $storage) {
+		/** @var AuthMechanism */
+		$authMechanism = $storage->getAuthMechanism();
+		$authMechanism->manipulateStorageConfig($storage, $this->userSession->getUser());
+		/** @var Backend */
+		$backend = $storage->getBackend();
+		$backend->manipulateStorageConfig($storage, $this->userSession->getUser());
+	}
+
+	/**
+	 * Get all storage entries
+	 *
+	 * @NoAdminRequired
+	 *
+	 * @return DataResponse
+	 */
+	public function index() {
+		return parent::index();
 	}
 
 	/**
@@ -69,8 +104,8 @@ class UserStoragesController extends StoragesController {
 	 *
 	 * {@inheritdoc}
 	 */
-	public function show($id) {
-		return parent::show($id);
+	public function show($id, $testOnly = true) {
+		return parent::show($id, $testOnly);
 	}
 
 	/**
@@ -127,6 +162,7 @@ class UserStoragesController extends StoragesController {
 	 * @param string $authMechanism authentication mechanism identifier
 	 * @param array $backendOptions backend-specific options
 	 * @param array $mountOptions backend-specific mount options
+	 * @param bool $testOnly whether to storage should only test the connection or do more things
 	 *
 	 * @return DataResponse
 	 *
@@ -138,7 +174,8 @@ class UserStoragesController extends StoragesController {
 		$backend,
 		$authMechanism,
 		$backendOptions,
-		$mountOptions
+		$mountOptions,
+		$testOnly = true
 	) {
 		$storage = $this->createStorage(
 			$mountPoint,
@@ -168,7 +205,7 @@ class UserStoragesController extends StoragesController {
 			);
 		}
 
-		$this->updateStorageStatus($storage);
+		$this->updateStorageStatus($storage, $testOnly);
 
 		return new DataResponse(
 			$storage,

@@ -2,9 +2,11 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Clark Tomlinson <fallen013@gmail.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -23,12 +25,14 @@
 namespace OCA\Encryption;
 
 use OC\Encryption\Exceptions\DecryptionFailedException;
+use OC\Files\View;
 use OCA\Encryption\Crypto\Encryption;
 use OCA\Encryption\Exceptions\PrivateKeyMissingException;
 use OCA\Encryption\Exceptions\PublicKeyMissingException;
 use OCA\Encryption\Crypto\Crypt;
 use OCP\Encryption\Keys\IStorage;
 use OCP\IConfig;
+use OCP\IDBConnection;
 use OCP\ILogger;
 use OCP\IUserSession;
 
@@ -213,7 +217,7 @@ class KeyManager {
 	}
 
 	/**
-	 * @param $password
+	 * @param string $password
 	 * @return bool
 	 */
 	public function checkRecoveryPassword($password) {
@@ -280,7 +284,7 @@ class KeyManager {
 
 	/**
 	 * @param $userId
-	 * @param $key
+	 * @param string $key
 	 * @return bool
 	 */
 	public function setPrivateKey($userId, $key) {
@@ -352,6 +356,13 @@ class KeyManager {
 			return false;
 		} catch (DecryptionFailedException $e) {
 			return false;
+		} catch (\Exception $e) {
+			$this->log->warning(
+				'Could not decrypt the private key from user "' . $uid . '"" during login. ' .
+				'Assume password change on the user back-end. Error message: '
+				. $e->getMessage()
+			);
+			return false;
 		}
 
 		if ($privateKey) {
@@ -365,7 +376,7 @@ class KeyManager {
 
 	/**
 	 * @param $userId
-	 * @return mixed
+	 * @return string
 	 * @throws PrivateKeyMissingException
 	 */
 	public function getPrivateKey($userId) {
@@ -379,7 +390,7 @@ class KeyManager {
 	}
 
 	/**
-	 * @param $path
+	 * @param string $path
 	 * @param $uid
 	 * @return string
 	 */
@@ -411,9 +422,40 @@ class KeyManager {
 	}
 
 	/**
+	 * Get the current version of a file
+	 *
+	 * @param string $path
+	 * @param View $view
+	 * @return int
+	 */
+	public function getVersion($path, View $view) {
+		$fileInfo = $view->getFileInfo($path);
+		if($fileInfo === false) {
+			return 0;
+		}
+		return $fileInfo->getEncryptedVersion();
+	}
+
+	/**
+	 * Set the current version of a file
+	 *
+	 * @param string $path
+	 * @param int $version
+	 * @param View $view
+	 */
+	public function setVersion($path, $version, View $view) {
+		$fileInfo= $view->getFileInfo($path);
+
+		if($fileInfo !== false) {
+			$cache = $fileInfo->getStorage()->getCache();
+			$cache->update($fileInfo->getId(), ['encrypted' => $version, 'encryptedVersion' => $version]);
+		}
+	}
+
+	/**
 	 * get the encrypted file key
 	 *
-	 * @param $path
+	 * @param string $path
 	 * @return string
 	 */
 	public function getEncryptedFileKey($path) {
@@ -458,6 +500,7 @@ class KeyManager {
 	 */
 	public function userHasKeys($userId) {
 		$privateKey = $publicKey = true;
+		$exception = null;
 
 		try {
 			$this->getPrivateKey($userId);
@@ -509,7 +552,7 @@ class KeyManager {
 	}
 
 	/**
-	 * @param $purpose
+	 * @param string $purpose
 	 * @param bool $timestamp
 	 * @param bool $includeUserKeys
 	 */
@@ -535,13 +578,17 @@ class KeyManager {
 	}
 
 	/**
-	 * @param $uid
+	 * @param string $uid
 	 * @return bool
 	 */
 	private function deletePrivateKey($uid) {
 		return $this->keyStorage->deleteUserKey($uid, $this->privateKeyId, Encryption::ID);
 	}
 
+	/**
+	 * @param string $path
+	 * @return bool
+	 */
 	public function deleteAllFileKeys($path) {
 		return $this->keyStorage->deleteAllFileKeys($path);
 	}
@@ -619,7 +666,7 @@ class KeyManager {
 	 * @return string
 	 * @throws \Exception
 	 */
-	protected function getMasterKeyPassword() {
+	public function getMasterKeyPassword() {
 		$password = $this->config->getSystemValue('secret');
 		if (empty($password)){
 			throw new \Exception('Can not get secret from ownCloud instance');

@@ -119,6 +119,9 @@
 				this._reloadCall.abort();
 			}
 
+			// there is only root
+			this._setCurrentDir('/', false);
+
 			var promises = [];
 			var shares = $.ajax({
 				url: OC.linkToOCS('apps/files_sharing/api/v1') + 'shares',
@@ -169,17 +172,14 @@
 
 			if (shares[0].ocs && shares[0].ocs.data) {
 				files = files.concat(this._makeFilesFromShares(shares[0].ocs.data));
-			} else {
-				// TODO: error handling
 			}
 
 			if (remoteShares && remoteShares[0].ocs && remoteShares[0].ocs.data) {
 				files = files.concat(this._makeFilesFromRemoteShares(remoteShares[0].ocs.data));
-			} else {
-				// TODO: error handling
 			}
 
 			this.setFiles(files);
+			return true;
 		},
 
 		_makeFilesFromRemoteShares: function(data) {
@@ -231,6 +231,7 @@
 			files = _.chain(files)
 				// convert share data to file data
 				.map(function(share) {
+					// TODO: use OC.Files.FileInfo
 					var file = {
 						id: share.file_source,
 						icon: OC.MimeType.getIconUrl(share.mimetype),
@@ -242,9 +243,6 @@
 					}
 					else {
 						file.type = 'file';
-						if (share.isPreviewAvailable) {
-							file.isPreviewAvailable = true;
-						}
 					}
 					file.share = {
 						id: share.id,
@@ -288,6 +286,8 @@
 						// using a hash to make them unique,
 						// this is only a list to be displayed
 						data.recipients = {};
+						// share types
+						data.shareTypes = {};
 						// counter is cheaper than calling _.keys().length
 						data.recipientsCount = 0;
 						data.mtime = file.share.stime;
@@ -310,6 +310,8 @@
 						data.recipientsCount++;
 					}
 
+					data.shareTypes[file.share.type] = true;
+
 					delete file.share;
 					return memo;
 				}, {})
@@ -326,6 +328,12 @@
 						data.recipientsCount
 					);
 					delete data.recipientsCount;
+					if (self._sharedWithUser) {
+						// only for outgoing shres
+						delete data.shareTypes;
+					} else {
+						data.shareTypes = _.keys(data.shareTypes);
+					}
 				})
 				// Finish the chain by getting the result
 				.value();

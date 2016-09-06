@@ -12,6 +12,8 @@
 
 namespace OCA\Gallery\AppInfo;
 
+ini_set("gd.jpeg_ignore_warning", true);
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 // A production environment will not have xdebug enabled and
@@ -234,6 +236,13 @@ class Application extends App {
 					 ->getUserFolder($c->query('UserId'));
 		}
 		);
+		$container->registerService(
+			'ShareManager', function (IAppContainer $c) {
+			return $c->getServer()
+				->getShareManager();
+		}
+		);
+
 
 		/**
 		 * OCA
@@ -392,7 +401,8 @@ class Application extends App {
 					$c->query('Environment'),
 					$c->query('OCP\AppFramework\Utility\IControllerMethodReflector'),
 					$c->query('OCP\IURLGenerator'),
-					$c->query('Logger')
+					$c->query('Logger'),
+					$c->query('ShareManager')
 				);
 			}
 		);

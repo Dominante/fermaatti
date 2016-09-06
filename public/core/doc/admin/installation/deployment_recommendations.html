@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>ownCloud Deployment Recommendations &mdash; ownCloud 8.2 Server Administration Manual 8.2 documentation</title>
+    <title>ownCloud Deployment Recommendations &mdash; ownCloud 9.0 Server Administration Manual 9.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '8.2',
+        VERSION:     '9.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="ownCloud 8.2 Server Administration Manual 8.2 documentation" href="../contents.html" />
+    <link rel="top" title="ownCloud 9.0 Server Administration Manual 9.0 documentation" href="../contents.html" />
     <link rel="up" title="Installation" href="index.html" />
     <link rel="next" title="Preferred Linux Installation Method" href="linux_installation.html" />
     <link rel="prev" title="System Requirements" href="system_requirements.html" />
@@ -66,9 +66,9 @@
 <li><a href="../contents.html">Table of Contents</a></li>
 									</ul>
                   <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 8.2 Server Administration Manual Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 8.2 Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 8.2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 9.0 Server Administration Manual Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 9.0 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 9.0</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Installation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="system_requirements.html">System Requirements</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">ownCloud Deployment Recommendations</a><ul>
@@ -86,14 +86,16 @@
 <li class="toctree-l2"><a class="reference internal" href="linux_installation.html">Preferred Linux Installation Method</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation_wizard.html">Installation Wizard</a></li>
 <li class="toctree-l2"><a class="reference internal" href="command_line_installation.html">Installing ownCloud From the Command Line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changing_the_web_route.html">Changing the web route</a></li>
 <li class="toctree-l2"><a class="reference internal" href="apps_management_installation.html">Installing and Managing Apps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apps_supported.html">Supported Apps in ownCloud</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source_installation.html">Manual Installation on Linux</a></li>
 <li class="toctree-l2"><a class="reference internal" href="appliance_installation.html">ownCloud Community Appliance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="php_54_installation.html">Installing PHP 5.4 on RHEL 6 and CentOS 6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="php_55_installation.html">Installing PHP 5.5 on RHEL 7 and CentOS 7</a></li>
 <li class="toctree-l2"><a class="reference internal" href="selinux_configuration.html">SELinux Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nginx_examples.html">Nginx Example Configurations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nginx_owncloud_8x.html">Nginx configuration for the ownCloud 8.x branches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nginx_owncloud_9x.html">Nginx Configuration for the ownCloud 9.x Branches</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../configuration_server/index.html">ownCloud Server Configuration</a></li>
@@ -111,8 +113,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_server_branding/index.html">Enterprise Server Branding (Enterprise only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_external_storage/index.html">External Storage (Enterprise only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_user_management/index.html">User Management (Enterprise only)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../enterprise_files_drop/index.html">Enabling Anonymous Uploads with Files Drop (Enterprise Only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_file_management/index.html">Enterprise File Management (Enterprise Only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_logging/index.html">Enterprise Logging Apps (Enterprise only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_firewall/index.html">Enterprise Firewall (Enterprise only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_troubleshooting.html">Enterprise Troubleshooting</a></li>
 </ul>
 
@@ -154,7 +157,7 @@ the amount of data stored in ownCloud will only grow. Plan ahead.</p>
 keep individual ownCloud instances to a manageable size.</p>
 <ul class="simple">
 <li>Operating system: Linux.</li>
-<li>Webserver: Apache 2.4.</li>
+<li>Web server: Apache 2.4.</li>
 <li>Database: MySQL/MariaDB.</li>
 <li>PHP 5.5+. PHP 5.4 is the minimum supported version; note that it reached
 end-of-life in September 2015 and is no longer supported by the PHP team.
@@ -189,7 +192,7 @@ nightly backups with service interruption.</p>
 </ul>
 <div class="section" id="recommended-system-requirements">
 <h3>Recommended System Requirements<a class="headerlink" href="#recommended-system-requirements" title="Permalink to this headline">¶</a></h3>
-<p>One machine running the application server, Webserver, database server and
+<p>One machine running the application server, Web server, database server and
 local storage.</p>
 <p>Authentication via an existing LDAP or Active Directory server.</p>
 <div class="figure">
@@ -462,7 +465,7 @@ Backups without service interruption</p>
 </ul>
 <div class="section" id="id2">
 <h3>Recommended System Requirements<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<p>4 to 20 application/Webservers.</p>
+<p>4 to 20 application/Web servers.</p>
 <p>A cluster of two or more database servers.</p>
 <p>Storage is an NFS server, or an object store that is S3 compatible.</p>
 <p>Cloud federation for a distributed setup over several data centers.</p>
@@ -652,8 +655,8 @@ community-supported free-of-cost Red Hat Enterprise Linux clone. openSUSE is
 community-supported, and includes many of the same system administration tools
 as SUSE Linux Enterprise Server.</p>
 </div>
-<div class="section" id="webserver">
-<h3>Webserver<a class="headerlink" href="#webserver" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="web-server">
+<h3>Web server<a class="headerlink" href="#web-server" title="Permalink to this headline">¶</a></h3>
 <p>Taking Apache and Nginx as the contenders, Apache with mod_php is currently the
 best option, as Nginx does not support all features necessary for enterprise
 deployments. Mod_php is recommended instead of PHP_FPM, because in scale-out

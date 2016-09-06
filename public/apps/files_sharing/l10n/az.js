@@ -37,8 +37,8 @@ OC.L10N.register(
     "Public shared file %1$s was downloaded" : "Ümumi paylaşılmış fayl %1$s endirilmişdir",
     "You shared %1$s with %2$s" : "Siz yayımladınız %1$s - i %2$s ilə",
     "You shared %1$s with group %2$s" : "Siz yayımladınız %1$s qrupu ilə %2$s",
-    "%2$s shared %1$s with you" : "%2$s yayımlanıb %1$s sizinlə",
     "You shared %1$s via link" : "Siz yayımladınız %1$s link ilə",
+    "%2$s shared %1$s with you" : "%2$s yayımlanıb %1$s sizinlə",
     "Shares" : "Yayımlanmalar",
     "This share is password-protected" : "Bu paylaşım şifrə ilə müdafiəlidir",
     "The password is wrong. Try again." : "Şifrə yalnışdır. Yenidən cəhd edin.",
@@ -59,6 +59,8 @@ OC.L10N.register(
     "Federated Cloud Sharing" : "Federal Cloud Paylaşım",
     "Open documentation" : "Sənədləri aç",
     "Allow users on this server to send shares to other servers" : "Bu serverdən digər serverlərə istifadəçilər tərəfindən paylaşımın göndərilməsinə izin vermək",
-    "Allow users on this server to receive shares from other servers" : "Digər serverlərdən bu serverə istifadəçilər tərəfindən paylaşımın ötürülməsinə izin vermək"
+    "Allow users on this server to receive shares from other servers" : "Digər serverlərdən bu serverə istifadəçilər tərəfindən paylaşımın ötürülməsinə izin vermək",
+    "Public shared file %1$s was downloaded" : "Ümumi paylaşılmış fayl %1$s endirilmişdir",
+    "Public shared folder %1$s was downloaded" : "Ümumi paylaşılmış qovluq %1$s endirilmişdir"
 },
 "nplurals=2; plural=(n != 1);");

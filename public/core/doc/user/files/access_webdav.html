@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Accessing ownCloud Files Using WebDAV &mdash; ownCloud 8.2 User Manual 8.2 documentation</title>
+    <title>Accessing ownCloud Files Using WebDAV &mdash; ownCloud 9.0 User Manual 9.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '8.2',
+        VERSION:     '9.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="ownCloud 8.2 User Manual 8.2 documentation" href="../contents.html" />
+    <link rel="top" title="ownCloud 9.0 User Manual 9.0 documentation" href="../contents.html" />
     <link rel="up" title="Files &amp; Synchronization" href="index.html" />
     <link rel="next" title="Gallery App" href="gallery_app.html" />
     <link rel="prev" title="Accessing your Files Using the ownCloud Web Interface" href="access_webgui.html" />
@@ -66,8 +66,8 @@
 <li><a href="../contents.html">Table of Contents</a></li>
 									</ul>
                   <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 8.2 User Manual Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../whats_new.html">What&#8217;s New for Users in ownCloud 8.2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 9.0 User Manual Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../whats_new.html">What&#8217;s New for Users in ownCloud 9.0</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../webinterface.html">The ownCloud Web Interface</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Files &amp; Synchronization</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="access_webgui.html">Accessing your Files Using the ownCloud Web Interface</a></li>
@@ -76,19 +76,20 @@
 <li class="toctree-l3"><a class="reference internal" href="#webdav-configuration">WebDAV Configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accessing-files-using-linux">Accessing Files Using Linux</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#creating-webdav-mounts-on-the-linux-command-line">Creating WebDAV Mounts on the Linux Command Line</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#accessing-public-shares-over-webdav">Accessing public shares over WebDAV</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#known-issues">Known Issues</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accessing-files-using-mac-os-x">Accessing Files Using Mac OS X</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accessing-files-using-microsoft-windows">Accessing Files Using Microsoft Windows</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accessing-files-using-cyberduck">Accessing Files Using Cyberduck</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accessing-public-shares-over-webdav">Accessing public shares over WebDAV</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#known-problems">Known Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accessing-files-using-curl">Accessing Files Using cURL</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="gallery_app.html">Gallery App</a></li>
 <li class="toctree-l2"><a class="reference internal" href="deleted_file_management.html">Managing Deleted Files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="desktop_mobile_sync.html">Desktop and Mobile Synchronization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="encrypting_files.html">Encrypting Your ownCloud Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="federated_cloud_sharing.html">Using Federated Cloud Sharing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="federated_cloud_sharing.html">Using Federation Shares</a></li>
 <li class="toctree-l2"><a class="reference internal" href="file_drop.html">Making Anonymous Uploads (Enterprise Only)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="large_file_upload.html">Large File Uploads</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quota.html">Storage Quota</a></li>
@@ -97,12 +98,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../pim/index.html">Contacts &amp; Calendar</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../documents.html">Collaborative Document Editing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../bookmarks.html">The main interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../bookmarks.html#the-bookmarklet">The Bookmarklet</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../userpreferences.html">Setting Your Preferences</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../external_storage/index.html">External Storage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../bookmarks.html">The main interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../bookmarks.html#the-bookmarklet">The Bookmarklet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bookmarks.html">Using the Bookmarks App</a></li>
 </ul>
 
 								</ul>
@@ -145,14 +143,14 @@ local PC are properly synchronized with the server.</p>
 Apple iOS devices is by using the <a class="reference external" href="https://owncloud.org/install/#install-clients">ownCloud mobile apps</a>.</p>
 <p>To connect to your ownCloud server with the <strong>ownCloud</strong> mobile apps, use the
 base URL and folder only:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">example</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">owncloud</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">owncloud</span>
 </pre></div>
 </div>
 <p>In addition to the mobile apps provided by ownCloud, you can use other apps to
 connect to ownCloud from your mobile device using WebDAV. <a class="reference external" href="http://seanashton.net/webdav/">WebDAV Navigator</a> is
 a good (proprietary) app for <a class="reference external" href="https://play.google.com/store/apps/details?id=com.schimera.webdavnavlite">Android devices</a>, <a class="reference external" href="https://itunes.apple.com/app/webdav-navigator/id382551345">iPhones</a>, and <a class="reference external" href="http://appworld.blackberry.com/webstore/content/46816">BlackBerry
 devices</a>. The URL to use on these is:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">example</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">owncloud</span><span class="o">/</span><span class="n">remote</span><span class="o">.</span><span class="n">php</span><span class="o">/</span><span class="n">webdav</span>
+<div class="highlight-python"><div class="highlight"><pre>example.com/owncloud/remote.php/dav/files/USERNAME/
 </pre></div>
 </div>
 </div>
@@ -166,7 +164,7 @@ servers. With WebDAV you can access your ownCloud shares on Linux, Mac OS X and
 Windows in the same way as any remote network share, and stay synchronized.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">In the following examples, You must adjust <strong>example.org/</strong> to the
+<p class="last">In the following examples, You must adjust <strong>example.com/</strong> to the
 URL of your ownCloud server installation.</p>
 </div>
 </div>
@@ -177,7 +175,7 @@ URL of your ownCloud server installation.</p>
 <h3>Nautilus File Manager<a class="headerlink" href="#nautilus-file-manager" title="Permalink to this headline">¶</a></h3>
 <p>Use the <code class="docutils literal"><span class="pre">davs://</span></code> protocol to connect the Nautilus file manager to your
 ownCloud share:</p>
-<div class="highlight-python"><div class="highlight"><pre>davs://example.org/owncloud/remote.php/webdav
+<div class="highlight-python"><div class="highlight"><pre>davs://example.com/owncloud/remote.php/dav/files/USERNAME/
 </pre></div>
 </div>
 <div class="admonition note">
@@ -191,7 +189,7 @@ of <cite>davs://</cite>.</p>
 <h3>Accessing Files with KDE and Dolphin File Manager<a class="headerlink" href="#accessing-files-with-kde-and-dolphin-file-manager" title="Permalink to this headline">¶</a></h3>
 <p>To access your ownCloud files using the Dolphin file manager in KDE, use
 the <code class="docutils literal"><span class="pre">webdav://</span></code> protocol:</p>
-<div class="highlight-python"><div class="highlight"><pre>webdav://example.org/owncloud/remote.php/webdav
+<div class="highlight-python"><div class="highlight"><pre>webdav://example.com/owncloud/remote.php/dav/files/USERNAME/
 </pre></div>
 </div>
 <img alt="screenshot of configuring Dolphin file manager to use WebDAV" src="../_images/webdav_dolphin.png" />
@@ -205,9 +203,9 @@ The resulting dialog should appear with WebDAV already selected.</li>
 <li>Enter the following settings:<ul>
 <li>Name: The name you want to see in the <strong>Places</strong> bookmark, for example ownCloud.</li>
 <li>User: The ownCloud username you used to log in, for example admin.</li>
-<li>Server: The ownCloud domain name, for example <strong>example.org</strong> (without
+<li>Server: The ownCloud domain name, for example <strong>example.com</strong> (without
 <strong>http://</strong> before or directories afterwards).</li>
-<li>Folder &#8211; Enter the path <code class="docutils literal"><span class="pre">owncloud/remote.php/webdav</span></code>.</li>
+<li>Folder &#8211; Enter the path <code class="docutils literal"><span class="pre">owncloud/remote.php/dav/files/USERNAME/</span></code>.</li>
 </ul>
 </li>
 <li>(Optional) Check the &#8220;Create icon checkbox&#8221; for a bookmark to appear in the
@@ -263,12 +261,12 @@ chmod 600 ~/.davfs2/secrets
 </li>
 <li><p class="first">Add your ownCloud login credentials to the end of the <code class="docutils literal"><span class="pre">secrets</span></code> file,
 using your ownCloud server URL and your ownCloud username and password:</p>
-<div class="highlight-python"><div class="highlight"><pre>example.org/owncloud/remote.php/webdav &lt;username&gt; &lt;password&gt;
+<div class="highlight-python"><div class="highlight"><pre>example.com/owncloud/remote.php/dav/files/USERNAME/ &lt;username&gt; &lt;password&gt;
 </pre></div>
 </div>
 </li>
 <li><p class="first">Add the mount information to <code class="docutils literal"><span class="pre">/etc/fstab</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre>example.org/owncloud/remote.php/webdav /home/&lt;username&gt;/owncloud
+<div class="highlight-python"><div class="highlight"><pre>example.com/owncloud/remote.php/dav/files/USERNAME/ /home/&lt;username&gt;/owncloud
 davfs user,rw,auto 0 0
 </pre></div>
 </div>
@@ -288,16 +286,6 @@ command. If you set it up correctly you won&#8217;t need root permissions:</p>
 <p>Now every time you login to your Linux system your ownCloud share should
 automatically mount via WebDAV in your <code class="docutils literal"><span class="pre">~/owncloud</span></code> directory. If you prefer
 to mount it manually, change <code class="docutils literal"><span class="pre">auto</span></code> to <code class="docutils literal"><span class="pre">noauto</span></code> in <code class="docutils literal"><span class="pre">/etc/fstab</span></code>.</p>
-</div>
-<div class="section" id="accessing-public-shares-over-webdav">
-<h2>Accessing public shares over WebDAV<a class="headerlink" href="#accessing-public-shares-over-webdav" title="Permalink to this headline">¶</a></h2>
-<p>ownCloud provides the possibility to access public shares over WebDAV.</p>
-<p>To access the public share, open:</p>
-<div class="highlight-python"><div class="highlight"><pre>https://example.com/owncloud/public.php/webdav
-</pre></div>
-</div>
-<p>in a WebDAV client, use the share token as username and the (optional) share password
-as password.</p>
 </div>
 <div class="section" id="known-issues">
 <h2>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">¶</a></h2>
@@ -349,7 +337,7 @@ ownCloud server runs on <strong>Apache</strong> and <strong>mod_php</strong>, or
 <div><img alt="Screenshot of entering your ownCloud server address on Mac OS X" src="../_images/osx_webdav1.png" />
 <p>For example, the URL used to connect to the ownCloud server
 from the Mac OS X Finder is:</p>
-<div class="highlight-python"><div class="highlight"><pre>http://example.org/owncloud/remote.php/webdav
+<div class="highlight-python"><div class="highlight"><pre>https://example.com/owncloud/remote.php/dav/files/USERNAME/
 </pre></div>
 </div>
 <img alt="../_images/osx_webdav2.png" src="../_images/osx_webdav2.png" />
@@ -389,7 +377,7 @@ the drive:</p>
 </li>
 <li><p class="first">Enter the following line in the command prompt to map to the computer Z
 drive:</p>
-<div class="highlight-python"><div class="highlight"><pre>net use Z: https://&lt;drive_path&gt;/remote.php/webdav /user:youruser
+<div class="highlight-python"><div class="highlight"><pre>net use Z: https://&lt;drive_path&gt;/remote.php/dav/files/USERNAME/ /user:youruser
 yourpassword
 </pre></div>
 </div>
@@ -397,7 +385,7 @@ yourpassword
 </ol>
 <blockquote>
 <div>where &lt;drive_path&gt; is the URL to your ownCloud server.</div></blockquote>
-<p>For example: <code class="docutils literal"><span class="pre">net</span> <span class="pre">use</span> <span class="pre">Z:</span> <span class="pre">https://example.org/owncloud/remote.php/webdav</span>
+<p>For example: <code class="docutils literal"><span class="pre">net</span> <span class="pre">use</span> <span class="pre">Z:</span> <span class="pre">https://example.com/owncloud/remote.php/dav/files/USERNAME/</span>
 <span class="pre">/user:youruser</span> <span class="pre">yourpassword</span></code></p>
 <blockquote>
 <div>The computer maps the files of your ownCloud account to the drive letter Z.</div></blockquote>
@@ -409,7 +397,7 @@ connections on devices while in a public place, we strongly recommend using a
 VPN tunnel to provide the necessary security.</p>
 </div>
 <p>An alternative command syntax is:</p>
-<div class="highlight-python"><div class="highlight"><pre>net use Z: \\example.org@ssl\owncloud\remote.php\webdav /user:youruser
+<div class="highlight-python"><div class="highlight"><pre>net use Z: \\example.com@ssl\owncloud\remote.php\dav /user:youruser
 yourpassword
 </pre></div>
 </div>
@@ -423,11 +411,11 @@ yourpassword
 the drop-down menu.</li>
 <li>Choose a local network drive to which you want to map ownCloud.</li>
 <li>Specify the address to your ownCloud instance, followed by
-<strong>/remote.php/webdav</strong>.</li>
+<strong>/remote.php/dav/files/USERNAME/</strong>.</li>
 </ol>
 <blockquote>
 <div><p>For example:</p>
-<div class="highlight-python"><div class="highlight"><pre>https://example.org/owncloud/remote.php/webdav
+<div class="highlight-python"><div class="highlight"><pre>https://example.com/owncloud/remote.php/dav/files/USERNAME/
 </pre></div>
 </div>
 </div></blockquote>
@@ -463,7 +451,7 @@ Mac OS X and Windows.</p>
 <li>Specify a server without any leading protocol information. For example:</li>
 </ol>
 <blockquote>
-<div><code class="docutils literal"><span class="pre">example.org</span></code></div></blockquote>
+<div><code class="docutils literal"><span class="pre">example.com</span></code></div></blockquote>
 <p>2. Specify the appropriate port.  The port you choose depends on whether or not
 your ownCloud server supports SSL. Cyberduck requires that you select a
 different connection type if you plan to use SSL.  For example:</p>
@@ -474,8 +462,18 @@ different connection type if you plan to use SSL.  For example:</p>
 <p>3. Use the &#8216;More Options&#8217; drop-down menu to add the rest of your WebDAV URL into
 the &#8216;Path&#8217; field. For example:</p>
 <blockquote>
-<div><code class="docutils literal"><span class="pre">remote.php/webdav</span></code></div></blockquote>
+<div><code class="docutils literal"><span class="pre">remote.php/dav/files/USERNAME/</span></code></div></blockquote>
 <p>Now Cyberduck enables file access to the ownCloud server.</p>
+</div>
+<div class="section" id="accessing-public-shares-over-webdav">
+<h2>Accessing public shares over WebDAV<a class="headerlink" href="#accessing-public-shares-over-webdav" title="Permalink to this headline">¶</a></h2>
+<p>ownCloud provides the possibility to access public shares over WebDAV.</p>
+<p>To access the public share, open:</p>
+<div class="highlight-python"><div class="highlight"><pre>https://example.com/owncloud/public.php/dav
+</pre></div>
+</div>
+<p>in a WebDAV client, use the share token as username and the (optional) share password
+as password.</p>
 </div>
 <div class="section" id="known-problems">
 <h2>Known Problems<a class="headerlink" href="#known-problems" title="Permalink to this headline">¶</a></h2>
@@ -560,6 +558,57 @@ longer than 30 minutes using Web Client in Windows 7.</p>
 <div class="section" id="id11">
 <h3>Solution<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
 <p>Workarounds are documented in the <a class="reference external" href="https://support.microsoft.com/kb/2668751">KB2668751</a> article.</p>
+</div>
+</div>
+<div class="section" id="accessing-files-using-curl">
+<h2>Accessing Files Using cURL<a class="headerlink" href="#accessing-files-using-curl" title="Permalink to this headline">¶</a></h2>
+<p>Since WebDAV is an extension of HTTP cURL can be used to script file operations.</p>
+<p>To create a folder with the current date as name:</p>
+<div class="highlight-bash"><div class="highlight"><pre>$ curl -u user:pass -X MKCOL <span class="s2">&quot;https://example.com/owncloud/remote.php/dav/files/USERNAME/</span><span class="k">$(</span>date <span class="s1">&#39;+%d-%b-%Y&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>To upload a file <code class="docutils literal"><span class="pre">error.log</span></code> into that directory:</p>
+<div class="highlight-bash"><div class="highlight"><pre>$ curl -u user:pass -T error.log <span class="s2">&quot;https://example.com/owncloud/remote.php/dav/files/USERNAME/</span><span class="k">$(</span>date <span class="s1">&#39;+%d-%b-%Y&#39;</span><span class="k">)</span><span class="s2">/error.log&quot;</span>
+</pre></div>
+</div>
+<p>To move a file:</p>
+<div class="highlight-bash"><div class="highlight"><pre>$ curl -u user:pass -X MOVE --header <span class="s1">&#39;Destination: https://example.com/owncloud/remote.php/dav/files/USERNAME/target.jpg&#39;</span> https://example.com/owncloud/remote.php/dav/files/USERNAME/source.jpg
+</pre></div>
+</div>
+<p>To get the properties of files in the root folder:</p>
+<div class="highlight-bash"><div class="highlight"><pre>    $ curl -X PROPFIND -H <span class="s2">&quot;Depth: 1&quot;</span> -u user:pass https://example.com/owncloud/remote.php/dav/files/USERNAME/ <span class="p">|</span> xml_pp
+    &lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span> <span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span>?&gt;
+&lt;d:multistatus xmlns:d<span class="o">=</span><span class="s2">&quot;DAV:&quot;</span> xmlns:oc<span class="o">=</span><span class="s2">&quot;http://owncloud.org/ns&quot;</span> xmlns:s<span class="o">=</span><span class="s2">&quot;http://sabredav.org/ns&quot;</span>&gt;
+  &lt;d:response&gt;
+    &lt;d:href&gt;/owncloud/remote.php/dav/files/USERNAME/&lt;/d:href&gt;
+    &lt;d:propstat&gt;
+      &lt;d:prop&gt;
+        &lt;d:getlastmodified&gt;Tue, <span class="m">13</span> Oct <span class="m">2015</span> 17:07:45 GMT&lt;/d:getlastmodified&gt;
+        &lt;d:resourcetype&gt;
+          &lt;d:collection/&gt;
+        &lt;/d:resourcetype&gt;
+        &lt;d:quota-used-bytes&gt;163&lt;/d:quota-used-bytes&gt;
+        &lt;d:quota-available-bytes&gt;11802275840&lt;/d:quota-available-bytes&gt;
+        &lt;d:getetag&gt;<span class="s2">&quot;561d3a6139d05&quot;</span>&lt;/d:getetag&gt;
+      &lt;/d:prop&gt;
+      &lt;d:status&gt;HTTP/1.1 <span class="m">200</span> OK&lt;/d:status&gt;
+    &lt;/d:propstat&gt;
+  &lt;/d:response&gt;
+  &lt;d:response&gt;
+    &lt;d:href&gt;/owncloud/remote.php/dav/files/USERNAME/welcome.txt&lt;/d:href&gt;
+    &lt;d:propstat&gt;
+      &lt;d:prop&gt;
+        &lt;d:getlastmodified&gt;Tue, <span class="m">13</span> Oct <span class="m">2015</span> 17:07:35 GMT&lt;/d:getlastmodified&gt;
+        &lt;d:getcontentlength&gt;163&lt;/d:getcontentlength&gt;
+        &lt;d:resourcetype/&gt;
+        &lt;d:getetag&gt;<span class="s2">&quot;47465fae667b2d0fee154f5e17d1f0f1&quot;</span>&lt;/d:getetag&gt;
+        &lt;d:getcontenttype&gt;text/plain&lt;/d:getcontenttype&gt;
+      &lt;/d:prop&gt;
+      &lt;d:status&gt;HTTP/1.1 <span class="m">200</span> OK&lt;/d:status&gt;
+    &lt;/d:propstat&gt;
+  &lt;/d:response&gt;
+&lt;/d:multistatus&gt;
+</pre></div>
 </div>
 </div>
 </div>

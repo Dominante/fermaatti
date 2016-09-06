@@ -60,7 +60,7 @@ Database Choice
 SQLite is the default database for ownCloud Server (it is not available and not supported
 in the ownCloud Enterprise edition), and it is good only for testing and lightweight single-user
 setups without client synchronization. Supported databases are MySQL, MariaDB,
-Oracle 11g  (ownCloud Enterprise edition only), and PostgreSQL, and we recommend 
+Oracle 11g (ownCloud Enterprise edition only), and PostgreSQL, and we recommend 
 :doc:`MySQL/MariaDB <system_requirements>`. Your database and PHP connectors 
 must be installed before you run the Installation Wizard. When you install 
 ownCloud from packages all the necessary dependencies will be satisfied (see 
@@ -154,6 +154,7 @@ replace the ``htuser`` and ``htgroup`` variables with your HTTP user and group::
  printf "Creating possible missing Directories\n"
  mkdir -p $ocpath/data
  mkdir -p $ocpath/assets
+ mkdir -p $ocpath/updater
 
  printf "chmod Files and Directories\n"
  find ${ocpath}/ -type f -print0 | xargs -0 chmod 0640
@@ -162,10 +163,11 @@ replace the ``htuser`` and ``htgroup`` variables with your HTTP user and group::
  printf "chown Directories\n"
  chown -R ${rootuser}:${htgroup} ${ocpath}/
  chown -R ${htuser}:${htgroup} ${ocpath}/apps/
+ chown -R ${htuser}:${htgroup} ${ocpath}/assets/
  chown -R ${htuser}:${htgroup} ${ocpath}/config/
  chown -R ${htuser}:${htgroup} ${ocpath}/data/
  chown -R ${htuser}:${htgroup} ${ocpath}/themes/
- chown -R ${htuser}:${htgroup} ${ocpath}/assets/
+ chown -R ${htuser}:${htgroup} ${ocpath}/updater/
 
  chmod +x ${ocpath}/occ
 

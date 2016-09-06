@@ -33,8 +33,8 @@ OC.L10N.register(
     "Public shared file %1$s was downloaded" : "Javni deljeni fajl %1$s je preuzet",
     "You shared %1$s with %2$s" : "Delili ste %1$s sa %2$s",
     "You shared %1$s with group %2$s" : "Delili ste %1$s sa grupom %2$s",
-    "%2$s shared %1$s with you" : "%2$s je delio %1$s sa Vama",
     "You shared %1$s via link" : "Delili ste %1$s pomoću prečice",
+    "%2$s shared %1$s with you" : "%2$s je delio %1$s sa Vama",
     "Shares" : "Deljenja",
     "This share is password-protected" : "Ovaj deljeni resurs je zaštićen lozinkom",
     "The password is wrong. Try again." : "Lozinka je netačna. Pokušajte ponovo.",
@@ -53,6 +53,8 @@ OC.L10N.register(
     "Download %s" : "Preuzmi %s",
     "Direct link" : "Direktna prečica",
     "Allow users on this server to send shares to other servers" : "Dozvoli korisnicima na ovom serveru da šalju deljene resurse na druge servere",
-    "Allow users on this server to receive shares from other servers" : "Dozvoli korisnicima na ovom serveru da primaju deljene resurse sa drugih servera"
+    "Allow users on this server to receive shares from other servers" : "Dozvoli korisnicima na ovom serveru da primaju deljene resurse sa drugih servera",
+    "Public shared file %1$s was downloaded" : "Javni deljeni fajl %1$s je preuzet",
+    "Public shared folder %1$s was downloaded" : "Javni deljeni direktorijum %1$s je preuzet"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

@@ -9,7 +9,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -31,16 +31,19 @@ namespace OC;
 use OC\Hooks\BasicEmitter;
 use OC\Hooks\Emitter;
 use OC\Repair\AssetCache;
+use OC\Repair\AvatarPermissions;
+use OC\Repair\BrokenUpdaterRepair;
 use OC\Repair\CleanTags;
 use OC\Repair\Collation;
+use OC\Repair\CopyRewriteBaseToConfig;
 use OC\Repair\DropOldJobs;
+use OC\Repair\EncryptionCompatibility;
 use OC\Repair\OldGroupMembershipShares;
 use OC\Repair\RemoveGetETagEntries;
 use OC\Repair\SqliteAutoincrement;
 use OC\Repair\DropOldTables;
 use OC\Repair\FillETags;
 use OC\Repair\InnoDB;
-use OC\Repair\RepairConfig;
 use OC\Repair\RepairLegacyStorages;
 use OC\Repair\RepairMimeTypes;
 use OC\Repair\SearchLuceneTables;
@@ -107,7 +110,6 @@ class Repair extends BasicEmitter {
 		return [
 			new RepairMimeTypes(\OC::$server->getConfig()),
 			new RepairLegacyStorages(\OC::$server->getConfig(), \OC::$server->getDatabaseConnection()),
-			new RepairConfig(),
 			new AssetCache(),
 			new FillETags(\OC::$server->getDatabaseConnection()),
 			new CleanTags(\OC::$server->getDatabaseConnection()),
@@ -116,6 +118,8 @@ class Repair extends BasicEmitter {
 			new RemoveGetETagEntries(\OC::$server->getDatabaseConnection()),
 			new UpdateOutdatedOcsIds(\OC::$server->getConfig()),
 			new RepairInvalidShares(\OC::$server->getConfig(), \OC::$server->getDatabaseConnection()),
+			new AvatarPermissions(\OC::$server->getDatabaseConnection()),
+			new BrokenUpdaterRepair(),
 		];
 	}
 
@@ -138,13 +142,15 @@ class Repair extends BasicEmitter {
 	 * @return array of RepairStep instances
 	 */
 	public static function getBeforeUpgradeRepairSteps() {
-		$steps = array(
+		$connection = \OC::$server->getDatabaseConnection();
+		$steps = [
+			new EncryptionCompatibility(),
 			new InnoDB(),
-			new Collation(\OC::$server->getConfig(), \OC_DB::getConnection()),
-			new SqliteAutoincrement(\OC_DB::getConnection()),
+			new Collation(\OC::$server->getConfig(), $connection),
+			new SqliteAutoincrement($connection),
 			new SearchLuceneTables(),
-			new RepairConfig()
-		);
+			new CopyRewriteBaseToConfig(\OC::$server->getConfig()),
+		];
 
 		//There is no need to delete all previews on every single update
 		//only 7.0.0 through 7.0.2 generated broken previews

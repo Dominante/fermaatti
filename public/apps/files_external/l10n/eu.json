@@ -9,13 +9,14 @@
     "All users. Type to select user or group." : "Erabiltzaile guztiak. Idatzi erabiltzaile edo taldea hautatzeko.",
     "(group)" : "(taldea)",
     "Saved" : "Gordeta",
+    "Username" : "Erabiltzaile izena",
+    "Password" : "Pasahitza",
+    "Save" : "Gorde",
     "None" : "Ezer",
     "App key" : "Aplikazio gakoa",
     "App secret" : "App sekretua",
     "Client ID" : "Bezero ID",
     "Client secret" : "Bezeroaren Sekretua",
-    "Username" : "Erabiltzaile izena",
-    "Password" : "Pasahitza",
     "API key" : "APIaren gakoa",
     "Public key" : "Gako publikoa",
     "Amazon S3" : "Amazon S3",
@@ -50,9 +51,10 @@
     "Folder name" : "Karpetaren izena",
     "Configuration" : "Konfigurazioa",
     "Available for" : "Hauentzat eskuragarri",
-    "Delete" : "Ezabatu",
     "Add storage" : "Gehitu biltegiratzea",
-    "Enable User External Storage" : "Gaitu erabiltzaileentzako kanpo biltegiratzea",
-    "Allow users to mount the following external storage" : "Baimendu erabiltzaileak hurrengo kanpo biltegiratzeak muntatzen"
+    "Delete" : "Ezabatu",
+    "Allow users to mount the following external storage" : "Baimendu erabiltzaileak hurrengo kanpo biltegiratzeak muntatzen",
+    "<b>Note:</b> The FTP support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>Oharra:</b> :PHPko FTP euskarria ez dago instalatuta edo gaitua. Ezinezko da %s muntatzea. Mesedez eskatu sistema administratzaleari instala dezan. ",
+    "SMB / CIFS using OC login" : "SMB / CIFS saioa hasteko OC erabiliz"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

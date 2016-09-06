@@ -1,8 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Could not move %s - File with this name already exists" : "%s সরানো যায়নি-এই নামে আগে থেকেই ফাইল আছে",
-    "Could not move %s" : "%s সরানো যায়নি",
     "No file was uploaded. Unknown error" : "কোন ফাইল আপলোড করা হয় নি।অজানা ত্রুটি",
     "There is no error, the file uploaded with success" : "কোন ত্রুটি নেই,ফাইল সাফল্যের সঙ্গে আপলোড করা হয়েছে",
     "The uploaded file exceeds the upload_max_filesize directive in php.ini: " : "আপলোড করা ফাইল-php.ini মধ্যে upload_max_filesize নির্দেশ অতিক্রম করে:",
@@ -19,7 +17,6 @@ OC.L10N.register(
     "Rename" : "পুনঃনামকরণ",
     "Delete" : "মুছে ফেলা",
     "Pending" : "মুলতুবি",
-    "Error" : "ভুল",
     "Name" : "নাম",
     "Size" : "আকার",
     "Folder" : "ফোল্ডার",
@@ -34,6 +31,9 @@ OC.L10N.register(
     "You deleted %1$s" : "আপনি %1$s কে মুছেছেন",
     "%2$s deleted %1$s" : "%2$s মুছেছে %1$s কে",
     "Save" : "সেভ",
-    "Settings" : "সেটিংস"
+    "Settings" : "সেটিংস",
+    "You changed %1$s" : "আপনি %1$s পরিবর্তন করেছেন ",
+    "You created %1$s" : "আপনি %1$s তৈরি করেছেন ",
+    "You deleted %1$s" : "আপনি %1$s কে মুছেছেন"
 },
 "nplurals=2; plural=(n != 1);");

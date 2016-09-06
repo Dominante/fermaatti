@@ -6,15 +6,20 @@ The primary purpose of the ownCloud server-side encryption is to protect users'
 files on remote storage, such as Dropbox and Google Drive, and to do it easily 
 and seamlessly from within ownCloud.
 
-In ownCloud 8.2 the server-side encryption has a number of changes and 
-improvements, including:
+In ownCloud 9.0 the server-side encryption separates encryption of local and 
+remote storage. This allows you to encrypt remote storage, such as Dropbox and 
+Google, without having to also encrypt your home storage on your ownCloud 
+server.
 
-* An option to create a master encryption key, which replaces all individual 
-  user keys. This is especially useful for single-sign on.
-* Encrypt all data files at once when enabling encryption.
-* Decrypt all data files, or per user.
-* Users may decrypt their own files.
-* Move your keys to a different folder.
+.. note:: Starting with ownCloud 9.0 we support Authenticated Encryption for all
+   newly encrypted files. See https://hackerone.com/reports/108082 for more 
+   technical information about the impact.
+   
+   For maximum security make sure to configure external storage with "Check for
+   changes: Never". This will let ownCloud ignore new files not added via
+   ownCloud, so a malicious external storage administrator could not add new
+   files to the storage without your knowledge. Of course, this is not wise if
+   your external storage is subject to legitimate external changes.
 
 ownCloud server-side encryption encrypts files stored on the ownCloud server, 
 and files on remote storage that is connected to your ownCloud server. 
@@ -60,12 +65,12 @@ storage.
    it is better to use other encryption tools, such as file-level or 
    whole-disk encryption. 
    
-   Note also that SSL terminates at or before Apache on the ownCloud server, and 
-   all files will exist in an unencrypted state between the SSL connection 
-   termination and the ownCloud code that encrypts and decrypts files. This is 
-   also potentially exploitable by anyone with administrator access to your 
-   server. Read `How ownCloud uses encryption to protect your data 
-   <https://owncloud.org/blog/how-owncloud-uses-encryption-to-protect-your- 
+   Note also that SSL terminates at or before Apache on the ownCloud server,
+   and all files will exist in an unencrypted state between the SSL connection
+   termination and the ownCloud code that encrypts and decrypts files. This is
+   also potentially exploitable by anyone with administrator access to your
+   server. Read `How ownCloud uses encryption to protect your data
+   <https://owncloud.org/blog/how-owncloud-uses-encryption-to-protect-your-
    data/>`_ for more information.
    
 Before Enabling Encryption
@@ -91,19 +96,25 @@ module is the ownCloud Default Encryption Module.
 First go to the **Server-side encryption** section of your Admin page and check 
 **Enable server-side encryption**. You have one last chance to change your mind.
 
-.. figure:: ../images/encryption3.png
+.. figure:: images/encryption3.png
 
 After clicking the **Enable Encryption** button you see the message "No 
 encryption module loaded, please load a encryption module in the app menu", so 
 go to your Apps page to enable the ownCloud Default Encryption Module.
 
-.. figure:: ../images/encryption1.png
+.. figure:: images/encryption1.png
 
 Return to your Admin page to see the ownCloud Default Encryption 
 Module added to the module selector, and automatically selected. Now you must 
 log out and then log back in to initialize your encryption keys.
 
-.. figure:: ../images/encryption14.png
+.. figure:: images/encryption14.png
+
+When you log back in, there is a checkbox for enabling encryption on your home 
+storage. This is checked by default. Un-check to avoid encrypting your home 
+storage.
+
+.. figure:: images/encryption15.png
 
 Sharing Encrypted Files
 -----------------------
@@ -116,11 +127,12 @@ log-out and log-in again."
 Share owners may need to re-share files after encryption is enabled; users 
 trying to access the share will see a message advising them to ask the share 
 owner to re-share the file with them. For individual shares, un-share and 
-re-share the file. For group shares, share with any individuals who can't access 
+re-share the file. For group shares, share with any individuals who can't 
+access 
 the share. This updates the encryption, and then the share owner can remove the 
 individual shares.
 
-.. figure:: ../images/encryption9.png
+.. figure:: images/encryption9.png
 
 Encrypting External Mountpoints
 -------------------------------
@@ -144,22 +156,22 @@ user data will be lost".
 To avoid all this, create a Recovery Key. Go to the Encryption section of your 
 Admin page and set a recovery key password.
 
-.. figure:: ../images/encryption10.png
+.. figure:: images/encryption10.png
 
 Then your users have the option of enabling password recovery on their Personal 
 pages. If they do not do this, then the Recovery Key won't work for them.
 
-.. figure:: ../images/encryption7.png
+.. figure:: images/encryption7.png
 
 For users who have enabled password recovery, give them a new password and 
 recover access to their encrypted files by supplying the Recovery Key on the 
 Users page.
 
-.. figure:: ../images/encryption8.png
+.. figure:: images/encryption8.png
 
 You may change your Recovery Key password.
 
-.. figure:: ../images/encryption12.png
+.. figure:: images/encryption12.png
 
 .. _occ_encryption_label:
 
@@ -296,10 +308,14 @@ their new password.
 Encryption migration to ownCloud 8.0
 ------------------------------------
 
-When you upgrade from older versions of ownCloud to ownCloud 8.0, you must manually migrate
-your encryption keys with the *occ* command after the upgrade is complete, like this
-example for CentOS: *sudo -u apache php occ encryption:migrate-keys* You must run *occ* as
-your HTTP user. See :doc:`../configuration_server/occ_command` to learn more about *occ*.
+When you upgrade from older versions of ownCloud to ownCloud 8.0, you must 
+manually migrate
+your encryption keys with the *occ* command after the upgrade is complete, like 
+this
+example for CentOS: *sudo -u apache php occ encryption:migrate-keys* You must 
+run *occ* as
+your HTTP user. See :doc:`../configuration_server/occ_command` to learn more 
+about *occ*.
 
 Encryption migration to ownCloud 8.1
 ------------------------------------

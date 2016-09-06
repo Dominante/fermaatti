@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Uploading big files &gt; 512MB &mdash; ownCloud 8.2 Server Administration Manual 8.2 documentation</title>
+    <title>Uploading big files &gt; 512MB &mdash; ownCloud 9.0 Server Administration Manual 9.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '8.2',
+        VERSION:     '9.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,10 +28,10 @@
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="ownCloud 8.2 Server Administration Manual 8.2 documentation" href="../contents.html" />
+    <link rel="top" title="ownCloud 9.0 Server Administration Manual 9.0 documentation" href="../contents.html" />
     <link rel="up" title="File Sharing and Management" href="index.html" />
     <link rel="next" title="Configuring the Collaborative Documents App" href="collaborative_documents_configuration.html" />
-    <link rel="prev" title="Configuring Federated Cloud Sharing" href="federated_cloud_sharing_configuration.html" />
+    <link rel="prev" title="Configuring Federation Sharing" href="federated_cloud_sharing_configuration.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -66,18 +66,18 @@
 <li><a href="../contents.html">Table of Contents</a></li>
 									</ul>
                   <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 8.2 Server Administration Manual Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 8.2 Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 8.2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">ownCloud 9.0 Server Administration Manual Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">ownCloud 9.0 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../whats_new_admin.html">What&#8217;s New for Admins in ownCloud 9.0</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configuration_server/index.html">ownCloud Server Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configuration_user/index.html">User Management</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">File Sharing and Management</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="file_sharing_configuration.html">File Sharing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="federated_cloud_sharing_configuration.html">Configuring Federated Cloud Sharing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="federated_cloud_sharing_configuration.html">Configuring Federation Sharing</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">Uploading big files &gt; 512MB</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#system-configuration">System Configuration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#configuring-your-webserver">Configuring Your Webserver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuring-your-web-server">Configuring Your Web server</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#configuring-php">Configuring PHP</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#configuring-owncloud">Configuring ownCloud</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#general-upload-issues">General upload issues</a></li>
@@ -106,8 +106,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_server_branding/index.html">Enterprise Server Branding (Enterprise only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_external_storage/index.html">External Storage (Enterprise only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_user_management/index.html">User Management (Enterprise only)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../enterprise_files_drop/index.html">Enabling Anonymous Uploads with Files Drop (Enterprise Only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_file_management/index.html">Enterprise File Management (Enterprise Only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_logging/index.html">Enterprise Logging Apps (Enterprise only)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enterprise_firewall/index.html">Enterprise Firewall (Enterprise only)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../enterprise_troubleshooting.html">Enterprise Troubleshooting</a></li>
 </ul>
 
@@ -122,7 +123,7 @@
             
 <ul class="prevnext-title list-unstyled list-inline">
   <li class="prev">
-    <a href="federated_cloud_sharing_configuration.html" title="Previous Chapter: Configuring Federated Cloud Sharing"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm">&laquo; Configuring F...</span>
+    <a href="federated_cloud_sharing_configuration.html" title="Previous Chapter: Configuring Federation Sharing"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm">&laquo; Configuring F...</span>
     </a>
   </li>
   <li class="next">
@@ -161,8 +162,8 @@ the average number of users uploading at the same time is 100: temp space has
 to hold at least 10x100 GB</li>
 </ul>
 </div>
-<div class="section" id="configuring-your-webserver">
-<h2>Configuring Your Webserver<a class="headerlink" href="#configuring-your-webserver" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="configuring-your-web-server">
+<h2>Configuring Your Web server<a class="headerlink" href="#configuring-your-web-server" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">ownCloud comes with its own <code class="docutils literal"><span class="pre">owncloud/.htaccess</span></code> file. Because <code class="docutils literal"><span class="pre">php-fpm</span></code>
@@ -170,7 +171,7 @@ can&#8217;t read PHP settings in <code class="docutils literal"><span class="pre
 <code class="docutils literal"><span class="pre">owncloud/.user.ini</span></code> file.</p>
 </div>
 <p>Set the following two parameters inside the corresponding php.ini file (see the
-<strong>Loaded Configuration File</strong> section of <a class="reference internal" href="../issues/index.html#label-phpinfo"><span>PHP Version and Information</span></a> to find your
+<strong>Loaded Configuration File</strong> section of <a class="reference internal" href="../issues/general_troubleshooting.html#label-phpinfo"><span>PHP Version and Information</span></a> to find your
 relevant php.ini files)</p>
 <div class="highlight-python"><div class="highlight"><pre>php_value upload_max_filesize = 16G
 php_value post_max_size = 16G
@@ -186,8 +187,8 @@ php_value max_execution_time 3600
 Apache module could also stop large uploads from completing. If you&#8217;re using this
 module and getting failed uploads of large files either disable it in your Apache
 config or raise the configured <code class="docutils literal"><span class="pre">RequestReadTimeout</span></code> timeouts.</p>
-<p>There are also several other configuration options in your webserver config which
-could prevent the upload of larger files. Please see the manual of your webserver
+<p>There are also several other configuration options in your Web server config which
+could prevent the upload of larger files. Please see the manual of your Web server
 for how to configure those values correctly:</p>
 <div class="section" id="apache">
 <h3>Apache<a class="headerlink" href="#apache" title="Permalink to this headline">¶</a></h3>
@@ -286,8 +287,8 @@ this input box.</p>
 </div>
 <p>To be able to use this input box you need to make sure that:</p>
 <ul class="simple">
-<li>your web server is be able to use the <code class="docutils literal"><span class="pre">.htaccess</span></code> file shipped by ownCloud (Apache only)</li>
-<li>the user your web server is running as has write permissions to the files <code class="docutils literal"><span class="pre">.htaccess</span></code> and <code class="docutils literal"><span class="pre">.user.ini</span></code></li>
+<li>your Web server is be able to use the <code class="docutils literal"><span class="pre">.htaccess</span></code> file shipped by ownCloud (Apache only)</li>
+<li>the user your Web server is running as has write permissions to the files <code class="docutils literal"><span class="pre">.htaccess</span></code> and <code class="docutils literal"><span class="pre">.user.ini</span></code></li>
 </ul>
 <p><a class="reference internal" href="../installation/installation_wizard.html#strong-perms-label"><span>Setting Strong Directory Permissions</span></a> might prevent write access to these files. As an admin you need
 to decide between the ability to use the input box and a more secure ownCloud installation
@@ -299,7 +300,7 @@ files described above.</p>
 <h2>General upload issues<a class="headerlink" href="#general-upload-issues" title="Permalink to this headline">¶</a></h2>
 <p>Various environmental factors could cause a restriction of the upload size. An example is
 the <code class="docutils literal"><span class="pre">LVE</span> <span class="pre">Manager</span></code> of <code class="docutils literal"><span class="pre">CloudLinux</span></code> which sets a <code class="docutils literal"><span class="pre">I/O</span> <span class="pre">limit</span></code>. Other webserver modules
-like described in <code class="xref doc docutils literal"><span class="pre">../issues/general_troubleshooting</span></code> might cause additional problems.</p>
+like described in <a class="reference internal" href="../issues/general_troubleshooting.html"><em>General Troubleshooting</em></a> might cause additional problems.</p>
 </div>
 </div>
 
@@ -307,7 +308,7 @@ like described in <code class="xref doc docutils literal"><span class="pre">../i
             
 <ul class="prevnext-title list-unstyled list-inline">
   <li class="prev">
-    <a href="federated_cloud_sharing_configuration.html" title="Previous Chapter: Configuring Federated Cloud Sharing"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm">&laquo; Configuring F...</span>
+    <a href="federated_cloud_sharing_configuration.html" title="Previous Chapter: Configuring Federation Sharing"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm">&laquo; Configuring F...</span>
     </a>
   </li>
   <li class="next">
