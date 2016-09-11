@@ -16,6 +16,7 @@ use OCP\AppFramework\Db\Mapper;
 
 use OCA\DomiSingers\Db\MemberMapper;
 use OCA\DomiSingers\Db\ResponsibilityMapper;
+use OCA\DomiSingers\Db\AbsenceMapper;
 use OCA\DomiSingers\Db\MemberProfile;
 
 class MemberProfileService {
@@ -23,12 +24,14 @@ class MemberProfileService {
 	protected $db;
 	protected $memberMapper;
 	protected $responsibilityMapper;
+	protected $absenceMapper;
 	
 	
-	public function __construct(IDBConnection $db, \OCP\ILogger $logger, MemberMapper $memberMapper, ResponsibilityMapper $responsibilityMapper) {
+	public function __construct(IDBConnection $db, \OCP\ILogger $logger, MemberMapper $memberMapper, ResponsibilityMapper $responsibilityMapper, AbsenceMapper $absenceMapper) {
 		$this->db = $db;
 		$this->memberMapper = $memberMapper;        
 		$this->responsibilityMapper = $responsibilityMapper;
+		$this->absenceMapper = $absenceMapper;
 		$this->logger = $logger;
 	}
 
@@ -84,6 +87,22 @@ class MemberProfileService {
 		$deletedResps = array_udiff($responsibilities, $modifiedResponsibilities, $compareFunc);
 		array_map(array($this->responsibilityMapper, 'insert'), $newResps);
 		array_map(array($this->responsibilityMapper, 'delete'), $deletedResps);
+		
+		$absences = $originalProfile->absences;
+		$modifiedAbsences = $modifiedProfile->absences;
+		
+		$compareFunc = function($abs1, $abs2) {
+			$alkoiComp = $abs1->getAlkoi() - $abs2->getAlkoi();
+			if ($alkoiComp != 0) return $alkoiComp;
+			$paattyiComp = $abs1->getPaattyi() - $abs2->getPaattyi();
+			if ($paattyiComp != 0) return $paattyiComp;
+			return strcmp($abs1->getSelite(), $abs2->getSelite());
+		};
+		
+		$newAbsences = array_udiff($modifiedAbsences, $absences, $compareFunc);
+		$deletedAbsences = array_udiff($absences, $modifiedAbsences, $compareFunc);
+		array_map(array($this->absenceMapper, 'insert'), $newAbsences);
+		array_map(array($this->absenceMapper, 'delete'), $deletedAbsences);
 		
 		return $modifiedProfile;
 	}

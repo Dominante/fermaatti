@@ -69,6 +69,15 @@
 			profile.vastuut.push({kausi: kausi, viskaalius: viskaalius});
 			updateResponsibilitiesEdit();
 		});
+        
+        $('#presence [data-action="add"]').click(function() {
+			var alkoi = $('#input_alkoi').val();
+			var paattyi = $('#input_paattyi').val();
+            var selite = $('#input_selite').val();
+			profile.tauot.push({alkoi: alkoi, paattyi: paattyi, selite: selite});
+			updatePresenceEdit();
+		});
+        
 
 		$('#cntrls [data-action="remove"]').click(function(event) {
 			var title = 'Vahvistus';
@@ -145,7 +154,7 @@
 	}
 
 	// Send updated profile to the server
-	function saveChanges(section, saveChanges) {
+	function saveChanges(section) {
 		var id = section.attr('id');
 		if (id == 'name') {
 			profile.etunimi = $('#input_etunimi').val().trim();
@@ -265,6 +274,25 @@
 				$('#input_lopetti').datepicker('show');
 			}
 			$('#input_lopetti').prop('disabled', !finished);
+		});
+		
+		var template = $('#presence .entry_template');
+		for(i=0; i<profile.tauot.length; i++) {
+			var a = profile.tauot[i];
+			var row = template.clone();
+			row.switchClass('entry_template', 'entry ' + i);
+			row.insertBefore(template);
+			row.find('col1').text(a['alkoi']);
+			row.find('col2').text(a['paattyi']);
+			row.find('col3').text(a['selite']);
+			row.show();
+		}
+		
+		$('#presence [data-action="remove"]').click(function(event) {
+			var row = event.target.closest('.row');
+			var i = $(row).prop('class').split(/\s+/)[2];
+			profile.tauot.splice(i, 1);
+			updateResponsibilitiesEdit();
 		});
 	}
 

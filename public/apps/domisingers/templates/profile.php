@@ -198,8 +198,8 @@ style('domisingers', 'profile');
             <a class='icon-delete' data-action='remove'></a>
         </div>
         <div class='row'>
-            <div class='col1'><input id='input_alkoi' type='text'></div>
-            <div class='col2'><input id='input_paattyi' type='text'></div>
+            <div class='col1'><input id='input_alkoi' type='date'></div>
+            <div class='col2'><input id='input_paattyi' type='date'></div>
             <div class='col3'><input id='input_selite' type='text'></div>
             <button data-action='add'>lis&auml;&auml;</button>
         </div>

@@ -20,12 +20,13 @@ class MemberProfile implements JsonSerializable {
     public $member;
     public $responsibilities = [];
     protected $responsibilityNames = [];
-    protected $breaks = [];
+    protected $absences = [];
 
-    public function __construct($member, $responsibilities, $responsibilityNames) {
+    public function __construct($member, $responsibilities, $responsibilityNames, $absences) {
         $this->member = $member;
         $this->responsibilities = $responsibilities;
         $this->responsibilityNames = $responsibilityNames;
+        $this->absences = $absences;
     }
 
     protected function getResponsibilityArray() {
@@ -36,7 +37,14 @@ class MemberProfile implements JsonSerializable {
         }
         return $arr;
     }
-
+    
+    protected function getAbsenceArray() {
+        $arr = [];
+        foreach($this->absences as $a) {
+            $arr[] = ['alkoi' => $a->getAlkoi(), 'paattyi' => $a->getPaattyi(), 'selite' => a->getSelite()];
+        }
+        return $arr;
+    }
 
     public static function fromJson($json, $responsibilityNames) {
         $responsibilityKey = array_flip($responsibilityNames);
@@ -62,8 +70,13 @@ class MemberProfile implements JsonSerializable {
             ];
             $responsibilities[] = Responsibility::fromParams($params);
         }
+        
+        $absences = [];
+        foreach ($json['tauot'] as $entry) {
+            $absences[] = Absence:fromParams($entry);
+        }
 
-        return new static($member, $responsibilities, $responsibilityNames);
+        return new static($member, $responsibilities, $absences, $responsibilityNames);
     }
 
     public function JsonSerialize() {
@@ -86,6 +99,7 @@ class MemberProfile implements JsonSerializable {
             'taukoja' => $this->member->getTaukoja(),
             'tietosuoja' => $this->member->getTietosuoja(),
             'vastuut' => $this->getResponsibilityArray(),
+            'tauot' => $this->getAbsenceArray(),
             'ocUid' => $this->member->getOcUid()
         ];
     }
